@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PracticeJob.Core\PracticeJob.Core.csproj" />
+    <ProjectReference Include="..\PracticeJob.DAL\PracticeJob.DAL.csproj" />
+  </ItemGroup>
+
+</Project>
