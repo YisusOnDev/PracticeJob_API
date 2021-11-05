@@ -21,7 +21,7 @@ using Microsoft.OpenApi.Models;
 using PracticeJob.Core.Security;
 using PracticeJob.Core.AutomapperProfiles;
 
-namespace PracticeJob.Api
+namespace PracticeJob.API
 {
     public class Startup
     {
