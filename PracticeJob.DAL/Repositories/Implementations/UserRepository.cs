@@ -28,7 +28,7 @@ namespace PracticeJob.DAL.Repositories.Implementations
 
         public bool Exists(User user)
         {
-            return _context.Users.Any(u => u.Email == user.Email || u.Username == user.Username);
+            return _context.Users.Any(u => u.Email == user.Email);
         }
     }
 }

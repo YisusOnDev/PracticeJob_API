@@ -24,6 +24,12 @@ namespace PracticeJob.API.Controllers
         [Route("Login")]
        public ActionResult Login(UserDTO userDTO)
         {
+            
+            if (string.IsNullOrEmpty(userDTO.Email) || string.IsNullOrEmpty(userDTO.Password))
+            {
+                return Unauthorized();
+            }
+
             if (userBL.Login(userDTO))
                 return Ok();
             else
@@ -33,6 +39,11 @@ namespace PracticeJob.API.Controllers
         [Route("Create")]
         public ActionResult<UserDTO> Create(UserDTO userDTO)
         {
+            if (string.IsNullOrEmpty(userDTO.Email) || string.IsNullOrEmpty(userDTO.Password))
+            {
+                return Unauthorized();
+            }
+
             var user =  userBL.Create(userDTO);
             if (user != null)
                 return Ok(user);
