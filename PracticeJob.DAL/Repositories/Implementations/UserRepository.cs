@@ -16,6 +16,12 @@ namespace PracticeJob.DAL.Repositories.Implementations
         }
         public bool Login(User user)
         {
+            /* var example_join = (from u in _context.Users
+                        join u2 in _context.Users on u.Id equals u2.Id
+                        where u.Email == user.Email && u.Password == user.Password
+                        select new { u, u2 }).SingleOrDefault(); */
+
+            // var lambdalong = _context.Users.Where(u => u.Email == user.Email && u.Password == user.Password).SingleOrDefault();
             return _context.Users.Any(u => u.Email == user.Email && u.Password == user.Password);
         }
 
