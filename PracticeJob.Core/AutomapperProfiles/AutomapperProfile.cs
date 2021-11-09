@@ -13,6 +13,8 @@ namespace PracticeJob.Core.AutomapperProfiles
         {
             CreateMap<UserDTO, User>();
             CreateMap<User, UserDTO>();
+            CreateMap<ProvinceDTO, Province>();
+            CreateMap<Province, ProvinceDTO>();
         }
     }
 }

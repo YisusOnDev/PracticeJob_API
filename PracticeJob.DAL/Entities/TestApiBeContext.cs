@@ -10,6 +10,7 @@ namespace PracticeJob.DAL.Entities
     public partial class TestApiBeContext : DbContext
     {
         public DbSet<User> Users { get; set; }
+        public DbSet<Province> Provinces { get; set; }
         public TestApiBeContext()
         {
         }

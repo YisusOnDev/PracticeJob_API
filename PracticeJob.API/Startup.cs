@@ -56,6 +56,8 @@ namespace PracticeJob.API
             services.AddScoped<IUserBL, UserBL>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPasswordGenerator, PasswordGenerator>();
+            services.AddScoped<IProvinceRepository, ProvinceRepository>();
+            services.AddScoped<IProvinceBL, ProvinceBL>();
         }
 
         private void AddSwagger(IServiceCollection services)
