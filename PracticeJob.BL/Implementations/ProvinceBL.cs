@@ -22,9 +22,9 @@ namespace PracticeJob.BL.Implementations
             this.mapper = mapper;
         }
 
-        public List<Province> Get()
+        public List<ProvinceDTO> Get()
         {
-            return this.provinceRepository.Get();
+            return mapper.Map<Province, ProvinceDTO>(provinceRepository.Get()); ;
         }
     }
 }
