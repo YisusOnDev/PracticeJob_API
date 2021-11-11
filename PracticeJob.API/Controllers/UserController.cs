@@ -49,7 +49,6 @@ namespace PracticeJob.API.Controllers
                 return Ok(user);
             else
                 return BadRequest();
-            
         }
     }
 }

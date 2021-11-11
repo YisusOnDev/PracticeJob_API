@@ -24,7 +24,7 @@ namespace PracticeJob.BL.Implementations
 
         public List<ProvinceDTO> Get()
         {
-            return mapper.Map<Province, ProvinceDTO>(provinceRepository.Get()); ;
+            return mapper.Map<List<Province>, List<ProvinceDTO>>(provinceRepository.Get());
         }
     }
 }
