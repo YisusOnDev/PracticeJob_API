@@ -5,10 +5,10 @@ using PracticeJob.DAL.Entities;
 
 namespace PracticeJob.DAL.Repositories.Contracts
 {
-    public interface IUserRepository
+    public interface IStudentRepository
     {
-        bool Login(User u);
-        User Create(User u);
-        bool Exists(User u);
+        Student Login(Student u);
+        Student Create(Student u);
+        bool Exists(Student u);
     }
 }

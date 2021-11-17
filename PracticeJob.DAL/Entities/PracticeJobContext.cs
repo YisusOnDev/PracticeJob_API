@@ -7,15 +7,15 @@ using PracticeJob.DAL.Entities;
 
 namespace PracticeJob.DAL.Entities
 {
-    public partial class TestApiBeContext : DbContext
+    public partial class PracticeJobContext : DbContext
     {
-        public DbSet<User> Users { get; set; }
+        public DbSet<Student> Students { get; set; }
         public DbSet<Province> Provinces { get; set; }
-        public TestApiBeContext()
+        public PracticeJobContext()
         {
         }
 
-        public TestApiBeContext(DbContextOptions<TestApiBeContext> options)
+        public PracticeJobContext(DbContextOptions<PracticeJobContext> options)
             : base(options)
         {
         }
@@ -24,7 +24,7 @@ namespace PracticeJob.DAL.Entities
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySql("server=localhost;port=3306;user=root;database=testapibe", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.19-mariadb"));
+                optionsBuilder.UseMySql("server=localhost;port=3306;user=root;database=practicejob", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.19-mariadb"));
             }
         }
 

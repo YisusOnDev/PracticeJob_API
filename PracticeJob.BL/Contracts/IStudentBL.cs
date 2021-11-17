@@ -5,9 +5,9 @@ using PracticeJob.Core.DTO;
 
 namespace PracticeJob.BL.Contracts
 {
-    public interface IUserBL
+    public interface IStudentBL
     {
-        bool Login(UserDTO userDTO);
-        UserDTO Create(UserDTO userDTO);
+        StudentDTO Login(AuthDTO authDTO);
+        StudentDTO Create(AuthDTO authDTO);
     }
 }

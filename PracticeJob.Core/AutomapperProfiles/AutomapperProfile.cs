@@ -11,8 +11,10 @@ namespace PracticeJob.Core.AutomapperProfiles
     {
         public AutomapperProfile()
         {
-            CreateMap<UserDTO, User>();
-            CreateMap<User, UserDTO>();
+            CreateMap<AuthDTO, Student>();
+            CreateMap<Student, AuthDTO>();
+            CreateMap<StudentDTO, Student>();
+            CreateMap<Student, StudentDTO>();
             CreateMap<ProvinceDTO, Province>();
             CreateMap<Province, ProvinceDTO>();
         }

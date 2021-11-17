@@ -7,7 +7,7 @@ using PracticeJob.DAL.Entities;
 
 namespace PracticeJob.DAL.Migrations
 {
-    [DbContext(typeof(TestApiBeContext))]
+    [DbContext(typeof(PracticeJobContext))]
     [Migration("20211110175353_InsertProvinces")]
     partial class InsertProvinces
     {

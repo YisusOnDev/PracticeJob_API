@@ -20,6 +20,7 @@ using PracticeJob.DAL.Repositories.Implementations;
 using Microsoft.OpenApi.Models;
 using PracticeJob.Core.Security;
 using PracticeJob.Core.AutomapperProfiles;
+using PracticeJob.Core.DTO;
 
 namespace PracticeJob.API
 {
@@ -38,23 +39,25 @@ namespace PracticeJob.API
             services.AddControllers();
 
             // Enable CORS in our API
-            services.AddCors(options =>
-            {
-                options.AddPolicy("CorsPolicy",
-                    builder => builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader());
+            services.AddCors(o => {
+                o.AddPolicy("AllowSetOrigins", options =>
+                {
+                    options.WithOrigins("http://localhost:8080");
+                    options.AllowAnyHeader();
+                    options.AllowAnyMethod();
+                    options.AllowCredentials();
+                });
             });
 
             AddSwagger(services);
 
             services.AddAutoMapper(cfg => cfg.AddProfile(new AutomapperProfile()));
 
-            services.AddDbContext<TestApiBeContext>(opts => opts.UseMySql(Configuration["ConnectionStrings:TestApiDB"], ServerVersion.AutoDetect(Configuration["ConnectionStrings:TestApiDB"])));
+            services.AddDbContext<PracticeJobContext>(opts => opts.UseMySql(Configuration["ConnectionStrings:PracticeJobDB"], ServerVersion.AutoDetect(Configuration["ConnectionStrings:PracticeJobDB"])));
 
-            //Aquí las inyecciones: Interfaz - Clase
-            services.AddScoped<IUserBL, UserBL>();
-            services.AddScoped<IUserRepository, UserRepository>();
+            // Interface and Class inyections
+            services.AddScoped<IStudentBL, StudentBL>();
+            services.AddScoped<IStudentRepository, StudentRepository>();
             services.AddScoped<IPasswordGenerator, PasswordGenerator>();
             services.AddScoped<IProvinceRepository, ProvinceRepository>();
             services.AddScoped<IProvinceBL, ProvinceBL>();
@@ -99,7 +102,7 @@ namespace PracticeJob.API
 
             app.UseRouting();
 
-            app.UseCors();
+            app.UseCors("AllowSetOrigins");
 
             app.UseAuthorization();
 

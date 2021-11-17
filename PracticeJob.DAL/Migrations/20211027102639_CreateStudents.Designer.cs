@@ -7,9 +7,9 @@ using PracticeJob.DAL.Entities;
 
 namespace PracticeJob.DAL.Migrations
 {
-    [DbContext(typeof(TestApiBeContext))]
-    [Migration("20211027102639_CreateUsers")]
-    partial class CreateUsers
+    [DbContext(typeof(PracticeJobContext))]
+    [Migration("20211027102639_CreateStudents")]
+    partial class CreateStudents
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,7 +20,7 @@ namespace PracticeJob.DAL.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
                 .HasAnnotation("ProductVersion", "5.0.11");
 
-            modelBuilder.Entity("PracticeJob.DAL.Entities.User", b =>
+            modelBuilder.Entity("PracticeJob.DAL.Entities.Student", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -34,7 +34,7 @@ namespace PracticeJob.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Students");
                 });
 #pragma warning restore 612, 618
         }

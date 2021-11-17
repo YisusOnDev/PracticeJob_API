@@ -9,8 +9,8 @@ namespace PracticeJob.DAL.Repositories.Implementations
 {
     public class ProvinceRepository : IProvinceRepository
     {
-        public TestApiBeContext _context { get; set; }
-        public ProvinceRepository(TestApiBeContext context)
+        public PracticeJobContext _context { get; set; }
+        public ProvinceRepository(PracticeJobContext context)
         {
             this._context = context;
         }
