@@ -12,7 +12,7 @@ namespace PracticeJob.DAL.Migrations
                 table: "Students",
                 type: "Date",
                 nullable: true,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+                defaultValue: null);
 
             migrationBuilder.AddColumn<string>(
                 name: "City",
@@ -43,7 +43,7 @@ namespace PracticeJob.DAL.Migrations
                 table: "Students",
                 type: "int",
                 nullable: true,
-                defaultValue: null);
+                defaultValue: 1);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Students_ProvinceId",

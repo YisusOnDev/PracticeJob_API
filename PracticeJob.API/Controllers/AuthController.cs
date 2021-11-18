@@ -37,6 +37,7 @@ namespace PracticeJob.API.Controllers
                     if (student != null)
                     {
                         student.Password = null;
+
                         return Ok(student);
                     } 
                     else

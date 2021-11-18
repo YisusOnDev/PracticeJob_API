@@ -35,7 +35,6 @@ namespace PracticeJob.BL.Implementations
             authDTO.Password = passwordGenerator.Hash(authDTO.Password);
 
             var user = mapper.Map<AuthDTO, Student>(authDTO);
-            user.ProvinceId = 1;
 
             if (!studentRepository.Exists(user))
             {
