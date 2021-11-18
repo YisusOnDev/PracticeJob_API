@@ -6,6 +6,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using PracticeJob.BL.Contracts;
 using PracticeJob.Core.DTO;
+using PracticeJob.Core.Common;
+using PracticeJob.Core.Security;
+using Microsoft.Extensions.Configuration;
 
 namespace PracticeJob.API.Controllers
 {
@@ -13,16 +16,21 @@ namespace PracticeJob.API.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
+        private readonly IConfiguration _config;
+        private readonly ITokenService _tokenService;
         public IStudentBL studentBL { get; set; }
+        private string generatedToken = null;
 
-        public AuthController(IStudentBL studentBL)
+        public AuthController(IConfiguration config, ITokenService tokenService, IStudentBL studentBL)
         {
+            _config = config;
+            _tokenService = tokenService;
             this.studentBL = studentBL;
         }
 
         [HttpPost]
         [Route("Login")]
-       public ActionResult<Object> Login(AuthDTO authDTO)
+       public ActionResult<GenericAPIResponse<Object>> Login(AuthDTO authDTO)
         {
             
             if (string.IsNullOrEmpty(authDTO.Email) || string.IsNullOrEmpty(authDTO.Password))
@@ -33,12 +41,12 @@ namespace PracticeJob.API.Controllers
             switch (authDTO.LoginType)
             {
                 case "Student":
-                    var student = studentBL.Login(authDTO);
+                    StudentDTO student = studentBL.Login(authDTO);
                     if (student != null)
                     {
-                        student.Password = null;
-
-                        return Ok(student);
+                        generatedToken = _tokenService.BuildStudentToken(_config["JWTSettings:Secret"].ToString(), _config["JWTSettings:Issuer"].ToString(), student);
+                        // return Ok(student);
+                        return new GenericAPIResponse<Object>(student, generatedToken);
                     } 
                     else
                     {
@@ -48,23 +56,33 @@ namespace PracticeJob.API.Controllers
                     // Do Business Login
                     return Unauthorized();
                 default:
-                    return Unauthorized();
+                    return BadRequest();
             }
         }
         [HttpPost]
         [Route("Create")]
-        public ActionResult<StudentDTO> Create(AuthDTO authDTO)
+        public ActionResult<GenericAPIResponse<Object>> Create(AuthDTO authDTO)
         {
             if (string.IsNullOrEmpty(authDTO.Email) || string.IsNullOrEmpty(authDTO.Password))
             {
-                return Unauthorized();
-            }   
-
-            var student =  studentBL.Create(authDTO);
-            if (student != null)
-                return Ok(student);
-            else
                 return BadRequest();
+            }
+
+            switch (authDTO.LoginType)
+            {
+                case "Student":
+                    var student = studentBL.Create(authDTO);
+                    if (student != null)
+                        return Ok(student);
+                    else
+                        return BadRequest();
+                case "Business":
+                    // Do Business Create
+                    return Unauthorized();
+                default:
+                    return BadRequest();
+            }
+
         }
     }
 }

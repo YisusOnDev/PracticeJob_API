@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 using PracticeJob.BL.Contracts;
 using PracticeJob.Core.DTO;
 using PracticeJob.DAL.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PracticeJob.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProvinceController : ControllerBase

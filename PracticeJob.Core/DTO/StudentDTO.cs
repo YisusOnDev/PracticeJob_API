@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace PracticeJob.Core.DTO
 {
@@ -8,7 +9,10 @@ namespace PracticeJob.Core.DTO
     {
         public int Id { get; set; }
         public string Email { get; set; }
+
+        [JsonIgnore]
         public string Password { get; set; }
+
         public int ProvinceId { get; set; }
         public ProvinceDTO Province { get; set; }
     }

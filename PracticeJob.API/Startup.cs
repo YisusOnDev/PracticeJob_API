@@ -1,17 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using PracticeJob.BL;
 using PracticeJob.BL.Contracts;
 using PracticeJob.BL.Implementations;
 using PracticeJob.DAL.Entities;
@@ -21,6 +14,10 @@ using Microsoft.OpenApi.Models;
 using PracticeJob.Core.Security;
 using PracticeJob.Core.AutomapperProfiles;
 using PracticeJob.Core.DTO;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Http;
 
 namespace PracticeJob.API
 {
@@ -37,6 +34,28 @@ namespace PracticeJob.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddMvc();
+            services.AddSession();
+
+            services.AddTransient<ITokenService, TokenService>();
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["JWTSettings:Secret"])),
+                    ValidIssuer = Configuration["JWTSettings:Issuer"],
+                    ValidAudience = Configuration["JWTSettings:Audience"],
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
 
             // Enable CORS in our API
             services.AddCors(o => {
@@ -61,6 +80,7 @@ namespace PracticeJob.API
             services.AddScoped<IPasswordGenerator, PasswordGenerator>();
             services.AddScoped<IProvinceRepository, ProvinceRepository>();
             services.AddScoped<IProvinceBL, ProvinceBL>();
+            services.AddScoped<ITokenService, TokenService>();
         }
 
         private void AddSwagger(IServiceCollection services)
@@ -91,6 +111,19 @@ namespace PracticeJob.API
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSession();
+
+            app.Use(async (context, next) =>
+            {
+                var token = context.Session.GetString("Token");
+                if (!string.IsNullOrEmpty(token))
+                {
+                    context.Request.Headers.Add("Authorization", "Bearer " + token);
+                }
+                await next();
+            });
+
 
             app.UseHttpsRedirection();
 
