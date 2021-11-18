@@ -12,6 +12,9 @@
 
 > PracticeJob API for WebApp and MobileApp built with .NET Core 3.1
 
+## Usage
+I personally recommend to use IDE like VS Code or VS Studio for running/debugging/building this API.
+
 ## Author
 
 👤 **Jesús Téllez (Yisus)**
