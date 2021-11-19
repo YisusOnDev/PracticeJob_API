@@ -45,7 +45,6 @@ namespace PracticeJob.API.Controllers
                     if (student != null)
                     {
                         generatedToken = _tokenService.BuildStudentToken(_config["JWTSettings:Secret"].ToString(), _config["JWTSettings:Issuer"].ToString(), student);
-                        // return Ok(student);
                         return new GenericAPIResponse<Object>(student, generatedToken);
                     } 
                     else
