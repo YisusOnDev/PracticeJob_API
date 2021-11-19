@@ -1,7 +1,4 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using PracticeJob.Core.DTO;
 using PracticeJob.DAL.Entities;
 
@@ -15,6 +12,10 @@ namespace PracticeJob.Core.AutomapperProfiles
             CreateMap<Student, AuthDTO>();
             CreateMap<StudentDTO, Student>();
             CreateMap<Student, StudentDTO>();
+            CreateMap<AuthDTO, Company>();
+            CreateMap<Company, AuthDTO>();
+            CreateMap<CompanyDTO, Company>();
+            CreateMap<Company, CompanyDTO>();
             CreateMap<ProvinceDTO, Province>();
             CreateMap<Province, ProvinceDTO>();
         }

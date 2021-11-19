@@ -25,8 +25,8 @@ namespace PracticeJob.BL.Implementations
         public StudentDTO Login(AuthDTO authDTO)
         {
             authDTO.Password = passwordGenerator.Hash(authDTO.Password);
-            var user = mapper.Map<AuthDTO, Student>(authDTO);
-            var student = mapper.Map<Student, StudentDTO>(studentRepository.Login(user));
+            var loginData = mapper.Map<AuthDTO, Student>(authDTO);
+            var student = mapper.Map<Student, StudentDTO>(studentRepository.Login(loginData));
             return student;
         }
 
@@ -34,11 +34,11 @@ namespace PracticeJob.BL.Implementations
         {
             authDTO.Password = passwordGenerator.Hash(authDTO.Password);
 
-            var user = mapper.Map<AuthDTO, Student>(authDTO);
+            var student = mapper.Map<AuthDTO, Student>(authDTO);
 
-            if (!studentRepository.Exists(user))
+            if (!studentRepository.Exists(student))
             {
-                var u = mapper.Map<Student, StudentDTO>(studentRepository.Create(user));
+                var u = mapper.Map<Student, StudentDTO>(studentRepository.Create(student));
                 u.Password = null;
                 return u;
             }
