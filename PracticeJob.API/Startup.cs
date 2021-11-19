@@ -32,9 +32,7 @@ namespace PracticeJob.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
             services.AddMvc();
-            services.AddSession();
 
             services.AddTransient<ITokenService, TokenService>();
             services.AddAuthentication(x =>
@@ -49,10 +47,9 @@ namespace PracticeJob.API
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["JWTSettings:Secret"])),
-                    ValidIssuer = Configuration["JWTSettings:Issuer"],
-                    ValidAudience = Configuration["JWTSettings:Audience"],
                     ValidateIssuer = false,
-                    ValidateAudience = false
+                    ValidateAudience = false,
+                    ValidateLifetime = false,
                 };
             });
 
@@ -113,18 +110,10 @@ namespace PracticeJob.API
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseSession();
+            app.UseRouting();
 
-            app.Use(async (context, next) =>
-            {
-                var token = context.Session.GetString("Token");
-                if (!string.IsNullOrEmpty(token))
-                {
-                    context.Request.Headers.Add("Authorization", "Bearer " + token);
-                }
-                await next();
-            });
-
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseHttpsRedirection();
 
@@ -134,7 +123,6 @@ namespace PracticeJob.API
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "PracticeJob API V1");
             });
 
-            app.UseRouting();
 
             app.UseCors("AllowSetOrigins");
 

@@ -15,9 +15,7 @@ namespace PracticeJob.Core.Security
         public string BuildToken(string key, string issuer, StudentDTO user)
         {
             var claims = new[] {
-            new Claim(ClaimTypes.Name, user.Email),
-            new Claim(ClaimTypes.NameIdentifier,
-            Guid.NewGuid().ToString())
+            new Claim(ClaimTypes.Name, user.Email)
         };
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
@@ -29,9 +27,7 @@ namespace PracticeJob.Core.Security
         public string BuildToken(string key, string issuer, CompanyDTO user)
         {
             var claims = new[] {
-            new Claim(ClaimTypes.Name, user.Email),
-            new Claim(ClaimTypes.NameIdentifier,
-            Guid.NewGuid().ToString())
+            new Claim(ClaimTypes.Name, user.Email)
         };
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));

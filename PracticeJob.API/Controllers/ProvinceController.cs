@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace PracticeJob.API.Controllers
 {
-    [Authorize]
+  
     [Route("api/[controller]")]
     [ApiController]
     public class ProvinceController : ControllerBase
@@ -23,7 +23,7 @@ namespace PracticeJob.API.Controllers
             this.provinceBL = provinceBL;
         }
 
-       
+        [Authorize]
         [HttpGet]
         [Route("GetAll")]
         public ActionResult<Province> Create()
