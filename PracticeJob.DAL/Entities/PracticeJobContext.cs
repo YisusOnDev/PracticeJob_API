@@ -10,6 +10,7 @@ namespace PracticeJob.DAL.Entities
     public partial class PracticeJobContext : DbContext
     {
         public DbSet<Student> Students { get; set; }
+        public DbSet<Company> Companies { get; set; }
         public DbSet<Province> Provinces { get; set; }
         public PracticeJobContext()
         {

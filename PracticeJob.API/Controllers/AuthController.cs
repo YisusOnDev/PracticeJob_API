@@ -19,13 +19,15 @@ namespace PracticeJob.API.Controllers
         private readonly IConfiguration _config;
         private readonly ITokenService _tokenService;
         public IStudentBL studentBL { get; set; }
+        public ICompanyBL companyBL { get; set; }
         private string generatedToken = null;
 
-        public AuthController(IConfiguration config, ITokenService tokenService, IStudentBL studentBL)
+        public AuthController(IConfiguration config, ITokenService tokenService, IStudentBL studentBL, ICompanyBL companyBL)
         {
             _config = config;
             _tokenService = tokenService;
             this.studentBL = studentBL;
+            this.companyBL = companyBL;
         }
 
         [HttpPost]
@@ -44,16 +46,24 @@ namespace PracticeJob.API.Controllers
                     StudentDTO student = studentBL.Login(authDTO);
                     if (student != null)
                     {
-                        generatedToken = _tokenService.BuildStudentToken(_config["JWTSettings:Secret"].ToString(), _config["JWTSettings:Issuer"].ToString(), student);
+                        generatedToken = _tokenService.BuildToken(_config["JWTSettings:Secret"].ToString(), _config["JWTSettings:Issuer"].ToString(), student);
                         return new GenericAPIResponse<Object>(student, generatedToken);
                     } 
                     else
                     {
                         return Unauthorized();
                     }
-                case "Business":
-                    // Do Business Login
-                    return Unauthorized();
+                case "Company":
+                    CompanyDTO company = companyBL.Login(authDTO);
+                    if (company != null)
+                    {
+                        generatedToken = _tokenService.BuildToken(_config["JWTSettings:Secret"].ToString(), _config["JWTSettings:Issuer"].ToString(), company);
+                        return new GenericAPIResponse<Object>(company, generatedToken);
+                    }
+                    else
+                    {
+                        return Unauthorized();
+                    }
                 default:
                     return BadRequest();
             }
@@ -72,12 +82,25 @@ namespace PracticeJob.API.Controllers
                 case "Student":
                     var student = studentBL.Create(authDTO);
                     if (student != null)
-                        return Ok(student);
+                    {
+                        generatedToken = _tokenService.BuildToken(_config["JWTSettings:Secret"].ToString(), _config["JWTSettings:Issuer"].ToString(), student);
+                        return new GenericAPIResponse<Object>(student, generatedToken);
+                    }
                     else
+                    {
                         return BadRequest();
-                case "Business":
-                    // Do Business Create
-                    return Unauthorized();
+                    }
+                case "Company":
+                    var company = companyBL.Create(authDTO);
+                    if (company != null)
+                    {
+                        generatedToken = _tokenService.BuildToken(_config["JWTSettings:Secret"].ToString(), _config["JWTSettings:Issuer"].ToString(), company);
+                        return new GenericAPIResponse<Object>(company, generatedToken);
+                    }
+                    else
+                    {
+                        return BadRequest();
+                    }
                 default:
                     return BadRequest();
             }

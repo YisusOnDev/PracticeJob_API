@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,11 +12,11 @@ using PracticeJob.DAL.Repositories.Implementations;
 using Microsoft.OpenApi.Models;
 using PracticeJob.Core.Security;
 using PracticeJob.Core.AutomapperProfiles;
-using PracticeJob.Core.DTO;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace PracticeJob.API
 {
@@ -77,6 +76,8 @@ namespace PracticeJob.API
             // Interface and Class inyections
             services.AddScoped<IStudentBL, StudentBL>();
             services.AddScoped<IStudentRepository, StudentRepository>();
+            services.AddScoped<ICompanyBL, CompanyBL>();
+            services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<IPasswordGenerator, PasswordGenerator>();
             services.AddScoped<IProvinceRepository, ProvinceRepository>();
             services.AddScoped<IProvinceBL, ProvinceBL>();
