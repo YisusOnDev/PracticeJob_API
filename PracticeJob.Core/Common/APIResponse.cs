@@ -5,7 +5,9 @@ using System.Text;
 
 namespace PracticeJob.Core.Common
 {
+
     [JsonObject(ItemNullValueHandling = NullValueHandling.Ignore)]
+    
     public class APIResponse
     {
         public bool Success { get; set; }

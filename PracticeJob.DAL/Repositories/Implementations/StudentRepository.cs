@@ -22,6 +22,7 @@ namespace PracticeJob.DAL.Repositories.Implementations
 
         public Student Create(Student user)
         {
+            // Put ProvinceId to 1 to prevent null ForeignKeys error
             user.ProvinceId = 1;
             var u = _context.Students.Add(user);
             _context.SaveChanges();

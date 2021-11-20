@@ -16,7 +16,7 @@ namespace PracticeJob.Core.Common
         public GenericAPIResponse(T data)
         {
             this.Data = data;
-        }
+        }   
         public GenericAPIResponse(T data, string token)
         {
             this.Data = data;

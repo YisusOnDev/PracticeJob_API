@@ -9,6 +9,9 @@ namespace PracticeJob.DAL.Repositories.Contracts
     {
         Company Login(Company u);
         Company Create(Company u);
+
+        Company Update(Company company);
         bool Exists(Company u);
+
     }
 }

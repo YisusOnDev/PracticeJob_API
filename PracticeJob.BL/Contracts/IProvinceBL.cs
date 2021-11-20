@@ -8,6 +8,7 @@ namespace PracticeJob.BL.Contracts
 {
     public interface IProvinceBL
     {
-        List<ProvinceDTO> Get();
+        List<ProvinceDTO> GetAll();
+        ProvinceDTO Get(int id);
     }
 }

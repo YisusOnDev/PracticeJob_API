@@ -26,14 +26,26 @@ namespace PracticeJob.API.Controllers
         [Authorize]
         [HttpGet]
         [Route("GetAll")]
-        public ActionResult<Province> Create()
+        public ActionResult<ProvinceDTO> GetAll()
         {
-            var provinces =  provinceBL.Get();
+            var provinces =  provinceBL.GetAll();
             if (provinces != null)
                 return Ok(provinces);
             else
                 return BadRequest();
             
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("Get")]
+        public ActionResult<ProvinceDTO> Get(int id)
+        {
+            var province = provinceBL.Get(id);
+            if (province != null)
+                return Ok(province);
+            else
+                return BadRequest();
         }
     }
 }

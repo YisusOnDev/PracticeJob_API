@@ -22,6 +22,7 @@ namespace PracticeJob.DAL.Repositories.Implementations
 
         public Company Create(Company user)
         {
+            // Put ProvinceId to 1 to prevent null ForeignKeys error
             user.ProvinceId = 1;
             var u = _context.Companies.Add(user);
             _context.SaveChanges();
@@ -31,6 +32,24 @@ namespace PracticeJob.DAL.Repositories.Implementations
         public bool Exists(Company user)
         {
             return _context.Companies.Any(u => u.Email == user.Email);
+        }
+
+        public Company Update(Company company)
+        {
+            var result = _context.Companies.SingleOrDefault(c => c.Id == company.Id);
+            if (result != null)
+            {
+                result.Name = company.Name;
+                result.Address = company.Address;
+                result.ProvinceId = company.ProvinceId;
+                _context.SaveChanges();
+                return _context.Companies.Include(c => c.Province).FirstOrDefault(c => c.Id == company.Id);
+
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

@@ -42,5 +42,12 @@ namespace PracticeJob.BL.Implementations
 
             return null;
         }
+
+        public CompanyDTO Update(CompanyDTO companyDTO)
+        {
+            var company = mapper.Map<CompanyDTO, Company>(companyDTO);
+            var updCompany = mapper.Map<Company, CompanyDTO>(companyRepository.Update(company));
+            return updCompany;
+        }
     }
 }

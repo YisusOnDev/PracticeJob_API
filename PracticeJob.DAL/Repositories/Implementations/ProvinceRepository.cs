@@ -14,18 +14,15 @@ namespace PracticeJob.DAL.Repositories.Implementations
         {
             this._context = context;
         }
-        public List<Province> Get()
+        public List<Province> GetAll()
         {
             var provinces = _context.Provinces.ToList();
+            return provinces;
+        }
 
-            List<Province> provinceList = new List<Province>();
-
-            foreach (Province p in provinces)
-            {
-                provinceList.Add(p);
-            }
-            
-            return provinceList;
+        public Province Get(int id)
+        {
+            return _context.Provinces.FirstOrDefault(p => p.Id == p.Id);
         }
     }
 }
