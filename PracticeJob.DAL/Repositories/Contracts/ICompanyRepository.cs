@@ -7,11 +7,12 @@ namespace PracticeJob.DAL.Repositories.Contracts
 {
     public interface ICompanyRepository
     {
-        Company Login(Company u);
-        Company Create(Company u);
+        Company Login(Company company);
+
+        Company Create(Company company);
 
         Company Update(Company company);
-        bool Exists(Company u);
+        bool Exists(Company company);
 
     }
 }

@@ -15,35 +15,35 @@ namespace PracticeJob.DAL.Repositories.Implementations
         {
             this._context = context;
         }
-        public Company Login(Company user)
+        public Company Login(Company company)
         {
-            return _context.Companies.Include(u => u.Province).FirstOrDefault(u => u.Email == user.Email && u.Password == user.Password);
+            return _context.Companies.Include(u => u.Province).FirstOrDefault(c => c.Email == company.Email && c.Password == company.Password);
         }
 
-        public Company Create(Company user)
+        public Company Create(Company company)
         {
             // Put ProvinceId to 1 to prevent null ForeignKeys error
-            user.ProvinceId = 1;
-            var u = _context.Companies.Add(user);
+            company.ProvinceId = 1;
+            var companyFromDb = _context.Companies.Add(company).Entity;
             _context.SaveChanges();
-            return _context.Companies.Include(u => u.Province).FirstOrDefault(u => u.Id == u.Id);
+            return _context.Companies.Include(c => c.Province).FirstOrDefault(c => c.Email == companyFromDb.Email && c.Password == companyFromDb.Password);
         }
 
-        public bool Exists(Company user)
+        public bool Exists(Company company)
         {
-            return _context.Companies.Any(u => u.Email == user.Email);
+            return _context.Companies.Any(c => c.Email == company.Email);
         }
 
         public Company Update(Company company)
         {
-            var result = _context.Companies.SingleOrDefault(c => c.Id == company.Id);
+            var result = _context.Companies.SingleOrDefault(c => c.Email == company.Email);
             if (result != null)
             {
                 result.Name = company.Name;
                 result.Address = company.Address;
                 result.ProvinceId = company.ProvinceId;
                 _context.SaveChanges();
-                return _context.Companies.Include(c => c.Province).FirstOrDefault(c => c.Id == company.Id);
+                return _context.Companies.Include(c => c.Province).FirstOrDefault(c => c.Email == company.Email);
 
             }
             else

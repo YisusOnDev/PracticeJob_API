@@ -24,9 +24,9 @@ namespace PracticeJob.DAL.Repositories.Implementations
         {
             // Put ProvinceId to 1 to prevent null ForeignKeys error
             user.ProvinceId = 1;
-            var u = _context.Students.Add(user);
+            var userFromDb = _context.Students.Add(user).Entity;
             _context.SaveChanges();
-            return _context.Students.Include(u => u.Province).FirstOrDefault(u => u.Id == u.Id);
+            return _context.Students.Include(u => u.Province).FirstOrDefault(u => u.Email == userFromDb.Email && u.Password == userFromDb.Password);
         }
 
         public bool Exists(Student user)
