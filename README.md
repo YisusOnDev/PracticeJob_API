@@ -14,6 +14,10 @@
 
 ## Usage
 I personally recommend to use IDE like VS Code or VS Studio for running/debugging/building this API.
+```bash
+In order to use the API properly u need to change DB Settings on "appsettings.json" [ConnectionStrings]
+Also once you change your settings you should run "Update-Database" on Package Manager Console in order to get all db data.
+```
 
 ## Author
 
