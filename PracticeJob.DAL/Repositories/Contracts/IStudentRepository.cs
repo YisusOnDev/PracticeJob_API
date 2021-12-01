@@ -7,8 +7,9 @@ namespace PracticeJob.DAL.Repositories.Contracts
 {
     public interface IStudentRepository
     {
-        Student Login(Student u);
-        Student Create(Student u);
-        bool Exists(Student u);
+        Student Login(Student student);
+        Student Create(Student student);
+        Student Update(Student student);
+        bool Exists(Student student);
     }
 }

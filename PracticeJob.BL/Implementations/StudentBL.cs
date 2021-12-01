@@ -45,5 +45,12 @@ namespace PracticeJob.BL.Implementations
 
             return null;
         }
+
+        public StudentDTO Update(StudentDTO studentDTO)
+        {
+            var student = mapper.Map<StudentDTO, Student>(studentDTO);
+            var updStudent = mapper.Map<Student, StudentDTO>(studentRepository.Update(student));
+            return updStudent;
+        }
     }
 }

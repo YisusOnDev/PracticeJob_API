@@ -33,5 +33,26 @@ namespace PracticeJob.DAL.Repositories.Implementations
         {
             return _context.Students.Any(u => u.Email == user.Email);
         }
+
+        public Student Update(Student student)
+        {
+            var result = _context.Students.SingleOrDefault(s => s.Email == student.Email);
+            if (result != null)
+            {
+                result.BirthDate = student.BirthDate;
+                result.City = student.City;
+                result.Name = student.Name;
+                result.LastName = student.LastName;
+                result.ProvinceId = student.ProvinceId;
+                result.ProfileImage = student.ProfileImage;
+
+                _context.SaveChanges();
+                return _context.Students.Include(s => s.Province).FirstOrDefault(s => s.Email == student.Email);
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

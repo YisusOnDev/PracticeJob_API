@@ -24,5 +24,6 @@ namespace PracticeJob.DAL.Entities
         [ForeignKey("ProvinceId")]
         public Province Province { get; set; }
         public string City { get; set; }
+        public string ProfileImage { get; set; }
     }
 }

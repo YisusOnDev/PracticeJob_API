@@ -9,5 +9,6 @@ namespace PracticeJob.BL.Contracts
     {
         StudentDTO Login(AuthDTO authDTO);
         StudentDTO Create(AuthDTO authDTO);
+        StudentDTO Update(StudentDTO studentDTO);
     }
 }

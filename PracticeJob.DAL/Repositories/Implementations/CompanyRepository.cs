@@ -44,7 +44,6 @@ namespace PracticeJob.DAL.Repositories.Implementations
                 result.ProvinceId = company.ProvinceId;
                 _context.SaveChanges();
                 return _context.Companies.Include(c => c.Province).FirstOrDefault(c => c.Email == company.Email);
-
             }
             else
             {
