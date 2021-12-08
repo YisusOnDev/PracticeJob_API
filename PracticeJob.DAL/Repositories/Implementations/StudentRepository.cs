@@ -17,16 +17,17 @@ namespace PracticeJob.DAL.Repositories.Implementations
         }
         public Student Login(Student user)
         {
-            return _context.Students.Include(u => u.Province).FirstOrDefault(u => u.Email == user.Email && u.Password == user.Password);
+            return _context.Students.Include(u => u.Province).Include(u => u.FP).ThenInclude(fp => fp.FPFamily).Include(u => u.FP).ThenInclude(fp => fp.FPGrade).FirstOrDefault(u => u.Email == user.Email && u.Password == user.Password);
         }
 
         public Student Create(Student user)
         {
-            // Put ProvinceId to 1 to prevent null ForeignKeys error
+            // Put ProvinceId and FPId to 1 to prevent null ForeignKeys error
             user.ProvinceId = 1;
+            user.FPId = 1;
             var userFromDb = _context.Students.Add(user).Entity;
             _context.SaveChanges();
-            return _context.Students.Include(u => u.Province).FirstOrDefault(u => u.Email == userFromDb.Email && u.Password == userFromDb.Password);
+            return _context.Students.Include(u => u.Province).Include(u => u.FP).ThenInclude(fp => fp.FPFamily).Include(u => u.FP).ThenInclude(fp => fp.FPGrade).FirstOrDefault(u => u.Email == userFromDb.Email && u.Password == userFromDb.Password);
         }
 
         public bool Exists(Student user)
@@ -45,9 +46,11 @@ namespace PracticeJob.DAL.Repositories.Implementations
                 result.LastName = student.LastName;
                 result.ProvinceId = student.ProvinceId;
                 result.ProfileImage = student.ProfileImage;
+                result.FPId = student.FPId;
+                result.FPCalification = student.FPCalification;
 
                 _context.SaveChanges();
-                return _context.Students.Include(s => s.Province).FirstOrDefault(s => s.Email == student.Email);
+                return _context.Students.Include(u => u.Province).Include(u => u.FP).ThenInclude(fp => fp.FPFamily).Include(u => u.FP).ThenInclude(fp => fp.FPGrade).FirstOrDefault(s => s.Email == student.Email);
             }
             else
             {

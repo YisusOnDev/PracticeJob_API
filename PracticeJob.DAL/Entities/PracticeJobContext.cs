@@ -12,6 +12,9 @@ namespace PracticeJob.DAL.Entities
         public DbSet<Student> Students { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<Province> Provinces { get; set; }
+        public DbSet<FP> FPs { get; set; }
+        public DbSet<FPFamily> FPFamilies { get; set; }
+        public DbSet<FPGrade> FPGrades { get; set; }
         public PracticeJobContext()
         {
         }

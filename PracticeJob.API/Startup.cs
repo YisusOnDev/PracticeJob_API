@@ -79,6 +79,8 @@ namespace PracticeJob.API
             services.AddScoped<IProvinceRepository, ProvinceRepository>();
             services.AddScoped<IProvinceBL, ProvinceBL>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IFPBL, FPBL>();
+            services.AddScoped<IFPRepository, FPRepository>();
         }
 
         private void AddSwagger(IServiceCollection services)

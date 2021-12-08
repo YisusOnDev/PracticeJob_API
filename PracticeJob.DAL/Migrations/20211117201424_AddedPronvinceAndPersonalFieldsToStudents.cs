@@ -43,7 +43,7 @@ namespace PracticeJob.DAL.Migrations
                 table: "Students",
                 type: "int",
                 nullable: true,
-                defaultValue: 1);
+                defaultValue: null);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Students_ProvinceId",

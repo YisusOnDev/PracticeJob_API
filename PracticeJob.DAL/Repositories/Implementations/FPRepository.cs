@@ -2,26 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 using PracticeJob.DAL.Entities;
 using PracticeJob.DAL.Repositories.Contracts;
 
 namespace PracticeJob.DAL.Repositories.Implementations
 {
-    public class ProvinceRepository : IProvinceRepository
+    public class FPRepository : IFPRepository
     {
         public PracticeJobContext _context { get; set; }
-        public ProvinceRepository(PracticeJobContext context)
+        public FPRepository(PracticeJobContext context)
         {
             this._context = context;
         }
-        public List<Province> GetAll()
+        public List<FP> GetAll()
         {
-            return _context.Provinces.ToList();
+            return _context.FPs.Include(fp => fp.FPFamily).Include(fp => fp.FPGrade).ToList();
         }
 
-        public Province Get(int id)
+        public FP Get(int id)
         {
-            return _context.Provinces.FirstOrDefault(p => p.Id == p.Id);
+            return _context.FPs.FirstOrDefault(p => p.Id == p.Id);
         }
     }
 }

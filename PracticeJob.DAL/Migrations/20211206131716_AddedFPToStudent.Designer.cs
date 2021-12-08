@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PracticeJob.DAL.Entities;
 
 namespace PracticeJob.DAL.Migrations
 {
     [DbContext(typeof(PracticeJobContext))]
-    partial class PracticeJobContextModelSnapshot : ModelSnapshot
+    [Migration("20211206131716_AddedFPToStudent")]
+    partial class AddedFPToStudent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -127,9 +129,6 @@ namespace PracticeJob.DAL.Migrations
 
                     b.Property<string>("Email")
                         .HasColumnType("longtext");
-
-                    b.Property<int>("FPCalification")
-                        .HasColumnType("int");
 
                     b.Property<int>("FPId")
                         .HasColumnType("int");

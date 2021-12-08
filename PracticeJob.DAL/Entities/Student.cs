@@ -25,5 +25,9 @@ namespace PracticeJob.DAL.Entities
         public Province Province { get; set; }
         public string City { get; set; }
         public string ProfileImage { get; set; }
+        public int FPId { get; set; }
+        [ForeignKey("FPId")]
+        public FP FP { get; set; }
+        public double FPCalification { get; set; }
     }
 }

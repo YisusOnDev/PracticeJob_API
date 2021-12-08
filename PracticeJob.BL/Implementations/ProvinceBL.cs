@@ -13,7 +13,6 @@ namespace PracticeJob.BL.Implementations
     public class ProvinceBL : IProvinceBL
     {
         public IProvinceRepository provinceRepository { get; set; }
-        public IPasswordGenerator passwordGenerator { get; set; }
         public IMapper mapper { get; set; }
 
         public ProvinceBL(IProvinceRepository provinceRepository, IMapper mapper)

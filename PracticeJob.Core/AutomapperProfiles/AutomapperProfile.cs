@@ -20,6 +20,9 @@ namespace PracticeJob.Core.AutomapperProfiles
 
             CreateMap<ProvinceDTO, Province>();
             CreateMap<Province, ProvinceDTO>();
+
+            CreateMap<FPDTO, FP>();
+            CreateMap<FP, FPDTO>();
         }
     }
 }
