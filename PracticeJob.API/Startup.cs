@@ -17,6 +17,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PracticeJob.API
 {
@@ -34,24 +35,28 @@ namespace PracticeJob.API
         {
             services.AddMvc();
 
+            // JWT
             services.AddTransient<ITokenService, TokenService>();
-            services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(x =>
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(x =>
             {
                 x.RequireHttpsMetadata = false;
                 x.SaveToken = true;
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["JWTSettings:Secret"])),
                     ValidateIssuer = false,
                     ValidateAudience = false,
-                    ValidateLifetime = false,
+                    ValidateLifetime = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["JWTSettings:Secret"]))
                 };
             });
+            services.AddAuthorization(config =>
+            {
+                var defaultAuthorizationPolicyBuilder = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme);
+                defaultAuthorizationPolicyBuilder = defaultAuthorizationPolicyBuilder.RequireAuthenticatedUser();
+                config.DefaultPolicy = defaultAuthorizationPolicyBuilder.Build();
+            });
+
 
             // Enable CORS in our API
             services.AddCors(o => {
@@ -66,11 +71,13 @@ namespace PracticeJob.API
 
             AddSwagger(services);
 
+            // AUTO MAPPER
             services.AddAutoMapper(cfg => cfg.AddProfile(new AutomapperProfile()));
 
+            // EF DB CONTEXT
             services.AddDbContext<PracticeJobContext>(opts => opts.UseMySql(Configuration["ConnectionStrings:PracticeJobDB"], ServerVersion.AutoDetect(Configuration["ConnectionStrings:PracticeJobDB"])));
 
-            // Interface and Class inyections
+            // INTERFACE - CLASS SCOPES
             services.AddScoped<IStudentBL, StudentBL>();
             services.AddScoped<IStudentRepository, StudentRepository>();
             services.AddScoped<ICompanyBL, CompanyBL>();
@@ -101,6 +108,30 @@ namespace PracticeJob.API
                         Url = new Uri("https://yisus.dev/"),
                     }
                 });
+
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme (Example: 'Bearer 12345abcdef')",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                    {
+                        {
+                            new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "Bearer"
+                                }
+                            },
+                            Array.Empty<string>()
+                        }
+                    });
             });
         }
 
@@ -114,8 +145,8 @@ namespace PracticeJob.API
 
             app.UseRouting();
 
-            app.UseAuthentication();
             app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseHttpsRedirection();
 
@@ -128,8 +159,7 @@ namespace PracticeJob.API
 
             app.UseCors("AllowSetOrigins");
 
-            app.UseAuthorization();
-
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
