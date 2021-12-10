@@ -63,10 +63,10 @@ namespace PracticeJob.Core.Security
             var jsonToken = handler.ReadToken(token.Replace("Bearer ", string.Empty));
             var tokenS = jsonToken as JwtSecurityToken;
             var id = tokenS.Claims.FirstOrDefault(claim => claim.Type == "Id").Value;
-            var email = tokenS.Claims.FirstOrDefault(claim => claim.Type == "Email").Value;
-            if (id != null && email != null)
+            
+            if (id != null)
             {
-                if (student.Id == Int32.Parse(id) && student.Email == email.ToString())
+                if (student.Id == Int32.Parse(id))
                 {
                     return true;
                 }
@@ -80,10 +80,9 @@ namespace PracticeJob.Core.Security
             var jsonToken = handler.ReadToken(token.Replace("Bearer ", string.Empty));
             var tokenS = jsonToken as JwtSecurityToken;
             var id = tokenS.Claims.FirstOrDefault(claim => claim.Type == "Id").Value;
-            var email = tokenS.Claims.FirstOrDefault(claim => claim.Type == "Email").Value;
-            if (id != null && email != null)
+            if (id != null)
             {
-                if (company.Id == Int32.Parse(id) && company.Email == email.ToString())
+                if (company.Id == Int32.Parse(id) )
                 {
                     return true;
                 }
