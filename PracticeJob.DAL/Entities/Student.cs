@@ -11,11 +11,11 @@ namespace PracticeJob.DAL.Entities
     {
         [Key]
         public int Id { get; set; }
+        [Required]
         public string Email { get; set; }
-
         [JsonIgnore]
+        [Required]
         public string Password { get; set; }
-
         public string Name { get; set; }
         public string LastName { get; set; }
         [Column(TypeName = "Date"), DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]

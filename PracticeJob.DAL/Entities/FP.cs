@@ -17,5 +17,8 @@ namespace PracticeJob.DAL.Entities
         public int FPFamilyId { get; set; }
         [ForeignKey("FPFamilyId")]
         public FPFamily FPFamily { get; set; }
+
+        /* EF N:N */
+        public ICollection<JobOffer> JobOffers { get; set; }
     }
 }
