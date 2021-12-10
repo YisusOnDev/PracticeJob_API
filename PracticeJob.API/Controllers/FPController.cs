@@ -16,11 +16,11 @@ namespace PracticeJob.API.Controllers
     [ApiController]
     public class FPController : ControllerBase
     {
-        public IFPBL fpBL { get; set; }
+        public IFPBL FPBL { get; set; }
 
-        public FPController(IFPBL fpBL)
+        public FPController(IFPBL FPBL)
         {
-            this.fpBL = fpBL;
+            this.FPBL = FPBL;
         }
 
         [Authorize]
@@ -28,9 +28,9 @@ namespace PracticeJob.API.Controllers
         [Route("GetAll")]
         public ActionResult<FPDTO> GetAll()
         {
-            var fps = fpBL.GetAll();
-            if (fps != null)
-                return Ok(fps);
+            var FPs = FPBL.GetAll();
+            if (FPs != null)
+                return Ok(FPs);
             else
                 return BadRequest();
 
@@ -41,9 +41,9 @@ namespace PracticeJob.API.Controllers
         [Route("Get")]
         public ActionResult<FPDTO> Get(int id)
         {
-            var fps = fpBL.Get(id);
-            if (fps != null)
-                return Ok(fps);
+            var FPs = FPBL.Get(id);
+            if (FPs != null)
+                return Ok(FPs);
             else
                 return BadRequest();
         }

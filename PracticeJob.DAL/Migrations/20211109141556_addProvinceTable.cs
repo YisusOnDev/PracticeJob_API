@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PracticeJob.DAL.Migrations
 {
-    public partial class addProvinceTable : Migration
+    public partial class AddProvinceTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

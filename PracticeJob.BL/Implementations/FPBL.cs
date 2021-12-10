@@ -12,23 +12,23 @@ namespace PracticeJob.BL.Implementations
 {
     public class FPBL : IFPBL
     {
-        public IFPRepository fpRepository { get; set; }
-        public IMapper mapper { get; set; }
+        public IFPRepository FPRepository { get; set; }
+        public IMapper Mapper { get; set; }
 
-        public FPBL(IFPRepository fpRepository, IMapper mapper)
+        public FPBL(IFPRepository FPRepository, IMapper Mapper)
         {
-            this.fpRepository = fpRepository;
-            this.mapper = mapper;
+            this.FPRepository = FPRepository;
+            this.Mapper = Mapper;
         }
 
         public List<FPDTO> GetAll()
         {
-            return mapper.Map<List<FP>, List<FPDTO>>(fpRepository.GetAll());
+            return Mapper.Map<List<FP>, List<FPDTO>>(FPRepository.GetAll());
         }
 
         public FPDTO Get(int id)
         {
-            return mapper.Map<FP, FPDTO>(fpRepository.Get(id));
+            return Mapper.Map<FP, FPDTO>(FPRepository.Get(id));
         }
     }
 }

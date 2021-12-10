@@ -10,5 +10,6 @@ namespace PracticeJob.BL.Contracts
         CompanyDTO Login(AuthDTO authDTO);
         CompanyDTO Create(AuthDTO authDTO);
         CompanyDTO Update(CompanyDTO companyDTO);
+        CompanyDTO Get(int companyId);
     }
 }

@@ -9,19 +9,19 @@ namespace PracticeJob.DAL.Repositories.Implementations
 {
     public class ProvinceRepository : IProvinceRepository
     {
-        public PracticeJobContext _context { get; set; }
+        public PracticeJobContext DbContext { get; set; }
         public ProvinceRepository(PracticeJobContext context)
         {
-            this._context = context;
+            this.DbContext = context;
         }
         public List<Province> GetAll()
         {
-            return _context.Provinces.ToList();
+            return DbContext.Provinces.ToList();
         }
 
         public Province Get(int id)
         {
-            return _context.Provinces.FirstOrDefault(p => p.Id == p.Id);
+            return DbContext.Provinces.FirstOrDefault(p => p.Id == p.Id);
         }
     }
 }

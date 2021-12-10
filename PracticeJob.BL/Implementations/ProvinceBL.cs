@@ -12,23 +12,23 @@ namespace PracticeJob.BL.Implementations
 {
     public class ProvinceBL : IProvinceBL
     {
-        public IProvinceRepository provinceRepository { get; set; }
-        public IMapper mapper { get; set; }
+        public IProvinceRepository ProvinceRepository { get; set; }
+        public IMapper Mapper { get; set; }
 
-        public ProvinceBL(IProvinceRepository provinceRepository, IMapper mapper)
+        public ProvinceBL(IProvinceRepository ProvinceRepository, IMapper Mapper)
         {
-            this.provinceRepository = provinceRepository;
-            this.mapper = mapper;
+            this.ProvinceRepository = ProvinceRepository;
+            this.Mapper = Mapper;
         }
 
         public List<ProvinceDTO> GetAll()
         {
-            return mapper.Map<List<Province>, List<ProvinceDTO>>(provinceRepository.GetAll());
+            return Mapper.Map<List<Province>, List<ProvinceDTO>>(ProvinceRepository.GetAll());
         }
 
         public ProvinceDTO Get(int id)
         {
-            return mapper.Map<Province, ProvinceDTO>(provinceRepository.Get(id));
+            return Mapper.Map<Province, ProvinceDTO>(ProvinceRepository.Get(id));
         }
     }
 }

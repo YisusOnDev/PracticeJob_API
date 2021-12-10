@@ -10,41 +10,41 @@ namespace PracticeJob.DAL.Repositories.Implementations
 {
     public class StudentRepository : IStudentRepository
     {
-        public PracticeJobContext _context { get; set; }
+        public PracticeJobContext DbContext { get; set; }
         public StudentRepository(PracticeJobContext context)
         {
-            this._context = context;
+            this.DbContext = context;
         }
         public Student Login(Student user)
         {
-            return _context.Students.
+            return DbContext.Students.
                 Include(u => u.Province).
                 Include(u => u.FP).ThenInclude(fp => fp.FPFamily).
                 Include(u => u.FP).ThenInclude(fp => fp.FPGrade).
                 FirstOrDefault(u => u.Email == user.Email && u.Password == user.Password);
         }
 
-        public Student Create(Student user)
+        public Student Create(Student student)
         {
             // Put ProvinceId and FPId to 1 to prevent null ForeignKeys error
-            user.ProvinceId = 1;
-            user.FPId = 1;
-            var userFromDb = _context.Students.Add(user).Entity;
-            _context.SaveChanges();
-            return _context.Students.Include(u => u.Province).
+            student.ProvinceId = 1;
+            student.FPId = 1;
+            var createdStudent = DbContext.Students.Add(student).Entity;
+            DbContext.SaveChanges();
+            return DbContext.Students.Include(u => u.Province).
                 Include(u => u.FP).ThenInclude(fp => fp.FPFamily).
                 Include(u => u.FP).ThenInclude(fp => fp.FPGrade).
-                FirstOrDefault(u => u.Email == userFromDb.Email && u.Password == userFromDb.Password);
+                FirstOrDefault(u => u.Email == createdStudent.Email && u.Password == createdStudent.Password);
         }
 
-        public bool Exists(Student user)
+        public bool Exists(Student student)
         {
-            return _context.Students.Any(u => u.Email == user.Email);
+            return DbContext.Students.Any(s => s.Email == student.Email);
         }
 
         public Student Update(Student student)
         {
-            var result = _context.Students.SingleOrDefault(s => s.Email == student.Email);
+            var result = DbContext.Students.SingleOrDefault(s => s.Email == student.Email);
             if (result != null)
             {
                 result.BirthDate = student.BirthDate;
@@ -56,8 +56,8 @@ namespace PracticeJob.DAL.Repositories.Implementations
                 result.FPId = student.FPId;
                 result.FPCalification = student.FPCalification;
 
-                _context.SaveChanges();
-                return _context.Students.
+                DbContext.SaveChanges();
+                return DbContext.Students.
                     Include(u => u.Province).
                     Include(u => u.FP).ThenInclude(fp => fp.FPFamily).
                     Include(u => u.FP).ThenInclude(fp => fp.FPGrade).
@@ -67,6 +67,15 @@ namespace PracticeJob.DAL.Repositories.Implementations
             {
                 return null;
             }
+        }
+
+        public Student Get(int studentId)
+        {
+            return DbContext.Students.
+                Include(u => u.Province).
+                Include(u => u.FP).ThenInclude(fp => fp.FPFamily).
+                Include(u => u.FP).ThenInclude(fp => fp.FPGrade).
+                FirstOrDefault(u => u.Id == studentId);
         }
     }
 }

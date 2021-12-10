@@ -11,5 +11,6 @@ namespace PracticeJob.DAL.Repositories.Contracts
         Student Create(Student student);
         Student Update(Student student);
         bool Exists(Student student);
+        Student Get(int studentId);
     }
 }

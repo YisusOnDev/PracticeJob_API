@@ -8,8 +8,8 @@ using PracticeJob.DAL.Entities;
 namespace PracticeJob.DAL.Migrations
 {
     [DbContext(typeof(PracticeJobContext))]
-    [Migration("20211109141556_addProvinceTable")]
-    partial class addProvinceTable
+    [Migration("20211109141556_AddProvinceTable")]
+    partial class AddProvinceTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

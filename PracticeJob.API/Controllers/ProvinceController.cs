@@ -16,11 +16,11 @@ namespace PracticeJob.API.Controllers
     [ApiController]
     public class ProvinceController : ControllerBase
     {
-        public IProvinceBL provinceBL { get; set; }
+        public IProvinceBL ProvinceBL { get; set; }
 
-        public ProvinceController(IProvinceBL provinceBL)
+        public ProvinceController(IProvinceBL ProvinceBL)
         {
-            this.provinceBL = provinceBL;
+            this.ProvinceBL = ProvinceBL;
         }
 
         [Authorize]
@@ -28,7 +28,7 @@ namespace PracticeJob.API.Controllers
         [Route("GetAll")]
         public ActionResult<ProvinceDTO> GetAll()
         {
-            var provinces =  provinceBL.GetAll();
+            var provinces =  ProvinceBL.GetAll();
             if (provinces != null)
                 return Ok(provinces);
             else
@@ -41,7 +41,7 @@ namespace PracticeJob.API.Controllers
         [Route("Get")]
         public ActionResult<ProvinceDTO> Get(int id)
         {
-            var province = provinceBL.Get(id);
+            var province = ProvinceBL.Get(id);
             if (province != null)
                 return Ok(province);
             else

@@ -10,19 +10,19 @@ namespace PracticeJob.DAL.Repositories.Implementations
 {
     public class FPRepository : IFPRepository
     {
-        public PracticeJobContext _context { get; set; }
+        public PracticeJobContext DbContext { get; set; }
         public FPRepository(PracticeJobContext context)
         {
-            this._context = context;
+            this.DbContext = context;
         }
         public List<FP> GetAll()
         {
-            return _context.FPs.Include(fp => fp.FPFamily).Include(fp => fp.FPGrade).ToList();
+            return DbContext.FPs.Include(fp => fp.FPFamily).Include(fp => fp.FPGrade).ToList();
         }
 
         public FP Get(int id)
         {
-            return _context.FPs.FirstOrDefault(p => p.Id == p.Id);
+            return DbContext.FPs.FirstOrDefault(p => p.Id == p.Id);
         }
     }
 }

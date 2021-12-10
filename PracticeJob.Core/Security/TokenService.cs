@@ -5,60 +5,90 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.Extensions.Configuration;
+using System.Linq;
 
 namespace PracticeJob.Core.Security
 {
     public class TokenService : ITokenService
     {
-        private const double EXPIRY_DURATION_MINUTES = 30;
+        private readonly IConfiguration Configuration;
 
-        public string BuildToken(string key, string issuer, StudentDTO user)
+        public TokenService(IConfiguration Configuration)
         {
-            var claims = new[] {
-            new Claim(ClaimTypes.Name, user.Email)
-        };
-
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
-            var tokenDescriptor = new JwtSecurityToken(issuer, issuer, claims,
-                expires: DateTime.Now.AddMinutes(EXPIRY_DURATION_MINUTES), signingCredentials: credentials);
-            return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
+            this.Configuration = Configuration;
         }
-        public string BuildToken(string key, string issuer, CompanyDTO user)
-        {
-            var claims = new[] {
-            new Claim(ClaimTypes.Name, user.Email)
-        };
 
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
-            var tokenDescriptor = new JwtSecurityToken(issuer, issuer, claims,
-                expires: DateTime.Now.AddMinutes(EXPIRY_DURATION_MINUTES), signingCredentials: credentials);
-            return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
-        }
-        public bool ValidateToken(string key, string issuer, string audience, string token)
+        public string BuildToken(StudentDTO student)
         {
-            var mySecret = Encoding.UTF8.GetBytes(key);
-            var mySecurityKey = new SymmetricSecurityKey(mySecret);
-            var tokenHandler = new JwtSecurityTokenHandler();
-            try
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWTSettings:Secret"]));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            var claims = new[]
             {
-                tokenHandler.ValidateToken(token,
-                new TokenValidationParameters
+                new Claim("Id",student.Id.ToString()),
+                new Claim("Email", student.Email.ToString()),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            };
+
+            var token = new JwtSecurityToken(
+                claims: claims,
+                expires: DateTime.Now.AddDays(7),
+                signingCredentials: credentials
+            );
+            return new JwtSecurityTokenHandler().WriteToken(token);
+
+        }
+        public string BuildToken(CompanyDTO company)
+        {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWTSettings:Secret"]));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            var claims = new[]
+            {
+                new Claim("Id",company.Id.ToString()),
+                new Claim("Email", company.Email.ToString()),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            };
+
+            var token = new JwtSecurityToken(
+                claims: claims,
+                expires: DateTime.Now.AddHours(1),
+                signingCredentials: credentials
+            );
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public bool ValidToken(string token, StudentDTO student)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(token.Replace("Bearer ", string.Empty));
+            var tokenS = jsonToken as JwtSecurityToken;
+            var id = tokenS.Claims.FirstOrDefault(claim => claim.Type == "Id").Value;
+            var email = tokenS.Claims.FirstOrDefault(claim => claim.Type == "Email").Value;
+            if (id != null && email != null)
+            {
+                if (student.Id == Int32.Parse(id) && student.Email == email.ToString())
                 {
-                    ValidateIssuerSigningKey = true,
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidIssuer = issuer,
-                    ValidAudience = audience,
-                    IssuerSigningKey = mySecurityKey,
-                }, out SecurityToken validatedToken);
+                    return true;
+                }
             }
-            catch
+            return false;
+        }
+
+        public bool ValidToken(string token, CompanyDTO company)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(token.Replace("Bearer ", string.Empty));
+            var tokenS = jsonToken as JwtSecurityToken;
+            var id = tokenS.Claims.FirstOrDefault(claim => claim.Type == "Id").Value;
+            var email = tokenS.Claims.FirstOrDefault(claim => claim.Type == "Email").Value;
+            if (id != null && email != null)
             {
-                return false;
+                if (company.Id == Int32.Parse(id) && company.Email == email.ToString())
+                {
+                    return true;
+                }
             }
-            return true;
+            return false;
         }
     }
 

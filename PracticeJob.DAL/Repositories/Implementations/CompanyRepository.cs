@@ -10,45 +10,50 @@ namespace PracticeJob.DAL.Repositories.Implementations
 {
     public class CompanyRepository : ICompanyRepository
     {
-        public PracticeJobContext _context { get; set; }
+        public PracticeJobContext DbContext { get; set; }
         public CompanyRepository(PracticeJobContext context)
         {
-            this._context = context;
+            this.DbContext = context;
         }
         public Company Login(Company company)
         {
-            return _context.Companies.Include(u => u.Province).FirstOrDefault(c => c.Email == company.Email && c.Password == company.Password);
+            return DbContext.Companies.Include(u => u.Province).FirstOrDefault(c => c.Email == company.Email && c.Password == company.Password);
         }
 
         public Company Create(Company company)
         {
             // Put ProvinceId to 1 to prevent null ForeignKeys error
             company.ProvinceId = 1;
-            var companyFromDb = _context.Companies.Add(company).Entity;
-            _context.SaveChanges();
-            return _context.Companies.Include(c => c.Province).FirstOrDefault(c => c.Email == companyFromDb.Email && c.Password == companyFromDb.Password);
+            var companyFromDb = DbContext.Companies.Add(company).Entity;
+            DbContext.SaveChanges();
+            return DbContext.Companies.Include(c => c.Province).FirstOrDefault(c => c.Email == companyFromDb.Email && c.Password == companyFromDb.Password);
         }
 
         public bool Exists(Company company)
         {
-            return _context.Companies.Any(c => c.Email == company.Email);
+            return DbContext.Companies.Any(c => c.Email == company.Email);
         }
 
         public Company Update(Company company)
         {
-            var result = _context.Companies.SingleOrDefault(c => c.Email == company.Email);
+            var result = DbContext.Companies.SingleOrDefault(c => c.Email == company.Email);
             if (result != null)
             {
                 result.Name = company.Name;
                 result.Address = company.Address;
                 result.ProvinceId = company.ProvinceId;
-                _context.SaveChanges();
-                return _context.Companies.Include(c => c.Province).FirstOrDefault(c => c.Email == company.Email);
+                DbContext.SaveChanges();
+                return DbContext.Companies.Include(c => c.Province).FirstOrDefault(c => c.Email == company.Email);
             }
             else
             {
                 return null;
             }
+        }
+
+        public Company Get(int companyId)
+        {
+            return DbContext.Companies.Include(u => u.Province).FirstOrDefault(c => c.Id == companyId);
         }
     }
 }

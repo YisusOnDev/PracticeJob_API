@@ -3,6 +3,8 @@ using PracticeJob.BL.Contracts;
 using PracticeJob.Core.DTO;
 using Microsoft.AspNetCore.Authorization;
 using PracticeJob.BL.Implementations;
+using Microsoft.AspNetCore.Authentication;
+using PracticeJob.Core.Security;
 
 namespace PracticeJob.API.Controllers
 {
@@ -10,11 +12,13 @@ namespace PracticeJob.API.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-        public IStudentBL studentBL { get; set; }
+        private readonly ITokenService _tokenService;
+        public IStudentBL StudentBL { get; set; }
 
-        public StudentController(IStudentBL studentBL)
+        public StudentController(ITokenService tokenService, IStudentBL StudentBL)
         {
-            this.studentBL = studentBL;
+            _tokenService = tokenService;
+            this.StudentBL = StudentBL;
         }
 
         [Authorize]
@@ -22,22 +26,33 @@ namespace PracticeJob.API.Controllers
         [Route("Update")]
        public ActionResult<StudentDTO> Update(StudentDTO studentDTO)
         {
-            
-            if (string.IsNullOrEmpty(studentDTO.Email))
+            var token = HttpContext.GetTokenAsync("access_token").Result;
+            if (_tokenService.ValidToken(token, studentDTO))
             {
-                return BadRequest();
+                StudentDTO student = StudentBL.Update(studentDTO);
+                if (student != null)
+                {
+                    return Ok(student);
+                }
             }
+            return Unauthorized();
+        }
 
-            StudentDTO student = studentBL.Update(studentDTO);
-            if (student != null)
-            { 
-                return Ok(student);
-            }
-            else
+        [Authorize]
+        [HttpPost]
+        [Route("Authorized")]
+        public ActionResult<StudentDTO> Authorized(StudentDTO studentDTO)
+        {
+            var token = HttpContext.GetTokenAsync("access_token").Result;
+            if (_tokenService.ValidToken(token, studentDTO))
             {
-                return Unauthorized();
+                StudentDTO student = StudentBL.Get(studentDTO.Id);
+                if (student != null)
+                {
+                    return Ok(student);
+                }
             }
-              
+            return Unauthorized();
         }
     }
 }

@@ -10,6 +10,7 @@ using PracticeJob.Core.Common;
 using PracticeJob.Core.Security;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication;
 
 namespace PracticeJob.API.Controllers
 {
@@ -17,34 +18,47 @@ namespace PracticeJob.API.Controllers
     [ApiController]
     public class CompanyController : ControllerBase
     {
-        public ICompanyBL companyBL { get; set; }
+        private readonly ITokenService _tokenService;
+        public ICompanyBL CompanyBL { get; set; }
 
-        public CompanyController(ICompanyBL companyBL)
+        public CompanyController(ITokenService tokenService, ICompanyBL CompanyBL)
         {
-            this.companyBL = companyBL;
+            _tokenService = tokenService;
+            this.CompanyBL = CompanyBL;
         }
 
         [Authorize]
         [HttpPost]
         [Route("Update")]
        public ActionResult<CompanyDTO> Update(CompanyDTO companyDTO)
-        {
-            
-            if (string.IsNullOrEmpty(companyDTO.Email))
+       {
+            var token = HttpContext.GetTokenAsync("access_token").Result;
+            if (_tokenService.ValidToken(token, companyDTO))
             {
-                return BadRequest();
+                CompanyDTO company = CompanyBL.Update(companyDTO);
+                if (company != null)
+                {
+                    return Ok(company);
+                }
             }
+            return Unauthorized();
+       }
 
-            CompanyDTO company = companyBL.Update(companyDTO);
-            if (company != null)
-            { 
-                return Ok(company);
-            }
-            else
+        [Authorize]
+        [HttpPost]
+        [Route("Authorized")]
+        public ActionResult<StudentDTO> Authorized(CompanyDTO companyDTO)
+        {
+            var token = HttpContext.GetTokenAsync("access_token").Result;
+            if (_tokenService.ValidToken(token, companyDTO))
             {
-                return Unauthorized();
+                CompanyDTO company = CompanyBL.Get(companyDTO.Id);
+                if (company != null)
+                {
+                    return Ok(company);
+                }
             }
-              
+            return Unauthorized();
         }
     }
 }

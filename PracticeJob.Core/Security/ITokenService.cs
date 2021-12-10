@@ -8,8 +8,10 @@ namespace PracticeJob.Core.Security
 {
     public interface ITokenService
     {
-        string BuildToken(string key, string issuer, StudentDTO user);
-        string BuildToken(string key, string issuer, CompanyDTO user);
-        bool ValidateToken(string key, string issuer, string audience, string token);
+        string BuildToken(StudentDTO studnet);
+        string BuildToken(CompanyDTO company);
+        bool ValidToken(string token, StudentDTO student);
+        bool ValidToken(string token, CompanyDTO company);
     }
+
 }

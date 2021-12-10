@@ -8,7 +8,6 @@ using PracticeJob.BL.Contracts;
 using PracticeJob.Core.DTO;
 using PracticeJob.Core.Common;
 using PracticeJob.Core.Security;
-using Microsoft.Extensions.Configuration;
 
 namespace PracticeJob.API.Controllers
 {
@@ -16,18 +15,16 @@ namespace PracticeJob.API.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IConfiguration _config;
         private readonly ITokenService _tokenService;
-        public IStudentBL studentBL { get; set; }
-        public ICompanyBL companyBL { get; set; }
+        public IStudentBL StudentBL { get; set; }
+        public ICompanyBL CompanyBL { get; set; }
         private string generatedToken = null;
 
-        public AuthController(IConfiguration config, ITokenService tokenService, IStudentBL studentBL, ICompanyBL companyBL)
+        public AuthController(ITokenService tokenService, IStudentBL StudentBL, ICompanyBL CompanyBL)
         {
-            _config = config;
             _tokenService = tokenService;
-            this.studentBL = studentBL;
-            this.companyBL = companyBL;
+            this.StudentBL = StudentBL;
+            this.CompanyBL = CompanyBL;
         }
 
         [HttpPost]
@@ -43,10 +40,10 @@ namespace PracticeJob.API.Controllers
             switch (authDTO.LoginType)
             {
                 case "Student":
-                    StudentDTO student = studentBL.Login(authDTO);
+                    StudentDTO student = StudentBL.Login(authDTO);
                     if (student != null)
                     {
-                        generatedToken = _tokenService.BuildToken(_config["JWTSettings:Secret"].ToString(), _config["JWTSettings:Issuer"].ToString(), student);
+                        generatedToken = _tokenService.BuildToken(student);
                         return new GenericAPIResponse<Object>(student, generatedToken);
                     } 
                     else
@@ -54,10 +51,10 @@ namespace PracticeJob.API.Controllers
                         return Unauthorized();
                     }
                 case "Company":
-                    CompanyDTO company = companyBL.Login(authDTO);
+                    CompanyDTO company = CompanyBL.Login(authDTO);
                     if (company != null)
                     {
-                        generatedToken = _tokenService.BuildToken(_config["JWTSettings:Secret"].ToString(), _config["JWTSettings:Issuer"].ToString(), company);
+                        generatedToken = _tokenService.BuildToken(company);
                         return new GenericAPIResponse<Object>(company, generatedToken);
                     }
                     else
@@ -80,10 +77,10 @@ namespace PracticeJob.API.Controllers
             switch (authDTO.LoginType)
             {
                 case "Student":
-                    var student = studentBL.Create(authDTO);
+                    var student = StudentBL.Create(authDTO);
                     if (student != null)
                     {
-                        generatedToken = _tokenService.BuildToken(_config["JWTSettings:Secret"].ToString(), _config["JWTSettings:Issuer"].ToString(), student);
+                        generatedToken = _tokenService.BuildToken(student);
                         return new GenericAPIResponse<Object>(student, generatedToken);
                     }
                     else
@@ -91,10 +88,10 @@ namespace PracticeJob.API.Controllers
                         return BadRequest();
                     }
                 case "Company":
-                    var company = companyBL.Create(authDTO);
+                    var company = CompanyBL.Create(authDTO);
                     if (company != null)
                     {
-                        generatedToken = _tokenService.BuildToken(_config["JWTSettings:Secret"].ToString(), _config["JWTSettings:Issuer"].ToString(), company);
+                        generatedToken = _tokenService.BuildToken(company);
                         return new GenericAPIResponse<Object>(company, generatedToken);
                     }
                     else

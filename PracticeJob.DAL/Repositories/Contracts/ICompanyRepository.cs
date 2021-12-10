@@ -11,6 +11,7 @@ namespace PracticeJob.DAL.Repositories.Contracts
         Company Create(Company company);
         Company Update(Company company);
         bool Exists(Company company);
+        Company Get(int companyId);
 
     }
 }

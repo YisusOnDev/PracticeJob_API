@@ -9,33 +9,33 @@ namespace PracticeJob.BL.Implementations
 {
     public class CompanyBL : ICompanyBL
     {
-        public ICompanyRepository companyRepository { get; set; }
-        public IPasswordGenerator passwordGenerator { get; set; }
-        public IMapper mapper { get; set; }
+        public ICompanyRepository CompanyRepository { get; set; }
+        public IPasswordGenerator PwdGenerator { get; set; }
+        public IMapper Mapper { get; set; }
 
-        public CompanyBL(ICompanyRepository companyRepository, IPasswordGenerator passwordGenerator, IMapper mapper)
+        public CompanyBL(ICompanyRepository CompanyRepository, IPasswordGenerator PwdGenerator, IMapper Mapper)
         {
-            this.companyRepository = companyRepository;
-            this.passwordGenerator = passwordGenerator;
-            this.mapper = mapper;
+            this.CompanyRepository = CompanyRepository;
+            this.PwdGenerator = PwdGenerator;
+            this.Mapper = Mapper;
         }
         public CompanyDTO Login(AuthDTO authDTO)
         {
-            authDTO.Password = passwordGenerator.Hash(authDTO.Password);
-            var loginData = mapper.Map<AuthDTO, Company>(authDTO);
-            var company = mapper.Map<Company, CompanyDTO>(companyRepository.Login(loginData));
+            authDTO.Password = PwdGenerator.Hash(authDTO.Password);
+            var loginData = Mapper.Map<AuthDTO, Company>(authDTO);
+            var company = Mapper.Map<Company, CompanyDTO>(CompanyRepository.Login(loginData));
             return company;
         }
 
         public CompanyDTO Create(AuthDTO authDTO)
         {
-            authDTO.Password = passwordGenerator.Hash(authDTO.Password);
+            authDTO.Password = PwdGenerator.Hash(authDTO.Password);
 
-            var company = mapper.Map<AuthDTO, Company>(authDTO);
+            var company = Mapper.Map<AuthDTO, Company>(authDTO);
 
-            if (!companyRepository.Exists(company))
+            if (!CompanyRepository.Exists(company))
             {
-                var c = mapper.Map<Company, CompanyDTO>(companyRepository.Create(company));
+                var c = Mapper.Map<Company, CompanyDTO>(CompanyRepository.Create(company));
                 c.Password = null;
                 return c;
             }
@@ -45,9 +45,15 @@ namespace PracticeJob.BL.Implementations
 
         public CompanyDTO Update(CompanyDTO companyDTO)
         {
-            var company = mapper.Map<CompanyDTO, Company>(companyDTO);
-            var updCompany = mapper.Map<Company, CompanyDTO>(companyRepository.Update(company));
+            var company = Mapper.Map<CompanyDTO, Company>(companyDTO);
+            var updCompany = Mapper.Map<Company, CompanyDTO>(CompanyRepository.Update(company));
             return updCompany;
+        }
+
+        public CompanyDTO Get(int companyId)
+        {
+            var company = Mapper.Map<Company, CompanyDTO>(CompanyRepository.Get(companyId));
+            return company;
         }
     }
 }

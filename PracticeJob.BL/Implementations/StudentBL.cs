@@ -12,33 +12,33 @@ namespace PracticeJob.BL.Implementations
 {
     public class StudentBL : IStudentBL
     {
-        public IStudentRepository studentRepository { get; set; }
-        public IPasswordGenerator passwordGenerator { get; set; }
-        public IMapper mapper { get; set; }
+        public IStudentRepository StudentRepository { get; set; }
+        public IPasswordGenerator PwdGenerator { get; set; }
+        public IMapper Mapper { get; set; }
 
-        public StudentBL(IStudentRepository studentRepository, IPasswordGenerator passwordGenerator, IMapper mapper)
+        public StudentBL(IStudentRepository StudentRepository, IPasswordGenerator PwdGenerator, IMapper Mapper)
         {
-            this.studentRepository = studentRepository;
-            this.passwordGenerator = passwordGenerator;
-            this.mapper = mapper;
+            this.StudentRepository = StudentRepository;
+            this.PwdGenerator = PwdGenerator;
+            this.Mapper = Mapper;
         }
         public StudentDTO Login(AuthDTO authDTO)
         {
-            authDTO.Password = passwordGenerator.Hash(authDTO.Password);
-            var loginData = mapper.Map<AuthDTO, Student>(authDTO);
-            var student = mapper.Map<Student, StudentDTO>(studentRepository.Login(loginData));
+            authDTO.Password = PwdGenerator.Hash(authDTO.Password);
+            var loginData = Mapper.Map<AuthDTO, Student>(authDTO);
+            var student = Mapper.Map<Student, StudentDTO>(StudentRepository.Login(loginData));
             return student;
         }
 
         public StudentDTO Create(AuthDTO authDTO)
         {
-            authDTO.Password = passwordGenerator.Hash(authDTO.Password);
+            authDTO.Password = PwdGenerator.Hash(authDTO.Password);
 
-            var student = mapper.Map<AuthDTO, Student>(authDTO);
+            var student = Mapper.Map<AuthDTO, Student>(authDTO);
 
-            if (!studentRepository.Exists(student))
+            if (!StudentRepository.Exists(student))
             {
-                var s = mapper.Map<Student, StudentDTO>(studentRepository.Create(student));
+                var s = Mapper.Map<Student, StudentDTO>(StudentRepository.Create(student));
                 s.Password = null;
                 return s;
             }
@@ -48,9 +48,15 @@ namespace PracticeJob.BL.Implementations
 
         public StudentDTO Update(StudentDTO studentDTO)
         {
-            var student = mapper.Map<StudentDTO, Student>(studentDTO);
-            var updStudent = mapper.Map<Student, StudentDTO>(studentRepository.Update(student));
+            var student = Mapper.Map<StudentDTO, Student>(studentDTO);
+            var updStudent = Mapper.Map<Student, StudentDTO>(StudentRepository.Update(student));
             return updStudent;
+        }
+
+        public StudentDTO Get(int studentId)
+        {
+            var student = Mapper.Map<Student, StudentDTO>(StudentRepository.Get(studentId));
+            return student;
         }
     }
 }
