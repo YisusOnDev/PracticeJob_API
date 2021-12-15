@@ -39,7 +39,7 @@ namespace PracticeJob.API.Controllers
         }
 
         [Authorize]
-        [HttpPost]
+        [HttpPut]
         [Route("Authorized")]
         public ActionResult<StudentDTO> Authorized(StudentDTO studentDTO)
         {
