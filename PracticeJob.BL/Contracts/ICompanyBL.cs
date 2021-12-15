@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using PracticeJob.Core.DTO;
+﻿using PracticeJob.Core.DTO;
 
 namespace PracticeJob.BL.Contracts
 {
     public interface ICompanyBL
     {
         CompanyDTO Login(AuthDTO authDTO);
+        CompanyDTO Get(int companyId);
         CompanyDTO Create(AuthDTO authDTO);
         CompanyDTO Update(CompanyDTO companyDTO);
-        CompanyDTO Get(int companyId);
     }
 }

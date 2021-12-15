@@ -15,7 +15,6 @@ using PracticeJob.Core.AutomapperProfiles;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 
@@ -88,6 +87,8 @@ namespace PracticeJob.API
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IFPBL, FPBL>();
             services.AddScoped<IFPRepository, FPRepository>();
+            services.AddScoped<IJobOfferBL, JobOfferBL>();
+            services.AddScoped<IJobOfferRepository, JobOfferRepository>();
         }
 
         private void AddSwagger(IServiceCollection services)

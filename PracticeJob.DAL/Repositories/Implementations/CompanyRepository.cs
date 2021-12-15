@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using PracticeJob.DAL.Entities;
 using PracticeJob.DAL.Repositories.Contracts;
@@ -18,6 +15,11 @@ namespace PracticeJob.DAL.Repositories.Implementations
         public Company Login(Company company)
         {
             return DbContext.Companies.Include(u => u.Province).FirstOrDefault(c => c.Email == company.Email && c.Password == company.Password);
+        }
+
+        public Company Get(int companyId)
+        {
+            return DbContext.Companies.Include(u => u.Province).FirstOrDefault(c => c.Id == companyId);
         }
 
         public Company Create(Company company)
@@ -39,9 +41,7 @@ namespace PracticeJob.DAL.Repositories.Implementations
             var result = DbContext.Companies.SingleOrDefault(c => c.Email == company.Email);
             if (result != null)
             {
-                result.Name = company.Name;
-                result.Address = company.Address;
-                result.ProvinceId = company.ProvinceId;
+                result = company;
                 DbContext.SaveChanges();
                 return DbContext.Companies.Include(c => c.Province).FirstOrDefault(c => c.Email == company.Email);
             }
@@ -49,11 +49,6 @@ namespace PracticeJob.DAL.Repositories.Implementations
             {
                 return null;
             }
-        }
-
-        public Company Get(int companyId)
-        {
-            return DbContext.Companies.Include(u => u.Province).FirstOrDefault(c => c.Id == companyId);
         }
     }
 }

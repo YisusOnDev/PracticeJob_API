@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PracticeJob.Core.DTO
+﻿namespace PracticeJob.Core.DTO
 {
     public class ProvinceDTO
     {

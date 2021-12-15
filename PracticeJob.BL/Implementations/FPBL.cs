@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using PracticeJob.BL.Contracts;
 using PracticeJob.Core.DTO;
-using PracticeJob.Core.Security;
 using PracticeJob.DAL.Entities;
 using PracticeJob.DAL.Repositories.Contracts;
 
@@ -21,14 +18,14 @@ namespace PracticeJob.BL.Implementations
             this.Mapper = Mapper;
         }
 
-        public List<FPDTO> GetAll()
-        {
-            return Mapper.Map<List<FP>, List<FPDTO>>(FPRepository.GetAll());
-        }
-
         public FPDTO Get(int id)
         {
             return Mapper.Map<FP, FPDTO>(FPRepository.Get(id));
+        }
+
+        public List<FPDTO> GetAll()
+        {
+            return Mapper.Map<List<FP>, List<FPDTO>>(FPRepository.GetAll());
         }
     }
 }

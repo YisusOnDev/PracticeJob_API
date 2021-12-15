@@ -26,6 +26,11 @@ namespace PracticeJob.BL.Implementations
             var company = Mapper.Map<Company, CompanyDTO>(CompanyRepository.Login(loginData));
             return company;
         }
+        public CompanyDTO Get(int companyId)
+        {
+            var company = Mapper.Map<Company, CompanyDTO>(CompanyRepository.Get(companyId));
+            return company;
+        }
 
         public CompanyDTO Create(AuthDTO authDTO)
         {
@@ -48,12 +53,6 @@ namespace PracticeJob.BL.Implementations
             var company = Mapper.Map<CompanyDTO, Company>(companyDTO);
             var updCompany = Mapper.Map<Company, CompanyDTO>(CompanyRepository.Update(company));
             return updCompany;
-        }
-
-        public CompanyDTO Get(int companyId)
-        {
-            var company = Mapper.Map<Company, CompanyDTO>(CompanyRepository.Get(companyId));
-            return company;
         }
     }
 }

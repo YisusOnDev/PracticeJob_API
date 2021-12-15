@@ -22,8 +22,22 @@ namespace PracticeJob.API.Controllers
         }
 
         [Authorize]
-        [HttpPut]
-        [Route("Update")]
+        [HttpGet]
+        public ActionResult<StudentDTO> Get(int studentId)
+        {
+            StudentDTO student = StudentBL.Get(studentId);
+            if (student != null)
+            {
+                return Ok(student);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+       [Authorize]
+       [HttpPut]
        public ActionResult<StudentDTO> Update(StudentDTO studentDTO)
         {
             var token = HttpContext.GetTokenAsync("access_token").Result;
@@ -40,21 +54,6 @@ namespace PracticeJob.API.Controllers
                 }
             }
             return Unauthorized();
-        }
-
-        [Authorize]
-        [HttpGet]
-        public ActionResult<StudentDTO> Get(int studentId)
-        {  
-            StudentDTO student = StudentBL.Get(studentId);
-            if (student != null)
-            {
-                return Ok(student);
-            }
-            else
-            {
-                return NotFound();
-            }
         }
 
         [Authorize]

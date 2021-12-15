@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using PracticeJob.Core.DTO;
+﻿using PracticeJob.Core.DTO;
 
 namespace PracticeJob.BL.Contracts
 {
@@ -9,7 +6,7 @@ namespace PracticeJob.BL.Contracts
     {
         StudentDTO Login(AuthDTO authDTO);
         StudentDTO Create(AuthDTO authDTO);
-        StudentDTO Update(StudentDTO studentDTO);
         StudentDTO Get(int studentId);
+        StudentDTO Update(StudentDTO studentDTO);
     }
 }

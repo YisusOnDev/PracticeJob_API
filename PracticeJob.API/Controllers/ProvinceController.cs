@@ -1,17 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
 using PracticeJob.BL.Contracts;
 using PracticeJob.Core.DTO;
-using PracticeJob.DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
 
 namespace PracticeJob.API.Controllers
 {
-  
+
     [Route("api/[controller]")]
     [ApiController]
     public class ProvinceController : ControllerBase
@@ -25,7 +19,7 @@ namespace PracticeJob.API.Controllers
 
         [Authorize]
         [HttpGet]
-        [Route("GetAll")]
+        [Route("All")]
         public ActionResult<ProvinceDTO> GetAll()
         {
             var provinces =  ProvinceBL.GetAll();
@@ -41,9 +35,9 @@ namespace PracticeJob.API.Controllers
 
         [Authorize]
         [HttpGet]
-        public ActionResult<ProvinceDTO> Get(int id)
+        public ActionResult<ProvinceDTO> Get(int provinceId)
         {
-            var province = ProvinceBL.Get(id);
+            var province = ProvinceBL.Get(provinceId);
             if (province != null)
             {
                 return Ok(province);

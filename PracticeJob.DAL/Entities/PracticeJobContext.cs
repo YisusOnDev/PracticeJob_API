@@ -1,7 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using PracticeJob.DAL.Entities;
+﻿using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
@@ -16,7 +13,6 @@ namespace PracticeJob.DAL.Entities
         public DbSet<FPFamily> FPFamilies { get; set; }
         public DbSet<FPGrade> FPGrades { get; set; }
         public DbSet<JobOffer> JobOffers { get; set; }
-        // public DbSet<JobOfferGrade> JobOffersGrades { get; set; }
         public PracticeJobContext()
         {
         }

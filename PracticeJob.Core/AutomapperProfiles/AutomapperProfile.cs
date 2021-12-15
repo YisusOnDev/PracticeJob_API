@@ -23,6 +23,9 @@ namespace PracticeJob.Core.AutomapperProfiles
 
             CreateMap<FPDTO, FP>();
             CreateMap<FP, FPDTO>();
+
+            CreateMap<JobOfferDTO, JobOffer>();
+            CreateMap<JobOffer, JobOfferDTO>();
         }
     }
 }

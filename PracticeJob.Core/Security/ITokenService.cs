@@ -1,8 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using PracticeJob.Core.DTO;
-using System;
-using System.Security.Claims;
+﻿using PracticeJob.Core.DTO;
 
 namespace PracticeJob.Core.Security
 {

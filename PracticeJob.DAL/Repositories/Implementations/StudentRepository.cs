@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using PracticeJob.DAL.Entities;
 using PracticeJob.DAL.Repositories.Contracts;
@@ -22,6 +19,15 @@ namespace PracticeJob.DAL.Repositories.Implementations
                 Include(u => u.FP).ThenInclude(fp => fp.FPFamily).
                 Include(u => u.FP).ThenInclude(fp => fp.FPGrade).
                 FirstOrDefault(u => u.Email == user.Email && u.Password == user.Password);
+        }
+
+        public Student Get(int studentId)
+        {
+            return DbContext.Students.
+                Include(u => u.Province).
+                Include(u => u.FP).ThenInclude(fp => fp.FPFamily).
+                Include(u => u.FP).ThenInclude(fp => fp.FPGrade).
+                FirstOrDefault(u => u.Id == studentId);
         }
 
         public Student Create(Student student)
@@ -47,14 +53,7 @@ namespace PracticeJob.DAL.Repositories.Implementations
             var result = DbContext.Students.SingleOrDefault(s => s.Email == student.Email);
             if (result != null)
             {
-                result.BirthDate = student.BirthDate;
-                result.City = student.City;
-                result.Name = student.Name;
-                result.LastName = student.LastName;
-                result.ProvinceId = student.ProvinceId;
-                result.ProfileImage = student.ProfileImage;
-                result.FPId = student.FPId;
-                result.FPCalification = student.FPCalification;
+                result = student;
 
                 DbContext.SaveChanges();
                 return DbContext.Students.
@@ -67,15 +66,6 @@ namespace PracticeJob.DAL.Repositories.Implementations
             {
                 return null;
             }
-        }
-
-        public Student Get(int studentId)
-        {
-            return DbContext.Students.
-                Include(u => u.Province).
-                Include(u => u.FP).ThenInclude(fp => fp.FPFamily).
-                Include(u => u.FP).ThenInclude(fp => fp.FPGrade).
-                FirstOrDefault(u => u.Id == studentId);
         }
     }
 }

@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using PracticeJob.Core.DTO;
-using PracticeJob.DAL.Entities;
 
 namespace PracticeJob.BL.Contracts
 {
     public interface IProvinceBL
     {
-        List<ProvinceDTO> GetAll();
         ProvinceDTO Get(int id);
+        List<ProvinceDTO> GetAll();
     }
 }

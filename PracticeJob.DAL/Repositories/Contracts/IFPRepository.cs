@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using PracticeJob.DAL.Entities;
 
 namespace PracticeJob.DAL.Repositories.Contracts

@@ -1,14 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using PracticeJob.BL.Contracts;
 using PracticeJob.Core.DTO;
-using PracticeJob.Core.Common;
 using PracticeJob.Core.Security;
-using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
 
@@ -28,6 +22,21 @@ namespace PracticeJob.API.Controllers
         }
 
         [Authorize]
+        [HttpGet]
+        public ActionResult<CompanyDTO> Get(int companyId)
+        {
+            CompanyDTO company = CompanyBL.Get(companyId);
+            if (company != null)
+            {
+                return Ok(company);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [Authorize]
         [HttpPut]
        public ActionResult<CompanyDTO> Update(CompanyDTO companyDTO)
        {
@@ -42,21 +51,6 @@ namespace PracticeJob.API.Controllers
             }
             return Unauthorized();
        }
-
-        [Authorize]
-        [HttpGet]
-        public ActionResult<CompanyDTO> Get(int companyId)
-        {
-            CompanyDTO company = CompanyBL.Get(companyId);
-            if (company != null)
-            {
-                return Ok(company);
-            }
-            else
-            {
-                return NotFound();
-            }
-        }
 
         [Authorize]
         [HttpPost]

@@ -1,7 +1,4 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using PracticeJob.BL.Contracts;
 using PracticeJob.Core.DTO;
 using PracticeJob.Core.Security;
@@ -29,6 +26,11 @@ namespace PracticeJob.BL.Implementations
             var student = Mapper.Map<Student, StudentDTO>(StudentRepository.Login(loginData));
             return student;
         }
+        public StudentDTO Get(int studentId)
+        {
+            var student = Mapper.Map<Student, StudentDTO>(StudentRepository.Get(studentId));
+            return student;
+        }
 
         public StudentDTO Create(AuthDTO authDTO)
         {
@@ -51,12 +53,6 @@ namespace PracticeJob.BL.Implementations
             var student = Mapper.Map<StudentDTO, Student>(studentDTO);
             var updStudent = Mapper.Map<Student, StudentDTO>(StudentRepository.Update(student));
             return updStudent;
-        }
-
-        public StudentDTO Get(int studentId)
-        {
-            var student = Mapper.Map<Student, StudentDTO>(StudentRepository.Get(studentId));
-            return student;
         }
     }
 }
