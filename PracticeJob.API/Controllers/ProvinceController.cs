@@ -30,22 +30,28 @@ namespace PracticeJob.API.Controllers
         {
             var provinces =  ProvinceBL.GetAll();
             if (provinces != null)
+            {
                 return Ok(provinces);
+            }
             else
+            {
                 return BadRequest();
-            
+            }
         }
 
         [Authorize]
         [HttpGet]
-        [Route("Get")]
         public ActionResult<ProvinceDTO> Get(int id)
         {
             var province = ProvinceBL.Get(id);
             if (province != null)
+            {
                 return Ok(province);
+            }
             else
-                return BadRequest();
+            {
+                return NotFound();
+            }
         }
     }
 }

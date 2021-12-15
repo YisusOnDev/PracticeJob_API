@@ -28,8 +28,7 @@ namespace PracticeJob.API.Controllers
         }
 
         [Authorize]
-        [HttpPost]
-        [Route("Update")]
+        [HttpPut]
        public ActionResult<CompanyDTO> Update(CompanyDTO companyDTO)
        {
             var token = HttpContext.GetTokenAsync("access_token").Result;
@@ -45,7 +44,22 @@ namespace PracticeJob.API.Controllers
        }
 
         [Authorize]
-        [HttpPut]
+        [HttpGet]
+        public ActionResult<CompanyDTO> Get(int companyId)
+        {
+            CompanyDTO company = CompanyBL.Get(companyId);
+            if (company != null)
+            {
+                return Ok(company);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
         [Route("Authorized")]
         public ActionResult<StudentDTO> Authorized(CompanyDTO companyDTO)
         {

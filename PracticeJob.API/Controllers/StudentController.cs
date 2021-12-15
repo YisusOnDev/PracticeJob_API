@@ -22,7 +22,7 @@ namespace PracticeJob.API.Controllers
         }
 
         [Authorize]
-        [HttpPost]
+        [HttpPut]
         [Route("Update")]
        public ActionResult<StudentDTO> Update(StudentDTO studentDTO)
         {
@@ -34,12 +34,31 @@ namespace PracticeJob.API.Controllers
                 {
                     return Ok(student);
                 }
+                else
+                {
+                    BadRequest();
+                }
             }
             return Unauthorized();
         }
 
         [Authorize]
-        [HttpPut]
+        [HttpGet]
+        public ActionResult<StudentDTO> Get(int studentId)
+        {  
+            StudentDTO student = StudentBL.Get(studentId);
+            if (student != null)
+            {
+                return Ok(student);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
         [Route("Authorized")]
         public ActionResult<StudentDTO> Authorized(StudentDTO studentDTO)
         {
@@ -51,8 +70,15 @@ namespace PracticeJob.API.Controllers
                 {
                     return Ok(student);
                 }
+                else
+                {
+                    return BadRequest();
+                }
             }
-            return Unauthorized();
+            else
+            {
+                return Unauthorized();
+            }
         }
     }
 }

@@ -30,22 +30,28 @@ namespace PracticeJob.API.Controllers
         {
             var FPs = FPBL.GetAll();
             if (FPs != null)
+            {
                 return Ok(FPs);
+            }
             else
+            {
                 return BadRequest();
-
+            }
         }
 
         [Authorize]
         [HttpGet]
-        [Route("Get")]
         public ActionResult<FPDTO> Get(int id)
         {
             var FPs = FPBL.Get(id);
             if (FPs != null)
+            {
                 return Ok(FPs);
+            }
             else
-                return BadRequest();
+            {
+                return NotFound();
+            }
         }
     }
 }
