@@ -77,5 +77,20 @@ namespace PracticeJob.API.Controllers
             }
             return Unauthorized();
         }
+
+        [Authorize]
+        [HttpDelete]
+        public ActionResult<bool> Delete(int offerId)
+        {
+            bool offer = JobOfferBL.Delete(offerId);
+            if (offer)
+            {
+                return Ok(offer);
+            }
+            else
+            {
+                return BadRequest(offer);
+            }
+        }
     }
 }

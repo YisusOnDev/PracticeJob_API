@@ -16,19 +16,41 @@ namespace PracticeJob.DAL.Repositories.Implementations
 
         public JobOffer Get(int offerId)
         {
-            return DbContext.JobOffers.Include(o => o.FPs).FirstOrDefault(o => o.Id == offerId);
+            return DbContext.JobOffers.Include(o => o.FPs).
+                ThenInclude(fp => fp.FPFamily).
+                Include(o => o.FPs).
+                ThenInclude(fp => fp.FPGrade).
+                FirstOrDefault(o => o.Id == offerId);
         }
 
         public List<JobOffer> GetAll()
         {
-            return DbContext.JobOffers.ToList();
+            return DbContext.JobOffers.Include(o => o.FPs).
+                ThenInclude(fp => fp.FPFamily).
+                Include(o => o.FPs).
+                ThenInclude(fp => fp.FPGrade).ToList();
         }
 
         public JobOffer Create(JobOffer offer)
         {
+            // Generate offerFpList from FPs Id
+            List<FP> offerFpList = new List<FP>();
+            foreach(FP f in offer.FPs)
+            {
+                var fpFromDb = DbContext.FPs.FirstOrDefault(f => f.Id == f.Id);
+                offerFpList.Add(fpFromDb);
+            }
+
+            // Set offer Fps List with the fp list from DB
+            offer.FPs = offerFpList;
             var offerFromDb = DbContext.JobOffers.Add(offer).Entity;
             DbContext.SaveChanges();
-            return DbContext.JobOffers.Include(o => o.FPs).FirstOrDefault(o => o.Id == offerFromDb.Id);
+
+            return DbContext.JobOffers.Include(o => o.FPs).
+                ThenInclude(fp => fp.FPFamily).
+                Include(o => o.FPs).
+                ThenInclude(fp => fp.FPGrade).
+                FirstOrDefault(o => o.Id == offerFromDb.Id);
         }
 
         public JobOffer Update(JobOffer offer)
@@ -38,11 +60,30 @@ namespace PracticeJob.DAL.Repositories.Implementations
             {
                 offerFromDb = offer;
                 DbContext.SaveChanges();
-                return DbContext.JobOffers.Include(o => o.FPs).FirstOrDefault(o => o.Id == offerFromDb.Id);
+                return DbContext.JobOffers.Include(o => o.FPs).
+                ThenInclude(fp => fp.FPFamily).
+                Include(o => o.FPs).
+                ThenInclude(fp => fp.FPGrade).
+                FirstOrDefault(o => o.Id == offerFromDb.Id);
             }
             else
             {
                 return null;
+            }
+        }
+
+        public bool Delete(int offerId)
+        {
+            var selectedOffer = DbContext.JobOffers.SingleOrDefault(o => o.Id == offerId);
+            if (selectedOffer != null)
+            {
+                DbContext.JobOffers.Remove(selectedOffer);
+                DbContext.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }

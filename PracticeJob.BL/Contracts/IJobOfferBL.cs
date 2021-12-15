@@ -9,5 +9,6 @@ namespace PracticeJob.BL.Contracts
         List<JobOfferDTO> GetAll();
         JobOfferDTO Create(JobOfferDTO offer);
         JobOfferDTO Update(JobOfferDTO offer);
+        bool Delete(int offerId);
     }
 }

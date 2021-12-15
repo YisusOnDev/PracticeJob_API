@@ -43,5 +43,10 @@ namespace PracticeJob.BL.Implementations
             return updJobOffer;
         }
 
+        public bool Delete(int offerId)
+        {
+            var succesfullyDeleted = JobOfferRepository.Delete(offerId);
+            return succesfullyDeleted;
+        }
     }
 }

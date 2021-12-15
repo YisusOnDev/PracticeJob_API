@@ -9,5 +9,6 @@ namespace PracticeJob.DAL.Repositories.Contracts
         JobOffer Get(int offerId);
         List<JobOffer> GetAll();
         JobOffer Update(JobOffer offer);
+        bool Delete(int offerId);
     }
 }
