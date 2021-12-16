@@ -29,6 +29,11 @@ namespace PracticeJob.BL.Implementations
             return Mapper.Map<List<JobOffer>, List<JobOfferDTO>>(JobOfferRepository.GetAll());
         }
 
+        public List<JobOfferDTO> GetAllFromCompanyId(int companyId)
+        {
+            return Mapper.Map<List<JobOffer>, List<JobOfferDTO>>(JobOfferRepository.GetAllFromCompanyId(companyId));
+        }
+
         public JobOfferDTO Create(JobOfferDTO offerDTO)
         {
             var jobOffer = Mapper.Map<JobOfferDTO, JobOffer>(offerDTO);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PracticeJob.DAL.Entities;
+using System;
 using System.Collections.Generic;
 
 namespace PracticeJob.Core.DTO
@@ -6,6 +7,8 @@ namespace PracticeJob.Core.DTO
     public class JobOfferDTO
     {
         public int Id { get; set; }
+        public int CompanyId { get; set; }
+        public Company Company { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public int Remuneration { get; set; }

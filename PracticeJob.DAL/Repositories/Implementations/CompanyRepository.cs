@@ -30,7 +30,7 @@ namespace PracticeJob.DAL.Repositories.Implementations
 
             DbContext.SaveChanges();
 
-            return DbContext.Companies.Include(c => c.Province).FirstOrDefault(c => c.Email == companyFromDb.Email && c.Password == companyFromDb.Password);
+            return companyFromDb;
         }
 
         public bool Exists(Company company)
@@ -50,7 +50,7 @@ namespace PracticeJob.DAL.Repositories.Implementations
 
                 DbContext.SaveChanges();
 
-                return DbContext.Companies.Include(c => c.Province).FirstOrDefault(c => c.Id == company.Id);
+                return dbCompany;
             }
             else
             {

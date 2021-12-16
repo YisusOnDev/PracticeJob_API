@@ -37,10 +37,7 @@ namespace PracticeJob.DAL.Repositories.Implementations
             student.FPId = 1;
             var createdStudent = DbContext.Students.Add(student).Entity;
             DbContext.SaveChanges();
-            return DbContext.Students.Include(u => u.Province).
-                Include(u => u.FP).ThenInclude(fp => fp.FPFamily).
-                Include(u => u.FP).ThenInclude(fp => fp.FPGrade).
-                FirstOrDefault(u => u.Email == createdStudent.Email && u.Password == createdStudent.Password);
+            return createdStudent;
         }
 
         public bool Exists(Student student)
@@ -50,25 +47,21 @@ namespace PracticeJob.DAL.Repositories.Implementations
 
         public Student Update(Student student)
         {
-            var result = DbContext.Students.SingleOrDefault(s => s.Email == student.Email);
-            if (result != null)
+            var studentFromDb = DbContext.Students.SingleOrDefault(s => s.Email == student.Email);
+            if (studentFromDb != null)
             {
-                result.BirthDate = student.BirthDate;
-                result.City = student.City;
-                result.Name = student.Name;
-                result.LastName = student.LastName;
-                result.ProvinceId = student.ProvinceId;
-                result.ProfileImage = student.ProfileImage;
-                result.FPId = student.FPId;
-                result.FPCalification = student.FPCalification;
+                studentFromDb.BirthDate = student.BirthDate;
+                studentFromDb.City = student.City;
+                studentFromDb.Name = student.Name;
+                studentFromDb.LastName = student.LastName;
+                studentFromDb.ProvinceId = student.ProvinceId;
+                studentFromDb.ProfileImage = student.ProfileImage;
+                studentFromDb.FPId = student.FPId;
+                studentFromDb.FPCalification = student.FPCalification;
 
                 DbContext.SaveChanges();
 
-                return DbContext.Students.
-                    Include(u => u.Province).
-                    Include(u => u.FP).ThenInclude(fp => fp.FPFamily).
-                    Include(u => u.FP).ThenInclude(fp => fp.FPGrade).
-                    FirstOrDefault(s => s.Email == student.Email);
+                return studentFromDb;
             }
             else
             {

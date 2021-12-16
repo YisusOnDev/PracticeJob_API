@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PracticeJob.DAL.Entities
 {
@@ -8,6 +9,9 @@ namespace PracticeJob.DAL.Entities
     {
         [Key]
         public int Id { get; set; }
+        public int CompanyId { get; set; }
+        [ForeignKey("CompanyId")]
+        public Company Company { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]

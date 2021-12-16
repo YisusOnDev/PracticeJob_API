@@ -47,6 +47,23 @@ namespace PracticeJob.API.Controllers
             }
         }
 
+        [Authorize]
+        [HttpGet]
+        [Route("AllFromId")]
+        public ActionResult<JobOfferDTO> GetAllFromCompanyId(int companyId)
+        {
+            var offers = JobOfferBL.GetAllFromCompanyId(companyId);
+            if (offers != null)
+            {
+                return Ok(offers);
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        [Authorize]
         [HttpPost]
         [Route("Create")]
         public ActionResult<JobOfferDTO> Create(JobOfferDTO offerDTO)
@@ -73,9 +90,8 @@ namespace PracticeJob.API.Controllers
             }
             else
             {
-                BadRequest();
+                return BadRequest();
             }
-            return Unauthorized();
         }
 
         [Authorize]

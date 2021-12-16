@@ -7,6 +7,7 @@ namespace PracticeJob.BL.Contracts
     {
         JobOfferDTO Get(int offerId);
         List<JobOfferDTO> GetAll();
+        List<JobOfferDTO> GetAllFromCompanyId(int companyId);
         JobOfferDTO Create(JobOfferDTO offer);
         JobOfferDTO Update(JobOfferDTO offer);
         bool Delete(int offerId);
