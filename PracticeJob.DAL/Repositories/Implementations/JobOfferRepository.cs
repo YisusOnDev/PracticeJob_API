@@ -37,13 +37,14 @@ namespace PracticeJob.DAL.Repositories.Implementations
             List<FP> offerFpList = new List<FP>();
             foreach(FP f in offer.FPs)
             {
-                var fpFromDb = DbContext.FPs.FirstOrDefault(f => f.Id == f.Id);
+                var fpFromDb = DbContext.FPs.FirstOrDefault(fdb => fdb.Id == f.Id);
                 offerFpList.Add(fpFromDb);
             }
 
             // Set offer Fps List with the fp list from DB
             offer.FPs = offerFpList;
             var offerFromDb = DbContext.JobOffers.Add(offer).Entity;
+
             DbContext.SaveChanges();
 
             return DbContext.JobOffers.Include(o => o.FPs).
@@ -58,8 +59,16 @@ namespace PracticeJob.DAL.Repositories.Implementations
             var offerFromDb = DbContext.JobOffers.SingleOrDefault(o => o.Id == offer.Id);
             if (offerFromDb != null)
             {
-                offerFromDb = offer;
+                offerFromDb.Name = offer.Name;
+                offerFromDb.Description = offer.Description;
+                offerFromDb.Remuneration = offer.Remuneration;
+                offerFromDb.Schedule = offer.Schedule;
+                offerFromDb.StartDate = offer.StartDate;
+                offerFromDb.EndDate = offer.EndDate;
+                offerFromDb.FPs = offer.FPs;
+
                 DbContext.SaveChanges();
+
                 return DbContext.JobOffers.Include(o => o.FPs).
                 ThenInclude(fp => fp.FPFamily).
                 Include(o => o.FPs).
@@ -77,7 +86,7 @@ namespace PracticeJob.DAL.Repositories.Implementations
             var selectedOffer = DbContext.JobOffers.SingleOrDefault(o => o.Id == offerId);
             if (selectedOffer != null)
             {
-                DbContext.JobOffers.Remove(selectedOffer);
+                DbContext.JobOffers.Remove(selectedOffer)
                 DbContext.SaveChanges();
                 return true;
             }

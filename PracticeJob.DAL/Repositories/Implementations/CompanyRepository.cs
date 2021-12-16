@@ -27,7 +27,9 @@ namespace PracticeJob.DAL.Repositories.Implementations
             // Put ProvinceId to 1 to prevent null ForeignKeys error
             company.ProvinceId = 1;
             var companyFromDb = DbContext.Companies.Add(company).Entity;
+
             DbContext.SaveChanges();
+
             return DbContext.Companies.Include(c => c.Province).FirstOrDefault(c => c.Email == companyFromDb.Email && c.Password == companyFromDb.Password);
         }
 
@@ -38,12 +40,17 @@ namespace PracticeJob.DAL.Repositories.Implementations
 
         public Company Update(Company company)
         {
-            var result = DbContext.Companies.SingleOrDefault(c => c.Email == company.Email);
-            if (result != null)
+            var dbCompany = DbContext.Companies.SingleOrDefault(c => c.Id == company.Id);
+            if (dbCompany != null)
             {
-                result = company;
+                dbCompany.Name = company.Name;
+                dbCompany.Address = company.Address;
+                dbCompany.ProvinceId = company.ProvinceId;
+                dbCompany.Province = company.Province;
+
                 DbContext.SaveChanges();
-                return DbContext.Companies.Include(c => c.Province).FirstOrDefault(c => c.Email == company.Email);
+
+                return DbContext.Companies.Include(c => c.Province).FirstOrDefault(c => c.Id == company.Id);
             }
             else
             {

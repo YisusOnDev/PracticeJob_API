@@ -53,9 +53,17 @@ namespace PracticeJob.DAL.Repositories.Implementations
             var result = DbContext.Students.SingleOrDefault(s => s.Email == student.Email);
             if (result != null)
             {
-                result = student;
+                result.BirthDate = student.BirthDate;
+                result.City = student.City;
+                result.Name = student.Name;
+                result.LastName = student.LastName;
+                result.ProvinceId = student.ProvinceId;
+                result.ProfileImage = student.ProfileImage;
+                result.FPId = student.FPId;
+                result.FPCalification = student.FPCalification;
 
                 DbContext.SaveChanges();
+
                 return DbContext.Students.
                     Include(u => u.Province).
                     Include(u => u.FP).ThenInclude(fp => fp.FPFamily).
