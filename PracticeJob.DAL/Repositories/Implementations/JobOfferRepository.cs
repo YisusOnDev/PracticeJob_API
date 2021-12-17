@@ -73,27 +73,26 @@ namespace PracticeJob.DAL.Repositories.Implementations
             var offerFromDb = Get(offer.Id);
             if (offerFromDb != null)
             {
-                // Set current Entity to detached to edit it correctly.
-                DbContext.Entry(offerFromDb).State = EntityState.Detached;
-
                 // We save current FP List of our offer in a new List in order to remove them correctly.
+                
                 List<FP> currentOfferFPs = new List<FP>();
                 foreach (FP f in offerFromDb.FPs)
                     currentOfferFPs.Add(f);
                    
                 foreach (FP f in currentOfferFPs)
                 {
-                    if (f != null)
-                    {
-                        offerFromDb.FPs.Remove(f);
-                    }
+                    var fpFromDb = DbContext.FPs.FirstOrDefault(fdb => fdb.Id == f.Id);
+                    offerFromDb.FPs.Remove(fpFromDb);
+                    
                 }
 
                 // Add updated offer fp list
                 foreach (FP f in offer.FPs)
                 {
-                    offerFromDb.FPs.Add(f);
+                    var fpFromDb = DbContext.FPs.FirstOrDefault(fdb => fdb.Id == f.Id);
+                    offerFromDb.FPs.Add(fpFromDb);
                 }
+                
                 offerFromDb.Name = offer.Name;
                 offerFromDb.CompanyId = offer.CompanyId;
 
@@ -106,8 +105,6 @@ namespace PracticeJob.DAL.Repositories.Implementations
                 offerFromDb.StartDate = offer.StartDate;
                 offerFromDb.EndDate = offer.EndDate;
                 
-                // Set current entity state to modify in order to save it
-                DbContext.Entry(offerFromDb).State = EntityState.Modified;
                 DbContext.SaveChanges();
                 return offerFromDb;
             }
