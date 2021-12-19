@@ -18,6 +18,7 @@ namespace PracticeJob.DAL.Repositories.Implementations
         {
             return DbContext.JobOffers.
                 Include(o => o.Company).
+                ThenInclude(p => p.Province).
                 Include(o => o.FPs).
                 ThenInclude(fp => fp.FPFamily).
                 Include(o => o.FPs).
@@ -29,6 +30,7 @@ namespace PracticeJob.DAL.Repositories.Implementations
         {
             return DbContext.JobOffers.
                 Include(o => o.Company).
+                ThenInclude(p => p.Province).
                 Include(o => o.FPs).
                 ThenInclude(fp => fp.FPFamily).
                 Include(o => o.FPs).
@@ -39,6 +41,7 @@ namespace PracticeJob.DAL.Repositories.Implementations
         {
             return DbContext.JobOffers.
                 Include(o => o.Company).
+                ThenInclude(p => p.Province).
                 Include(o => o.FPs).
                 ThenInclude(fp => fp.FPFamily).
                 Include(o => o.FPs).
