@@ -2,6 +2,7 @@
 using PracticeJob.BL.Contracts;
 using PracticeJob.Core.DTO;
 using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
 
 namespace PracticeJob.API.Controllers
 {
@@ -49,7 +50,7 @@ namespace PracticeJob.API.Controllers
 
         [Authorize]
         [HttpGet]
-        [Route("AllFromId")]
+        [Route("AllFromCompany")]
         public ActionResult<JobOfferDTO> GetAllFromCompanyId(int companyId)
         {
             var offers = JobOfferBL.GetAllFromCompanyId(companyId);
