@@ -10,7 +10,7 @@
   </a>
 </p>
 
-> PracticeJob API for WebApp and MobileApp built with .NET Core 3.1
+> PracticeJob API for WebApp and MobileApp built with [.NET Core](https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-6.0) 3.1
 
 ## Usage
 I personally recommend to use IDE like VS Code or VS Studio for running/debugging/building this API.
