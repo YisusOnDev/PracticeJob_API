@@ -50,10 +50,58 @@ namespace PracticeJob.API.Controllers
 
         [Authorize]
         [HttpGet]
+        [Route("AllAvailable")]
+        public ActionResult<JobOfferDTO> GetAllAvailable()
+        {
+            var offers = JobOfferBL.GetAllAvailable();
+            if (offers != null)
+            {
+                return Ok(offers);
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        [Authorize]
+        [HttpGet]
         [Route("AllFromCompany")]
         public ActionResult<JobOfferDTO> GetAllFromCompanyId(int companyId)
         {
             var offers = JobOfferBL.GetAllFromCompanyId(companyId);
+            if (offers != null)
+            {
+                return Ok(offers);
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("AllFromName")]
+        public ActionResult<JobOfferDTO> GetAllFromName(string offerName)
+        {
+            var offers = JobOfferBL.GetAllFromName(offerName);
+            if (offers != null)
+            {
+                return Ok(offers);
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("AllFromFP")]
+        public ActionResult<JobOfferDTO> GetAllFromFP(int fpId)
+        {
+            var offers = JobOfferBL.GetAllFromFP(fpId);
             if (offers != null)
             {
                 return Ok(offers);

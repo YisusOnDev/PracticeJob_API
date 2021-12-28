@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using PracticeJob.DAL.Entities;
@@ -37,6 +38,18 @@ namespace PracticeJob.DAL.Repositories.Implementations
                 ThenInclude(fp => fp.FPGrade).ToList();
         }
 
+        public List<JobOffer> GetAllAvailable()
+        {
+            return DbContext.JobOffers.
+                Include(o => o.Company).
+                ThenInclude(p => p.Province).
+                Include(o => o.FPs).
+                ThenInclude(fp => fp.FPFamily).
+                Include(o => o.FPs).
+                ThenInclude(fp => fp.FPGrade).
+                Where(o => o.EndDate.Date > DateTime.Today).ToList();
+        }
+
         public List<JobOffer> GetAllFromCompanyId(int companyId)
         {
             return DbContext.JobOffers.
@@ -45,7 +58,32 @@ namespace PracticeJob.DAL.Repositories.Implementations
                 Include(o => o.FPs).
                 ThenInclude(fp => fp.FPFamily).
                 Include(o => o.FPs).
-                ThenInclude(fp => fp.FPGrade).Where(o => o.CompanyId == companyId).ToList();
+                ThenInclude(fp => fp.FPGrade).
+                Where(o => o.CompanyId == companyId).ToList();
+        }
+
+        public List<JobOffer> GetAllFromName(string offerName)
+        {
+            return DbContext.JobOffers.
+                Include(o => o.Company).
+                ThenInclude(p => p.Province).
+                Include(o => o.FPs).
+                ThenInclude(fp => fp.FPFamily).
+                Include(o => o.FPs).
+                ThenInclude(fp => fp.FPGrade).
+                Where(o => o.Name.Contains(offerName)).ToList();
+        }
+
+        public List<JobOffer> GetAllFromFP(int fpId)
+        {
+            return DbContext.JobOffers.
+                Include(o => o.Company).
+                ThenInclude(p => p.Province).
+                Include(o => o.FPs).
+                ThenInclude(fp => fp.FPFamily).
+                Include(o => o.FPs).
+                ThenInclude(fp => fp.FPGrade).Where(o => o.FPs.Any(f => f.Id == fpId)).ToList();
+
         }
 
         public JobOffer Create(JobOffer offer)
