@@ -13,6 +13,7 @@ namespace PracticeJob.DAL.Entities
         public DbSet<FPFamily> FPFamilies { get; set; }
         public DbSet<FPGrade> FPGrades { get; set; }
         public DbSet<JobOffer> JobOffers { get; set; }
+        public DbSet<JobApplication> JobApllications { get; set; }
         public PracticeJobContext()
         {
         }
