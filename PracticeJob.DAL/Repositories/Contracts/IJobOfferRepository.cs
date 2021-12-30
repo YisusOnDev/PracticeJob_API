@@ -9,6 +9,7 @@ namespace PracticeJob.DAL.Repositories.Contracts
         JobOffer Get(int offerId);
         List<JobOffer> GetAll();
         List<JobOffer> GetAllAvailable();
+        List<JobOffer> GetAllAvailableFromFP(int fpId);
         List<JobOffer> GetAllFromCompanyId(int companyId);
         List<JobOffer> GetAllFromName(string offerName);
         List<JobOffer> GetAllFromFP(int fpId);

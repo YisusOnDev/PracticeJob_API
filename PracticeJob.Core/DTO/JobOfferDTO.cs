@@ -16,5 +16,6 @@ namespace PracticeJob.Core.DTO
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public ICollection<FPDTO> FPs { get; set; }
+        public ICollection<JobApplicationDTO> JobApplications { get; set; }
     }
 }

@@ -64,6 +64,22 @@ namespace PracticeJob.API.Controllers
             }
         }
 
+        //[Authorize]
+        [HttpGet]
+        [Route("AllAvailableFromFP")]
+        public ActionResult<JobOfferDTO> GetAllAvailableFromFP(int fpId)
+        {
+            var offers = JobOfferBL.GetAllAvailableFromFP(fpId);
+            if (offers != null)
+            {
+                return Ok(offers);
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
         [Authorize]
         [HttpGet]
         [Route("AllFromCompany")]

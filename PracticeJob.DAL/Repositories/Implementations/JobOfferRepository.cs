@@ -24,6 +24,10 @@ namespace PracticeJob.DAL.Repositories.Implementations
                 ThenInclude(fp => fp.FPFamily).
                 Include(o => o.FPs).
                 ThenInclude(fp => fp.FPGrade).
+                Include(o => o.JobApplications).
+                ThenInclude(app => app.Student).
+                Include(o => o.JobApplications).
+                ThenInclude(app => app.Student.Province).
                 FirstOrDefault(o => o.Id == offerId);
         }
 
@@ -35,7 +39,11 @@ namespace PracticeJob.DAL.Repositories.Implementations
                 Include(o => o.FPs).
                 ThenInclude(fp => fp.FPFamily).
                 Include(o => o.FPs).
-                ThenInclude(fp => fp.FPGrade).ToList();
+                ThenInclude(fp => fp.FPGrade).
+                Include(o => o.JobApplications).
+                ThenInclude(app => app.Student).
+                Include(o => o.JobApplications).
+                ThenInclude(app => app.Student.Province).ToList();
         }
 
         public List<JobOffer> GetAllAvailable()
@@ -47,7 +55,28 @@ namespace PracticeJob.DAL.Repositories.Implementations
                 ThenInclude(fp => fp.FPFamily).
                 Include(o => o.FPs).
                 ThenInclude(fp => fp.FPGrade).
-                Where(o => o.EndDate.Date > DateTime.Today).ToList();
+                Where(o => o.EndDate.Date >= DateTime.Today).
+                Include(o => o.JobApplications).
+                ThenInclude(app => app.Student).
+                Include(o => o.JobApplications).
+                ThenInclude(app => app.Student.Province).ToList();
+        }
+
+        public List<JobOffer> GetAllAvailableFromFP(int fpId)
+        {
+            return DbContext.JobOffers.
+                Include(o => o.Company).
+                ThenInclude(p => p.Province).
+                Include(o => o.FPs).
+                ThenInclude(fp => fp.FPFamily).
+                Include(o => o.FPs).
+                ThenInclude(fp => fp.FPGrade).
+                Include(o => o.JobApplications).
+                ThenInclude(app => app.Student).
+                Include(o => o.JobApplications).
+                ThenInclude(app => app.Student.Province).
+                Where(o => o.FPs.Any(f => f.Id == fpId) && o.EndDate.Date >= DateTime.Today).ToList();
+
         }
 
         public List<JobOffer> GetAllFromCompanyId(int companyId)
@@ -59,6 +88,10 @@ namespace PracticeJob.DAL.Repositories.Implementations
                 ThenInclude(fp => fp.FPFamily).
                 Include(o => o.FPs).
                 ThenInclude(fp => fp.FPGrade).
+                Include(o => o.JobApplications).
+                ThenInclude(app => app.Student).
+                Include(o => o.JobApplications).
+                ThenInclude(app => app.Student.Province).
                 Where(o => o.CompanyId == companyId).ToList();
         }
 
@@ -71,6 +104,10 @@ namespace PracticeJob.DAL.Repositories.Implementations
                 ThenInclude(fp => fp.FPFamily).
                 Include(o => o.FPs).
                 ThenInclude(fp => fp.FPGrade).
+                Include(o => o.JobApplications).
+                ThenInclude(app => app.Student).
+                Include(o => o.JobApplications).
+                ThenInclude(app => app.Student.Province).
                 Where(o => o.Name.Contains(offerName)).ToList();
         }
 
@@ -82,7 +119,12 @@ namespace PracticeJob.DAL.Repositories.Implementations
                 Include(o => o.FPs).
                 ThenInclude(fp => fp.FPFamily).
                 Include(o => o.FPs).
-                ThenInclude(fp => fp.FPGrade).Where(o => o.FPs.Any(f => f.Id == fpId)).ToList();
+                ThenInclude(fp => fp.FPGrade).
+                Include(o => o.JobApplications).
+                ThenInclude(app => app.Student).
+                Include(o => o.JobApplications).
+                ThenInclude(app => app.Student.Province).
+                Where(o => o.FPs.Any(f => f.Id == fpId)).ToList();
 
         }
 

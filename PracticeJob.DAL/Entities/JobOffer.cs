@@ -26,5 +26,6 @@ namespace PracticeJob.DAL.Entities
 
         /* EF N:N */
         public ICollection<FP> FPs { get; set; }
+        public ICollection<JobApplication> JobApplications { get; set; }
     }
 }

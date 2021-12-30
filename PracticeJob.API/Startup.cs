@@ -70,6 +70,9 @@ namespace PracticeJob.API
 
             AddSwagger(services);
 
+            // FIX JSON OVERFLOW
+            services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
             // AUTO MAPPER
             services.AddAutoMapper(cfg => cfg.AddProfile(new AutomapperProfile()));
 

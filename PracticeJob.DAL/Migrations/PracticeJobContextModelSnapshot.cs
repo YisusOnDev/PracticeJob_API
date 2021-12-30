@@ -287,7 +287,7 @@ namespace PracticeJob.DAL.Migrations
             modelBuilder.Entity("PracticeJob.DAL.Entities.JobApplication", b =>
                 {
                     b.HasOne("PracticeJob.DAL.Entities.JobOffer", "JobOffer")
-                        .WithMany()
+                        .WithMany("JobApplications")
                         .HasForeignKey("JobOfferId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -331,6 +331,11 @@ namespace PracticeJob.DAL.Migrations
                     b.Navigation("FP");
 
                     b.Navigation("Province");
+                });
+
+            modelBuilder.Entity("PracticeJob.DAL.Entities.JobOffer", b =>
+                {
+                    b.Navigation("JobApplications");
                 });
 #pragma warning restore 612, 618
         }

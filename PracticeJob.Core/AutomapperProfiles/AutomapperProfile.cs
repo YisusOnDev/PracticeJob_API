@@ -26,6 +26,9 @@ namespace PracticeJob.Core.AutomapperProfiles
 
             CreateMap<JobOfferDTO, JobOffer>();
             CreateMap<JobOffer, JobOfferDTO>();
+
+            CreateMap<JobApplicationDTO, JobApplication>();
+            CreateMap<JobApplication, JobApplicationDTO>();
         }
     }
 }

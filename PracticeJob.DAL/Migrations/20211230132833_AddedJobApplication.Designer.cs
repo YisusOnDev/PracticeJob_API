@@ -9,7 +9,7 @@ using PracticeJob.DAL.Entities;
 namespace PracticeJob.DAL.Migrations
 {
     [DbContext(typeof(PracticeJobContext))]
-    [Migration("20211229183628_AddedJobApplication")]
+    [Migration("20211230132833_AddedJobApplication")]
     partial class AddedJobApplication
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -289,7 +289,7 @@ namespace PracticeJob.DAL.Migrations
             modelBuilder.Entity("PracticeJob.DAL.Entities.JobApplication", b =>
                 {
                     b.HasOne("PracticeJob.DAL.Entities.JobOffer", "JobOffer")
-                        .WithMany()
+                        .WithMany("JobApplications")
                         .HasForeignKey("JobOfferId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -333,6 +333,11 @@ namespace PracticeJob.DAL.Migrations
                     b.Navigation("FP");
 
                     b.Navigation("Province");
+                });
+
+            modelBuilder.Entity("PracticeJob.DAL.Entities.JobOffer", b =>
+                {
+                    b.Navigation("JobApplications");
                 });
 #pragma warning restore 612, 618
         }
