@@ -41,7 +41,6 @@ namespace PracticeJob.BL.Implementations
             if (!StudentRepository.Exists(student))
             {
                 var s = Mapper.Map<Student, StudentDTO>(StudentRepository.Create(student));
-                s.Password = null;
                 return s;
             }
 

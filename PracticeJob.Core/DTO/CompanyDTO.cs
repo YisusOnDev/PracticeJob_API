@@ -7,8 +7,6 @@ namespace PracticeJob.Core.DTO
     {
         public int Id { get; set; }
         public string Email { get; set; }
-        [JsonIgnore]
-        public string Password { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
         public int ProvinceId { get; set; }

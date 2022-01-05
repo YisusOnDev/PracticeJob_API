@@ -92,6 +92,9 @@ namespace PracticeJob.API
             services.AddScoped<IFPRepository, FPRepository>();
             services.AddScoped<IJobOfferBL, JobOfferBL>();
             services.AddScoped<IJobOfferRepository, JobOfferRepository>();
+            services.AddScoped<IJobApplicationBL, JobApplicationBL>();
+            services.AddScoped<IJobApplicationRepository, JobApplicationRepository>();
+
         }
 
         private void AddSwagger(IServiceCollection services)

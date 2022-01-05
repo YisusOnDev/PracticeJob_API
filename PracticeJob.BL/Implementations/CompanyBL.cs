@@ -41,7 +41,6 @@ namespace PracticeJob.BL.Implementations
             if (!CompanyRepository.Exists(company))
             {
                 var c = Mapper.Map<Company, CompanyDTO>(CompanyRepository.Create(company));
-                c.Password = null;
                 return c;
             }
 
