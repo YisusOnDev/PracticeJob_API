@@ -144,6 +144,9 @@ namespace PracticeJob.DAL.Repositories.Implementations
 
         public JobOffer Create(JobOffer offer)
         {
+            // Initialize jobapplications
+            offer.JobApplications = new List<JobApplication>();
+
             // Generate offerFpList from FPs Id
             List<FP> offerFpList = new List<FP>();
             foreach(FP f in offer.FPs)
