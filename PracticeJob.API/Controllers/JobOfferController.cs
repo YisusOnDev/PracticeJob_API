@@ -64,7 +64,7 @@ namespace PracticeJob.API.Controllers
             }
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet]
         [Route("AllAvailableFromFP")]
         public ActionResult<JobOfferDTO> GetAllAvailableFromFP(int fpId)
