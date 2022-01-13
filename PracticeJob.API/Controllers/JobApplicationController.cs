@@ -18,7 +18,7 @@ namespace PracticeJob.API.Controllers
             this.JobApplicationBL = JobApplicationBL;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost]
         public ActionResult<bool> CreateStudentApplication(int jobOfferId, int studentId)
         {
