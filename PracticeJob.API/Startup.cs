@@ -17,6 +17,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using PracticeJob.Core.Email;
 
 namespace PracticeJob.API
 {
@@ -58,6 +59,7 @@ namespace PracticeJob.API
 
 
             // Enable CORS in our API
+            string[] exposedHeaders = { "Authorization" };
             services.AddCors(o => {
                 o.AddPolicy("AllowSetOrigins", options =>
                 {
@@ -65,6 +67,7 @@ namespace PracticeJob.API
                     options.AllowAnyHeader();
                     options.AllowAnyMethod();
                     options.AllowCredentials();
+                    options.WithExposedHeaders(exposedHeaders);
                 });
             });
 
@@ -94,7 +97,7 @@ namespace PracticeJob.API
             services.AddScoped<IJobOfferRepository, JobOfferRepository>();
             services.AddScoped<IJobApplicationBL, JobApplicationBL>();
             services.AddScoped<IJobApplicationRepository, JobApplicationRepository>();
-
+            services.AddScoped<IEmailSender, EmailSender>();
         }
 
         private void AddSwagger(IServiceCollection services)

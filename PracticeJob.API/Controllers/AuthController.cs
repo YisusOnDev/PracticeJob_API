@@ -40,7 +40,8 @@ namespace PracticeJob.API.Controllers
                     if (student != null)
                     {
                         generatedToken = _tokenService.BuildToken(student);
-                        return new GenericAPIResponse<Object>(student, generatedToken);
+                        Response.Headers.Add("Authorization", generatedToken);
+                        return new GenericAPIResponse<Object>(student);
                     } 
                     else
                     {
@@ -51,7 +52,8 @@ namespace PracticeJob.API.Controllers
                     if (company != null)
                     {
                         generatedToken = _tokenService.BuildToken(company);
-                        return new GenericAPIResponse<Object>(company, generatedToken);
+                        Response.Headers.Add("Authorization", generatedToken);
+                        return new GenericAPIResponse<Object>(company);
                     }
                     else
                     {
@@ -77,7 +79,8 @@ namespace PracticeJob.API.Controllers
                     if (student != null)
                     {
                         generatedToken = _tokenService.BuildToken(student);
-                        return new GenericAPIResponse<Object>(student, generatedToken);
+                        Response.Headers.Add("Authorization", generatedToken);
+                        return new GenericAPIResponse<Object>(student);
                     }
                     else
                     {
@@ -88,7 +91,8 @@ namespace PracticeJob.API.Controllers
                     if (company != null)
                     {
                         generatedToken = _tokenService.BuildToken(company);
-                        return new GenericAPIResponse<Object>(company, generatedToken);
+                        Response.Headers.Add("Authorization", generatedToken);
+                        return new GenericAPIResponse<Object>(company);
                     }
                     else
                     {
