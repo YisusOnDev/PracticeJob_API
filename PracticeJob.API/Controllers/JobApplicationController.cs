@@ -35,7 +35,6 @@ namespace PracticeJob.API.Controllers
 
         [Authorize]
         [HttpPut]
-        [Route("UpdateStudentApplication")]
         public ActionResult<bool> UpdateStudentApplication(int applicationId, ApplicationStatus newStatus)
         {
             bool changed = JobApplicationBL.UpdateStudentApplication(applicationId, newStatus);

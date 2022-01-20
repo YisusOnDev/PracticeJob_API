@@ -17,5 +17,8 @@ namespace PracticeJob.DAL.Entities
         public int ProvinceId { get; set; }
         [ForeignKey("ProvinceId")]
         public Province Province { get; set; }
+        public bool ValidatedEmail { get; set; }
+        [JsonIgnore]
+        public string TFCode { get; set; }
     }
 }

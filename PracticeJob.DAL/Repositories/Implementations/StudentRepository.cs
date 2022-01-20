@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PracticeJob.DAL.Entities;
 using PracticeJob.DAL.Repositories.Contracts;
+using System;
 
 namespace PracticeJob.DAL.Repositories.Implementations
 {
@@ -63,10 +64,59 @@ namespace PracticeJob.DAL.Repositories.Implementations
 
                 return studentFromDb;
             }
-            else
+            return null;
+        }
+
+        public string Generate2FACode(Student student)
+        {
+            var studentFromDb = DbContext.Students.SingleOrDefault(s => s.Email == student.Email);
+            if (studentFromDb != null)
             {
-                return null;
+                var randomCode = new Random().Next(1000, 9999).ToString();
+                studentFromDb.TFCode = randomCode;
+                DbContext.SaveChanges();
+                return randomCode;
             }
+            return null;
+        }
+        public string Generate2FACode(string email)
+        {
+            var studentFromDb = DbContext.Students.SingleOrDefault(s => s.Email == email);
+            if (studentFromDb != null)
+            {
+                var randomCode = new Random().Next(1000, 9999).ToString();
+                studentFromDb.TFCode = randomCode;
+                DbContext.SaveChanges();
+                return randomCode;
+            }
+            return null;
+        }
+
+        public bool Validate2FACode(Student student, string code)
+        {
+            var studentFromDb = DbContext.Students.SingleOrDefault(s => s.Email == student.Email);
+            if (studentFromDb != null)
+            {
+                var currentValidCode = studentFromDb.TFCode;
+                studentFromDb.TFCode = null;
+                DbContext.SaveChanges();
+                if (currentValidCode != null && currentValidCode == code)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool ValidateEmail(Student student)
+        {
+            var studentFromDb = DbContext.Students.SingleOrDefault(s => s.Email == student.Email);
+            if (studentFromDb != null)
+            {
+                studentFromDb.ValidatedEmail = true;
+                DbContext.SaveChanges();
+            }
+            return false;
         }
     }
 }

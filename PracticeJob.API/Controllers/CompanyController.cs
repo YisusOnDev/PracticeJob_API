@@ -54,8 +54,16 @@ namespace PracticeJob.API.Controllers
 
         [Authorize]
         [HttpPost]
+        [Route("ResetPassword")]
+        public ActionResult<bool> SendResetPasswordMail(string email)
+        {
+            return Ok(CompanyBL.Generate2FACode(email));
+        }
+
+        [Authorize]
+        [HttpPost]
         [Route("Authorized")]
-        public ActionResult<StudentDTO> Authorized(CompanyDTO companyDTO)
+        public ActionResult<CompanyDTO> Authorized(CompanyDTO companyDTO)
         {
             var token = HttpContext.GetTokenAsync("access_token").Result;
             if (_tokenService.ValidToken(token, companyDTO))

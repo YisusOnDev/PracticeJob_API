@@ -53,5 +53,26 @@ namespace PracticeJob.BL.Implementations
             var updCompany = Mapper.Map<Company, CompanyDTO>(CompanyRepository.Update(company));
             return updCompany;
         }
+        public string Generate2FACode(CompanyDTO companyDTO)
+        {
+            var company = Mapper.Map<CompanyDTO, Company>(companyDTO);
+            return CompanyRepository.Generate2FACode(company);
+        }
+        public string Generate2FACode(string email)
+        {
+            return CompanyRepository.Generate2FACode(email);
+        }
+
+        public bool Validate2FACode(CompanyDTO companyDTO, string code)
+        {
+            var company = Mapper.Map<CompanyDTO, Company>(companyDTO);
+            return CompanyRepository.Validate2FACode(company, code);
+        }
+
+        public bool ValidateEmail(CompanyDTO companyDTO)
+        {
+            var company = Mapper.Map<CompanyDTO, Company>(companyDTO);
+            return CompanyRepository.ValidateEmail(company);
+        }
     }
 }

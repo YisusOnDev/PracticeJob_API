@@ -27,5 +27,10 @@ namespace PracticeJob.DAL.Entities
         [ForeignKey("FPId")]
         public FP FP { get; set; }
         public double FPCalification { get; set; }
+
+        public bool ValidatedEmail { get; set; }
+        [JsonIgnore]
+        public string TFCode { get; set; }
+
     }
 }

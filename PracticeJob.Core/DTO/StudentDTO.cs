@@ -16,5 +16,6 @@ namespace PracticeJob.Core.DTO
         public int FPId { get; set; }
         public FPDTO FP { get; set; }
         public double FPCalification { get; set; }
+        public bool ValidatedEmail { get; set; }
     }
 }

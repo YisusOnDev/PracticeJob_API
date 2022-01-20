@@ -46,12 +46,33 @@ namespace PracticeJob.BL.Implementations
 
             return null;
         }
-
         public StudentDTO Update(StudentDTO studentDTO)
         {
             var student = Mapper.Map<StudentDTO, Student>(studentDTO);
             var updStudent = Mapper.Map<Student, StudentDTO>(StudentRepository.Update(student));
             return updStudent;
+        }
+
+        public string Generate2FACode(StudentDTO studentDTO)
+        {
+            var student = Mapper.Map<StudentDTO, Student>(studentDTO);
+            return StudentRepository.Generate2FACode(student);
+        }
+        public string Generate2FACode(string email)
+        {
+            return StudentRepository.Generate2FACode(email);
+        }
+
+        public bool Validate2FACode(StudentDTO studentDTO, string code)
+        {
+            var student = Mapper.Map<StudentDTO, Student>(studentDTO);
+            return StudentRepository.Validate2FACode(student, code);
+        }
+
+        public bool ValidateEmail(StudentDTO studentDTO)
+        {
+            var student = Mapper.Map<StudentDTO, Student>(studentDTO);
+            return StudentRepository.ValidateEmail(student);
         }
     }
 }

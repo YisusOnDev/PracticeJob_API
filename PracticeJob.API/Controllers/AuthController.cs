@@ -4,6 +4,7 @@ using PracticeJob.BL.Contracts;
 using PracticeJob.Core.DTO;
 using PracticeJob.Core.Common;
 using PracticeJob.Core.Security;
+using PracticeJob.Core.Email;
 
 namespace PracticeJob.API.Controllers
 {
@@ -14,13 +15,14 @@ namespace PracticeJob.API.Controllers
         private readonly ITokenService _tokenService;
         public IStudentBL StudentBL { get; set; }
         public ICompanyBL CompanyBL { get; set; }
-        private string generatedToken = null;
+        public IEmailSender EmailSender { get; set; }
 
-        public AuthController(ITokenService tokenService, IStudentBL StudentBL, ICompanyBL CompanyBL)
+        public AuthController(ITokenService tokenService, IStudentBL StudentBL, ICompanyBL CompanyBL, IEmailSender EmailSender)
         {
             _tokenService = tokenService;
             this.StudentBL = StudentBL;
             this.CompanyBL = CompanyBL;
+            this.EmailSender = EmailSender;
         }
 
         [HttpPost]
@@ -39,7 +41,7 @@ namespace PracticeJob.API.Controllers
                     StudentDTO student = StudentBL.Login(authDTO);
                     if (student != null)
                     {
-                        generatedToken = _tokenService.BuildToken(student);
+                        string generatedToken = _tokenService.BuildToken(student);
                         Response.Headers.Add("Authorization", generatedToken);
                         return new GenericAPIResponse<Object>(student);
                     } 
@@ -51,7 +53,7 @@ namespace PracticeJob.API.Controllers
                     CompanyDTO company = CompanyBL.Login(authDTO);
                     if (company != null)
                     {
-                        generatedToken = _tokenService.BuildToken(company);
+                        string generatedToken = _tokenService.BuildToken(company);
                         Response.Headers.Add("Authorization", generatedToken);
                         return new GenericAPIResponse<Object>(company);
                     }
@@ -78,7 +80,9 @@ namespace PracticeJob.API.Controllers
                     var student = StudentBL.Create(authDTO);
                     if (student != null)
                     {
-                        generatedToken = _tokenService.BuildToken(student);
+                        string confirmEmailCode = StudentBL.Generate2FACode(student);
+                        EmailSender.SendConfirmationMail(student.Email, student.Name, confirmEmailCode);
+                        string generatedToken = _tokenService.BuildToken(student);
                         Response.Headers.Add("Authorization", generatedToken);
                         return new GenericAPIResponse<Object>(student);
                     }
@@ -90,7 +94,9 @@ namespace PracticeJob.API.Controllers
                     var company = CompanyBL.Create(authDTO);
                     if (company != null)
                     {
-                        generatedToken = _tokenService.BuildToken(company);
+                        string confirmEmailCode = CompanyBL.Generate2FACode(company);
+                        EmailSender.SendConfirmationMail(company.Email, company.Name, confirmEmailCode);                    
+                        string generatedToken  = _tokenService.BuildToken(company);
                         Response.Headers.Add("Authorization", generatedToken);
                         return new GenericAPIResponse<Object>(company);
                     }

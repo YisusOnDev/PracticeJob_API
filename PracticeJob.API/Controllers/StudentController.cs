@@ -58,6 +58,14 @@ namespace PracticeJob.API.Controllers
 
         [Authorize]
         [HttpPost]
+        [Route("ResetPassword")]
+        public ActionResult<bool> SendResetPasswordMail(string email)
+        {
+            return Ok(StudentBL.Generate2FACode(email));
+        }
+
+        [Authorize]
+        [HttpPost]
         [Route("Authorized")]
         public ActionResult<StudentDTO> Authorized(StudentDTO studentDTO)
         {

@@ -8,5 +8,9 @@ namespace PracticeJob.BL.Contracts
         StudentDTO Create(AuthDTO authDTO);
         StudentDTO Get(int studentId);
         StudentDTO Update(StudentDTO studentDTO);
+        string Generate2FACode(StudentDTO studentDTO);
+        string Generate2FACode(string email);
+        bool Validate2FACode(StudentDTO studentDTO, string code);
+        bool ValidateEmail(StudentDTO studentDTO);
     }
 }

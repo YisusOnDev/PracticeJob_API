@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using PracticeJob.DAL.Entities;
 using PracticeJob.DAL.Repositories.Contracts;
@@ -40,7 +41,7 @@ namespace PracticeJob.DAL.Repositories.Implementations
 
         public Company Update(Company company)
         {
-            var dbCompany = DbContext.Companies.SingleOrDefault(c => c.Id == company.Id);
+            var dbCompany = DbContext.Companies.SingleOrDefault(c => c.Email == company.Email);
             if (dbCompany != null)
             {
                 dbCompany.Name = company.Name;
@@ -56,6 +57,57 @@ namespace PracticeJob.DAL.Repositories.Implementations
             {
                 return null;
             }
+        }
+        public string Generate2FACode(Company company)
+        {
+            var dbCompany = DbContext.Companies.SingleOrDefault(c => c.Email == company.Email);
+            if (dbCompany != null)
+            {
+                var randomCode = new Random().Next(1000, 9999).ToString();
+                dbCompany.TFCode = randomCode;
+                DbContext.SaveChanges();
+                return randomCode;
+            }
+            return null;
+        }
+        public string Generate2FACode(string email)
+        {
+            var dbCompany = DbContext.Companies.SingleOrDefault(c => c.Email == email);
+            if (dbCompany != null)
+            {
+                var randomCode = new Random().Next(1000, 9999).ToString();
+                dbCompany.TFCode = randomCode;
+                DbContext.SaveChanges();
+                return randomCode;
+            }
+            return null;
+        }
+
+        public bool Validate2FACode(Company company, string code)
+        {
+            var dbCompany = DbContext.Companies.SingleOrDefault(c => c.Email == company.Email);
+            if (dbCompany != null)
+            {
+                var currentValidCode = dbCompany.TFCode;
+                dbCompany.TFCode = null;
+                DbContext.SaveChanges();
+                if (currentValidCode != null && currentValidCode == code)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool ValidateEmail(Company company)
+        {
+            var dbCompany = DbContext.Companies.SingleOrDefault(c => c.Email == company.Email);
+            if (dbCompany != null)
+            {
+                dbCompany.ValidatedEmail = true;
+                DbContext.SaveChanges();
+            }
+            return false;
         }
     }
 }
