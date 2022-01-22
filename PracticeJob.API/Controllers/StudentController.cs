@@ -2,7 +2,6 @@
 using PracticeJob.BL.Contracts;
 using PracticeJob.Core.DTO;
 using Microsoft.AspNetCore.Authorization;
-using PracticeJob.BL.Implementations;
 using Microsoft.AspNetCore.Authentication;
 using PracticeJob.Core.Security;
 
@@ -30,16 +29,13 @@ namespace PracticeJob.API.Controllers
             {
                 return Ok(student);
             }
-            else
-            {
-                return NotFound();
-            }
+            return NotFound();
         }
 
        [Authorize]
        [HttpPut]
        public ActionResult<StudentDTO> Update(StudentDTO studentDTO)
-        {
+       {
             var token = HttpContext.GetTokenAsync("access_token").Result;
             if (_tokenService.ValidToken(token, studentDTO))
             {
@@ -48,20 +44,38 @@ namespace PracticeJob.API.Controllers
                 {
                     return Ok(student);
                 }
-                else
-                {
-                    BadRequest();
-                }
+                return BadRequest();
+            }
+            return Unauthorized();
+       }
+
+        [Authorize]
+        [HttpPost]
+        [Route("ValidateEmail")]
+        public ActionResult<StudentDTO> ValidateEmail(StudentDTO studentDTO, string code)
+        {
+            var token = HttpContext.GetTokenAsync("access_token").Result;
+            if (_tokenService.ValidToken(token, studentDTO))
+            {
+                var updStudent = StudentBL.ValidateEmail(studentDTO, code);
+                return Ok(updStudent);
             }
             return Unauthorized();
         }
 
         [Authorize]
         [HttpPost]
-        [Route("ResetPassword")]
-        public ActionResult<bool> SendResetPasswordMail(string email)
+        [Route("SendEmailConfirm")]
+        public ActionResult<bool> SendEmailConfirm(StudentDTO studentDTO)
         {
-            return Ok(StudentBL.Generate2FACode(email));
+            var token = HttpContext.GetTokenAsync("access_token").Result;
+            if (_tokenService.ValidToken(token, studentDTO))
+            {
+                StudentBL.ConfirmEmailSend(studentDTO);
+                return Ok(true);
+            }
+            return Unauthorized();
+            
         }
 
         [Authorize]
@@ -77,15 +91,10 @@ namespace PracticeJob.API.Controllers
                 {
                     return Ok(student);
                 }
-                else
-                {
-                    return BadRequest();
-                }
+                
+                return BadRequest();
             }
-            else
-            {
-                return Unauthorized();
-            }
+            return Unauthorized();
         }
     }
 }

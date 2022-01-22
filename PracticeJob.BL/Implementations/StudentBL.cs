@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using PracticeJob.BL.Contracts;
 using PracticeJob.Core.DTO;
+using PracticeJob.Core.Email;
 using PracticeJob.Core.Security;
 using PracticeJob.DAL.Entities;
 using PracticeJob.DAL.Repositories.Contracts;
@@ -12,12 +13,14 @@ namespace PracticeJob.BL.Implementations
         public IStudentRepository StudentRepository { get; set; }
         public IPasswordGenerator PwdGenerator { get; set; }
         public IMapper Mapper { get; set; }
+        public IEmailSender EmailSender { get; set; }
 
-        public StudentBL(IStudentRepository StudentRepository, IPasswordGenerator PwdGenerator, IMapper Mapper)
+        public StudentBL(IStudentRepository StudentRepository, IPasswordGenerator PwdGenerator, IMapper Mapper, IEmailSender EmailSender)
         {
             this.StudentRepository = StudentRepository;
             this.PwdGenerator = PwdGenerator;
             this.Mapper = Mapper;
+            this.EmailSender = EmailSender;
         }
         public StudentDTO Login(AuthDTO authDTO)
         {
@@ -53,26 +56,16 @@ namespace PracticeJob.BL.Implementations
             return updStudent;
         }
 
-        public string Generate2FACode(StudentDTO studentDTO)
+        public void ConfirmEmailSend(StudentDTO studentDTO)
         {
-            var student = Mapper.Map<StudentDTO, Student>(studentDTO);
-            return StudentRepository.Generate2FACode(student);
-        }
-        public string Generate2FACode(string email)
-        {
-            return StudentRepository.Generate2FACode(email);
+            var confirmCode = StudentRepository.Generate2FACode(studentDTO.Email);
+            EmailSender.SendConfirmationMail(studentDTO.Email, confirmCode);
         }
 
-        public bool Validate2FACode(StudentDTO studentDTO, string code)
+        public StudentDTO ValidateEmail(StudentDTO studentDTO, string code)
         {
             var student = Mapper.Map<StudentDTO, Student>(studentDTO);
-            return StudentRepository.Validate2FACode(student, code);
-        }
-
-        public bool ValidateEmail(StudentDTO studentDTO)
-        {
-            var student = Mapper.Map<StudentDTO, Student>(studentDTO);
-            return StudentRepository.ValidateEmail(student);
+            return Mapper.Map<Student, StudentDTO>(StudentRepository.ValidateEmail(student, code));
         }
     }
 }

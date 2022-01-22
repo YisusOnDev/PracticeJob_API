@@ -26,10 +26,7 @@ namespace PracticeJob.API.Controllers
             {
                 return Ok(FPs);
             }
-            else
-            {
-                return NotFound();
-            }
+            return NotFound();
         }
 
         [Authorize]
@@ -42,10 +39,7 @@ namespace PracticeJob.API.Controllers
             {
                 return Ok(FPs);
             }
-            else
-            {
-                return BadRequest();
-            }
+            return BadRequest();
         }
     }
 }

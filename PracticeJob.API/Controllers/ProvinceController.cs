@@ -27,10 +27,7 @@ namespace PracticeJob.API.Controllers
             {
                 return Ok(provinces);
             }
-            else
-            {
-                return BadRequest();
-            }
+            return BadRequest();
         }
 
         [Authorize]
@@ -42,10 +39,7 @@ namespace PracticeJob.API.Controllers
             {
                 return Ok(province);
             }
-            else
-            {
-                return NotFound();
-            }
+            return NotFound();
         }
     }
 }

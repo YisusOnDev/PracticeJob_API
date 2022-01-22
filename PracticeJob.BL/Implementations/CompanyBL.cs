@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using PracticeJob.BL.Contracts;
 using PracticeJob.Core.DTO;
+using PracticeJob.Core.Email;
 using PracticeJob.Core.Security;
 using PracticeJob.DAL.Entities;
 using PracticeJob.DAL.Repositories.Contracts;
@@ -12,12 +13,15 @@ namespace PracticeJob.BL.Implementations
         public ICompanyRepository CompanyRepository { get; set; }
         public IPasswordGenerator PwdGenerator { get; set; }
         public IMapper Mapper { get; set; }
+        
+        public IEmailSender EmailSender { get; set; }
 
-        public CompanyBL(ICompanyRepository CompanyRepository, IPasswordGenerator PwdGenerator, IMapper Mapper)
+        public CompanyBL(ICompanyRepository CompanyRepository, IPasswordGenerator PwdGenerator, IMapper Mapper, IEmailSender EmailSender)
         {
             this.CompanyRepository = CompanyRepository;
             this.PwdGenerator = PwdGenerator;
             this.Mapper = Mapper;
+            this.EmailSender = EmailSender;
         }
         public CompanyDTO Login(AuthDTO authDTO)
         {
@@ -53,15 +57,6 @@ namespace PracticeJob.BL.Implementations
             var updCompany = Mapper.Map<Company, CompanyDTO>(CompanyRepository.Update(company));
             return updCompany;
         }
-        public string Generate2FACode(CompanyDTO companyDTO)
-        {
-            var company = Mapper.Map<CompanyDTO, Company>(companyDTO);
-            return CompanyRepository.Generate2FACode(company);
-        }
-        public string Generate2FACode(string email)
-        {
-            return CompanyRepository.Generate2FACode(email);
-        }
 
         public bool Validate2FACode(CompanyDTO companyDTO, string code)
         {
@@ -69,10 +64,21 @@ namespace PracticeJob.BL.Implementations
             return CompanyRepository.Validate2FACode(company, code);
         }
 
-        public bool ValidateEmail(CompanyDTO companyDTO)
+        public void ConfirmEmailSend(CompanyDTO companyDTO)
+        {
+            var confirmCode = CompanyRepository.Generate2FACode(companyDTO.Email);
+            EmailSender.SendConfirmationMail(companyDTO.Email, confirmCode);
+        }
+
+        public bool ValidateEmail(CompanyDTO companyDTO, string code)
         {
             var company = Mapper.Map<CompanyDTO, Company>(companyDTO);
-            return CompanyRepository.ValidateEmail(company);
+            var codeValid = CompanyRepository.Validate2FACode(company, code);
+            if (codeValid)
+            {
+                return CompanyRepository.ValidateEmail(company);
+            }
+            return false;
         }
     }
 }

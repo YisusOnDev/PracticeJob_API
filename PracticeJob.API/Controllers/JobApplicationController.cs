@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PracticeJob.BL.Contracts;
-using PracticeJob.Core.DTO;
 using Microsoft.AspNetCore.Authorization;
-using System.Threading.Tasks;
 using PracticeJob.DAL.Entities;
 
 namespace PracticeJob.API.Controllers
@@ -27,10 +25,7 @@ namespace PracticeJob.API.Controllers
             {
                 return Ok(success);
             } 
-            else
-            {
-                return BadRequest();
-            }
+            return BadRequest();
         }
 
         [Authorize]
@@ -42,10 +37,7 @@ namespace PracticeJob.API.Controllers
             {
                 return Ok(changed);
             }
-            else
-            {
-                return BadRequest();
-            }
+            return BadRequest();
         }
     }
 }

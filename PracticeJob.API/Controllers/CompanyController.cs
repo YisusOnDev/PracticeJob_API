@@ -30,10 +30,7 @@ namespace PracticeJob.API.Controllers
             {
                 return Ok(company);
             }
-            else
-            {
-                return NotFound();
-            }
+            return NotFound();
         }
 
         [Authorize]
@@ -54,10 +51,16 @@ namespace PracticeJob.API.Controllers
 
         [Authorize]
         [HttpPost]
-        [Route("ResetPassword")]
-        public ActionResult<bool> SendResetPasswordMail(string email)
+        [Route("ValidateEmail")]
+        public ActionResult<StudentDTO> ValidateEmail(CompanyDTO companyDTO, string code)
         {
-            return Ok(CompanyBL.Generate2FACode(email));
+            var token = HttpContext.GetTokenAsync("access_token").Result;
+            if (_tokenService.ValidToken(token, companyDTO))
+            {
+                bool validated = CompanyBL.ValidateEmail(companyDTO, code);
+                return Ok(validated);
+            }
+            return Unauthorized();
         }
 
         [Authorize]

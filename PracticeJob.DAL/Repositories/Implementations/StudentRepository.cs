@@ -67,18 +67,6 @@ namespace PracticeJob.DAL.Repositories.Implementations
             return null;
         }
 
-        public string Generate2FACode(Student student)
-        {
-            var studentFromDb = DbContext.Students.SingleOrDefault(s => s.Email == student.Email);
-            if (studentFromDb != null)
-            {
-                var randomCode = new Random().Next(1000, 9999).ToString();
-                studentFromDb.TFCode = randomCode;
-                DbContext.SaveChanges();
-                return randomCode;
-            }
-            return null;
-        }
         public string Generate2FACode(string email)
         {
             var studentFromDb = DbContext.Students.SingleOrDefault(s => s.Email == email);
@@ -92,31 +80,20 @@ namespace PracticeJob.DAL.Repositories.Implementations
             return null;
         }
 
-        public bool Validate2FACode(Student student, string code)
+        public Student ValidateEmail(Student student, string code)
         {
             var studentFromDb = DbContext.Students.SingleOrDefault(s => s.Email == student.Email);
             if (studentFromDb != null)
             {
-                var currentValidCode = studentFromDb.TFCode;
-                studentFromDb.TFCode = null;
-                DbContext.SaveChanges();
-                if (currentValidCode != null && currentValidCode == code)
+                if (studentFromDb.TFCode == code)
                 {
-                    return true;
+                    studentFromDb.ValidatedEmail = true;
+                    studentFromDb.TFCode = null;
                 }
-            }
-            return false;
-        }
-
-        public bool ValidateEmail(Student student)
-        {
-            var studentFromDb = DbContext.Students.SingleOrDefault(s => s.Email == student.Email);
-            if (studentFromDb != null)
-            {
-                studentFromDb.ValidatedEmail = true;
                 DbContext.SaveChanges();
+                return studentFromDb;
             }
-            return false;
+            return null;
         }
     }
 }

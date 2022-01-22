@@ -2,7 +2,6 @@
 using PracticeJob.BL.Contracts;
 using PracticeJob.Core.DTO;
 using Microsoft.AspNetCore.Authorization;
-using System.Threading.Tasks;
 
 namespace PracticeJob.API.Controllers
 {
@@ -74,10 +73,7 @@ namespace PracticeJob.API.Controllers
             {
                 return Ok(offers);
             }
-            else
-            {
-                return BadRequest();
-            }
+            return BadRequest();
         }
 
         [Authorize]
@@ -90,10 +86,7 @@ namespace PracticeJob.API.Controllers
             {
                 return Ok(offers);
             }
-            else
-            {
-                return BadRequest();
-            }
+            return BadRequest();
         }
 
         [Authorize]
@@ -106,10 +99,7 @@ namespace PracticeJob.API.Controllers
             {
                 return Ok(offers);
             }
-            else
-            {
-                return BadRequest();
-            }
+            return BadRequest();
         }
 
         [Authorize]
@@ -122,10 +112,7 @@ namespace PracticeJob.API.Controllers
             {
                 return Ok(offers);
             }
-            else
-            {
-                return BadRequest();
-            }
+            return BadRequest();
         }
 
         [Authorize]
@@ -138,10 +125,7 @@ namespace PracticeJob.API.Controllers
             {
                 return Ok(offer);
             }
-            else
-            {
-                return BadRequest();
-            }
+            return BadRequest();
         }
 
         [Authorize]
@@ -153,10 +137,7 @@ namespace PracticeJob.API.Controllers
             {
                 return Ok(offer);
             }
-            else
-            {
-                return BadRequest();
-            }
+            return BadRequest();
         }
 
         [Authorize]
@@ -168,10 +149,7 @@ namespace PracticeJob.API.Controllers
             {
                 return Ok(offer);
             }
-            else
-            {
-                return BadRequest(offer);
-            }
+            return BadRequest(offer);
         }
     }
 }

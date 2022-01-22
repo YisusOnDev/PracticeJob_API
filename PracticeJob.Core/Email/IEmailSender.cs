@@ -7,6 +7,7 @@ namespace PracticeJob.Core.Email
 {
     public interface IEmailSender
     {
-        public void SendConfirmationMail(string destinationEmail, string name, string confirmationCode);
+        public Task SendConfirmationMail(string destinationEmail, string confirmationCode);
+        public Task SendPasswordReset(string destinationEmail, string confirmationCode);
     }
 }

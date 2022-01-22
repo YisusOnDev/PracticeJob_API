@@ -18,43 +18,26 @@ namespace PracticeJob.Core.Email
         {
             this.IConfiguration = IConfiguration;
         }
-        public void SendConfirmationMail(string destinationEmail, string name, string confirmationCode)
+        public Task SendConfirmationMail(string destinationEmail, string confirmationCode)
         {
-            string emailTemplate = File.ReadAllText(@"../PracticeJob.Core/Email/EmailTemplates/ConfirmEmailTemplate.html");
-            string mailBody = Engine.Razor.RunCompile(emailTemplate, "confirmMail", null, new { Name = name, Code = confirmationCode });
-            
-            MailAddress fromAddress = new MailAddress(IConfiguration["EmailSettings:Email"], "PracticeJob");
-            string fromPassword = IConfiguration["EmailSettings:Password"];
+            string emailTemplate = File.ReadAllText(EmailTemplates.ConfirmEmailTemplate);
+            string mailBody = Engine.Razor.RunCompile(emailTemplate, "confirmMail", null, new { Code = confirmationCode });
 
-            MailAddress toAddress = new MailAddress(destinationEmail);
-
-            SmtpClient smtp = new SmtpClient
-            {
-                Host = "smtp.gmail.com",
-                Port = 587,
-                EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
-            };
-            
-            MailMessage mail = new MailMessage(fromAddress, toAddress);
-
-            mail.IsBodyHtml = true;
-            mail.Subject = "Confirma tu nueva cuenta en PracticeJob";
-            mail.Body = mailBody;
-
-            smtp.SendAsync(mail, destinationEmail);
+            return SendMailAsync(destinationEmail, "Confirma tu cuenta en PracticeJob", mailBody);
         }
 
-        public void SendPasswordReset(string destinationEmail, string name, string confirmationCode)
+        public Task SendPasswordReset(string destinationEmail, string confirmationCode)
         {
-            string emailTemplate = File.ReadAllText(@"../PracticeJob.Core/Email/EmailTemplates/ResetPasswordTemplate.html");
-            string mailBody = Engine.Razor.RunCompile(emailTemplate, "resetPassword", null, new { Name = name, Code = confirmationCode });
+            string emailTemplate = File.ReadAllText(EmailTemplates.PasswordRecoveryTemplate);
+            string mailBody = Engine.Razor.RunCompile(emailTemplate, "resetPassword", null, new {Code = confirmationCode });
 
+            return SendMailAsync(destinationEmail, "Reestablecimiento de contraseña", mailBody);
+        }
+
+        public Task SendMailAsync(string destinationEmail, string subject, string bodyMail)
+        {
             MailAddress fromAddress = new MailAddress(IConfiguration["EmailSettings:Email"], "PracticeJob");
             string fromPassword = IConfiguration["EmailSettings:Password"];
-
             MailAddress toAddress = new MailAddress(destinationEmail);
 
             SmtpClient smtp = new SmtpClient
@@ -68,12 +51,13 @@ namespace PracticeJob.Core.Email
             };
 
             MailMessage mail = new MailMessage(fromAddress, toAddress);
-
             mail.IsBodyHtml = true;
-            mail.Subject = "Confirma tu nueva cuenta en PracticeJob";
-            mail.Body = mailBody;
+            mail.Subject = subject;
+            mail.Body = bodyMail;
 
-            smtp.SendAsync(mail, destinationEmail);
+            smtp.Send(mail);
+
+            return Task.FromResult(true);
         }
     }
 }
