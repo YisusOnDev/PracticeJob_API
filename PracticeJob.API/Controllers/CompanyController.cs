@@ -52,15 +52,46 @@ namespace PracticeJob.API.Controllers
         [Authorize]
         [HttpPost]
         [Route("ValidateEmail")]
-        public ActionResult<StudentDTO> ValidateEmail(CompanyDTO companyDTO, string code)
+        public ActionResult<CompanyDTO> ValidateEmail(CompanyDTO companyDTO, string code)
         {
             var token = HttpContext.GetTokenAsync("access_token").Result;
             if (_tokenService.ValidToken(token, companyDTO))
             {
-                bool validated = CompanyBL.ValidateEmail(companyDTO, code);
-                return Ok(validated);
+                var updCompany = CompanyBL.ValidateEmail(companyDTO, code);
+                return Ok(updCompany);
             }
             return Unauthorized();
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("SendEmailConfirm")]
+        public ActionResult<bool> SendEmailConfirm(CompanyDTO companyDTO)
+        {
+            var token = HttpContext.GetTokenAsync("access_token").Result;
+            if (_tokenService.ValidToken(token, companyDTO))
+            {
+                CompanyBL.ConfirmEmailSend(companyDTO);
+                return Ok(true);
+            }
+            return Unauthorized();
+
+        }
+
+        [HttpPost]
+        [Route("SendPasswordReset")]
+        public ActionResult<bool> SendPasswordReset(string email)
+        {
+            var result = CompanyBL.ResetPasswordSend(email);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("UpdatePassword")]
+        public ActionResult<bool> UpdatePassword(PasswordResetDTO passwordReset)
+        {
+            var updStudent = CompanyBL.UpdatePassword(passwordReset);
+            return Ok(updStudent);
         }
 
         [Authorize]

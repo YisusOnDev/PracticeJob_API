@@ -67,5 +67,24 @@ namespace PracticeJob.BL.Implementations
             var student = Mapper.Map<StudentDTO, Student>(studentDTO);
             return Mapper.Map<Student, StudentDTO>(StudentRepository.ValidateEmail(student, code));
         }
+        public bool ResetPasswordSend(string email)
+        {
+            var accountExists = StudentRepository.EmailRegistered(email);
+            if (accountExists)
+            {
+                var confirmCode = StudentRepository.Generate2FACode(email);
+                EmailSender.SendPasswordReset(email, confirmCode);
+                return true;
+            }
+            return false;
+        }
+
+        public bool UpdatePassword(PasswordResetDTO passwordReset)
+        {
+            passwordReset.Password = PwdGenerator.Hash(passwordReset.Password);
+            var newPasswordReset = Mapper.Map<PasswordResetDTO, PasswordReset>(passwordReset);
+            var passwordReseted = StudentRepository.UpdatePassword(newPasswordReset);
+            return passwordReseted;
+        }
     }
 }

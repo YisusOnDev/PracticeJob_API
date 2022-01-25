@@ -46,6 +46,11 @@ namespace PracticeJob.DAL.Repositories.Implementations
             return DbContext.Students.Any(s => s.Email == student.Email);
         }
 
+        public bool EmailRegistered(string email)
+        {
+            return DbContext.Students.Any(s => s.Email == email);
+        }
+
         public Student Update(Student student)
         {
             var studentFromDb = DbContext.Students.SingleOrDefault(s => s.Email == student.Email);
@@ -94,6 +99,23 @@ namespace PracticeJob.DAL.Repositories.Implementations
                 return studentFromDb;
             }
             return null;
+        }
+
+        public bool UpdatePassword(PasswordReset newPassword)
+        {
+            var studentFromDb = DbContext.Students.SingleOrDefault(s => s.Email == newPassword.Email);
+            if (studentFromDb != null)
+            {
+                if (studentFromDb.TFCode == newPassword.TFACode)
+                {
+                    studentFromDb.Password = newPassword.Password;
+                    studentFromDb.TFCode = null;
+                    
+                    DbContext.SaveChanges();
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

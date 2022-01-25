@@ -8,8 +8,9 @@ namespace PracticeJob.BL.Contracts
         CompanyDTO Get(int companyId);
         CompanyDTO Create(AuthDTO authDTO);
         CompanyDTO Update(CompanyDTO companyDTO);
-        bool Validate2FACode(CompanyDTO companyDTO, string code);
         void ConfirmEmailSend(CompanyDTO companyDTO);
-        bool ValidateEmail(CompanyDTO companyDTO, string code);
+        CompanyDTO ValidateEmail(CompanyDTO companyDTO, string code);
+        bool ResetPasswordSend(string email);
+        bool UpdatePassword(PasswordResetDTO passwordReset);
     }
 }

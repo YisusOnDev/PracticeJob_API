@@ -8,8 +8,10 @@ namespace PracticeJob.DAL.Repositories.Contracts
         Student Create(Student student);
         Student Update(Student student);
         bool Exists(Student student);
+        bool EmailRegistered(string email);
         Student Get(int studentId);
         string Generate2FACode(string email);
         Student ValidateEmail(Student student, string code);
+        bool UpdatePassword(PasswordReset newPassword);
     }
 }

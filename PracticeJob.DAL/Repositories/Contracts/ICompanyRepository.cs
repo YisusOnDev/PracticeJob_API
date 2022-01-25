@@ -9,10 +9,10 @@ namespace PracticeJob.DAL.Repositories.Contracts
         Company Update(Company company);
         bool Exists(Company company);
         Company Get(int companyId);
-        string Generate2FACode(Company company);
+        bool EmailRegistered(string email);
         string Generate2FACode(string email);
-        bool Validate2FACode(Company company, string code);
-        bool ValidateEmail(Company company);
+        Company ValidateEmail(Company company, string code);
+        bool UpdatePassword(PasswordReset newPassword);
 
     }
 }

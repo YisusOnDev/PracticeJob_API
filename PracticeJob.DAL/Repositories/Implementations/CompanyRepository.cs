@@ -58,54 +58,53 @@ namespace PracticeJob.DAL.Repositories.Implementations
                 return null;
             }
         }
-        public string Generate2FACode(Company company)
+        public bool EmailRegistered(string email)
         {
-            var dbCompany = DbContext.Companies.SingleOrDefault(c => c.Email == company.Email);
-            if (dbCompany != null)
-            {
-                var randomCode = new Random().Next(1000, 9999).ToString();
-                dbCompany.TFCode = randomCode;
-                DbContext.SaveChanges();
-                return randomCode;
-            }
-            return null;
+            return DbContext.Companies.Any(s => s.Email == email);
         }
+
         public string Generate2FACode(string email)
         {
-            var dbCompany = DbContext.Companies.SingleOrDefault(c => c.Email == email);
-            if (dbCompany != null)
+            var companyFromDb = DbContext.Companies.SingleOrDefault(s => s.Email == email);
+            if (companyFromDb != null)
             {
                 var randomCode = new Random().Next(1000, 9999).ToString();
-                dbCompany.TFCode = randomCode;
+                companyFromDb.TFCode = randomCode;
                 DbContext.SaveChanges();
                 return randomCode;
             }
             return null;
         }
 
-        public bool Validate2FACode(Company company, string code)
+        public Company ValidateEmail(Company company, string code)
         {
-            var dbCompany = DbContext.Companies.SingleOrDefault(c => c.Email == company.Email);
-            if (dbCompany != null)
+            var companyFromDb = DbContext.Companies.SingleOrDefault(s => s.Email == company.Email);
+            if (companyFromDb != null)
             {
-                var currentValidCode = dbCompany.TFCode;
-                dbCompany.TFCode = null;
-                DbContext.SaveChanges();
-                if (currentValidCode != null && currentValidCode == code)
+                if (companyFromDb.TFCode == code)
                 {
-                    return true;
+                    companyFromDb.ValidatedEmail = true;
+                    companyFromDb.TFCode = null;
                 }
+                DbContext.SaveChanges();
+                return companyFromDb;
             }
-            return false;
+            return null;
         }
 
-        public bool ValidateEmail(Company company)
+        public bool UpdatePassword(PasswordReset newPassword)
         {
-            var dbCompany = DbContext.Companies.SingleOrDefault(c => c.Email == company.Email);
-            if (dbCompany != null)
+            var companyFromDb = DbContext.Companies.SingleOrDefault(s => s.Email == newPassword.Email);
+            if (companyFromDb != null)
             {
-                dbCompany.ValidatedEmail = true;
-                DbContext.SaveChanges();
+                if (companyFromDb.TFCode == newPassword.TFACode)
+                {
+                    companyFromDb.Password = newPassword.Password;
+                    companyFromDb.TFCode = null;
+
+                    DbContext.SaveChanges();
+                    return true;
+                }
             }
             return false;
         }

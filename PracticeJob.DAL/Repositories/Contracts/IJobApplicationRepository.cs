@@ -8,5 +8,6 @@ namespace PracticeJob.DAL.Repositories.Contracts
         bool CreateStudentApplication(int jobOfferId, int studentId);
         bool UpdateStudentApplication(int applicationId, ApplicationStatus newStatus);
         bool Exists(int jobOfferId, int studentId);
+        bool Delete(int applicationId);
     }
 }

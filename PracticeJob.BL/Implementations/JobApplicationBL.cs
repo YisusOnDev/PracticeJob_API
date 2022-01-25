@@ -29,5 +29,11 @@ namespace PracticeJob.BL.Implementations
             var succesfull = JobApplicationRepository.UpdateStudentApplication(applicationId, newStatus);
             return succesfull;
         }
+
+        public bool Delete(int applicationId)
+        {
+            var succesfull = JobApplicationRepository.Delete(applicationId);
+            return succesfull;
+        }
     }
 }

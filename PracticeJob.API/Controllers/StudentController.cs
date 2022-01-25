@@ -78,6 +78,22 @@ namespace PracticeJob.API.Controllers
             
         }
 
+        [HttpPost]
+        [Route("SendPasswordReset")]
+        public ActionResult<bool> SendPasswordReset(string email)
+        {
+            var result = StudentBL.ResetPasswordSend(email);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("UpdatePassword")]
+        public ActionResult<bool> UpdatePassword(PasswordResetDTO passwordReset)
+        {
+            var updStudent = StudentBL.UpdatePassword(passwordReset);
+            return Ok(updStudent);
+        }
+
         [Authorize]
         [HttpPost]
         [Route("Authorized")]

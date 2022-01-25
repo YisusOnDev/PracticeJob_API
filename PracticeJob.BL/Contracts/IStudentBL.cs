@@ -10,5 +10,7 @@ namespace PracticeJob.BL.Contracts
         StudentDTO Update(StudentDTO studentDTO);
         void ConfirmEmailSend(StudentDTO studentDTO);
         StudentDTO ValidateEmail(StudentDTO studentDTO, string code);
+        bool ResetPasswordSend(string email);
+        bool UpdatePassword(PasswordResetDTO passwordReset);
     }
 }

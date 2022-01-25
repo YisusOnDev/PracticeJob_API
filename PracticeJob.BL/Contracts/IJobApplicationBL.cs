@@ -8,5 +8,6 @@ namespace PracticeJob.BL.Contracts
     {
         bool CreateStudentApplication(int jobOfferId, int studentId);
         bool UpdateStudentApplication(int applicationId, ApplicationStatus newStatus);
+        bool Delete(int applicationId);
     }
 }

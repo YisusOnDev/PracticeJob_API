@@ -39,5 +39,17 @@ namespace PracticeJob.API.Controllers
             }
             return BadRequest();
         }
+
+        [Authorize]
+        [HttpDelete]
+        public ActionResult<bool> DeleteStudentApplication(int applicationId)
+        {
+            bool changed = JobApplicationBL.Delete(applicationId);
+            if (changed == true || changed == false)
+            {
+                return Ok(changed);
+            }
+            return BadRequest();
+        }
     }
 }

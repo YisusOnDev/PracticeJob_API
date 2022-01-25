@@ -29,6 +29,9 @@ namespace PracticeJob.Core.AutomapperProfiles
 
             CreateMap<JobApplicationDTO, JobApplication>();
             CreateMap<JobApplication, JobApplicationDTO>();
+
+            CreateMap<PasswordResetDTO, PasswordReset>();
+            CreateMap<PasswordReset, PasswordResetDTO>();
         }
     }
 }

@@ -59,5 +59,17 @@ namespace PracticeJob.DAL.Repositories.Implementations
             return false;
         }
 
+        public bool Delete(int applicationId)
+        {
+            var dbJobApplication = DbContext.JobApllications.SingleOrDefault(a => a.Id == applicationId);
+            if (dbJobApplication != null)
+            {
+                DbContext.JobApllications.Remove(dbJobApplication);
+                DbContext.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
     }
 }

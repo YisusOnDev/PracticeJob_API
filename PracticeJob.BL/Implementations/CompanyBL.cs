@@ -58,27 +58,35 @@ namespace PracticeJob.BL.Implementations
             return updCompany;
         }
 
-        public bool Validate2FACode(CompanyDTO companyDTO, string code)
-        {
-            var company = Mapper.Map<CompanyDTO, Company>(companyDTO);
-            return CompanyRepository.Validate2FACode(company, code);
-        }
-
         public void ConfirmEmailSend(CompanyDTO companyDTO)
         {
             var confirmCode = CompanyRepository.Generate2FACode(companyDTO.Email);
             EmailSender.SendConfirmationMail(companyDTO.Email, confirmCode);
         }
 
-        public bool ValidateEmail(CompanyDTO companyDTO, string code)
+        public CompanyDTO ValidateEmail(CompanyDTO companyDTO, string code)
         {
             var company = Mapper.Map<CompanyDTO, Company>(companyDTO);
-            var codeValid = CompanyRepository.Validate2FACode(company, code);
-            if (codeValid)
+            return Mapper.Map<Company, CompanyDTO>(CompanyRepository.ValidateEmail(company, code));
+        }
+        public bool ResetPasswordSend(string email)
+        {
+            var accountExists = CompanyRepository.EmailRegistered(email);
+            if (accountExists)
             {
-                return CompanyRepository.ValidateEmail(company);
+                var confirmCode = CompanyRepository.Generate2FACode(email);
+                EmailSender.SendPasswordReset(email, confirmCode);
+                return true;
             }
             return false;
+        }
+
+        public bool UpdatePassword(PasswordResetDTO passwordReset)
+        {
+            passwordReset.Password = PwdGenerator.Hash(passwordReset.Password);
+            var newPasswordReset = Mapper.Map<PasswordResetDTO, PasswordReset>(passwordReset);
+            var passwordReseted = CompanyRepository.UpdatePassword(newPasswordReset);
+            return passwordReseted;
         }
     }
 }
