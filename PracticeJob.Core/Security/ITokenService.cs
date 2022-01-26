@@ -8,6 +8,7 @@ namespace PracticeJob.Core.Security
         string BuildToken(CompanyDTO company);
         bool ValidToken(string token, StudentDTO student);
         bool ValidToken(string token, CompanyDTO company);
+        bool ValidToken(string token, int objectId);
     }
 
 }

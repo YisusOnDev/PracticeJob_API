@@ -9,5 +9,6 @@ namespace PracticeJob.Core.Email
         private static readonly string TemplatesPath = @"../PracticeJob.Core/Email/EmailTemplates/";
         public static string ConfirmEmailTemplate = TemplatesPath + "ConfirmEmailTemplate.html";
         public static string PasswordRecoveryTemplate = TemplatesPath + "ResetPasswordTemplate.html";
+        public static string CompanyContactTemplate = TemplatesPath + "CompanyContactTemplate.html";
     }
 }

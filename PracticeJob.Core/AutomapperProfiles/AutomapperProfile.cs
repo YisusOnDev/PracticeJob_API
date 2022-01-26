@@ -32,6 +32,9 @@ namespace PracticeJob.Core.AutomapperProfiles
 
             CreateMap<PasswordResetDTO, PasswordReset>();
             CreateMap<PasswordReset, PasswordResetDTO>();
+
+            CreateMap<ContactMailDTO, ContactMail>();
+            CreateMap<ContactMail, ContactMailDTO>();
         }
     }
 }

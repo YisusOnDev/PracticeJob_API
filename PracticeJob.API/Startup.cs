@@ -155,6 +155,8 @@ namespace PracticeJob.API
 
             app.UseRouting();
 
+            app.UseStaticFiles();
+
             app.UseAuthorization();
             app.UseAuthentication();
 

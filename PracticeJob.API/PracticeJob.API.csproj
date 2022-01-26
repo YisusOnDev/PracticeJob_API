@@ -20,5 +20,9 @@
 	<ProjectReference Include="..\PracticeJob.DAL\PracticeJob.DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\profile_images\" />
+  </ItemGroup>
+
 
 </Project>

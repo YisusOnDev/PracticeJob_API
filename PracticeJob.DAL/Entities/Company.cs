@@ -8,6 +8,7 @@ namespace PracticeJob.DAL.Entities
     {
         [Key]
         public int Id { get; set; }
+        public string ProfileImage { get; set; }
         [Required]
         public string Email { get; set; }
         [JsonIgnore]

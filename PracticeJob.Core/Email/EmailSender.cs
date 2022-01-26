@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
+using PracticeJob.Core.DTO;
+using PracticeJob.DAL.Entities;
 using RazorEngine;
 using RazorEngine.Templating;
 using System;
@@ -32,6 +34,13 @@ namespace PracticeJob.Core.Email
             string mailBody = Engine.Razor.RunCompile(emailTemplate, "resetPassword", null, new {Code = confirmationCode });
 
             return SendMailAsync(destinationEmail, "Reestablecimiento de contraseña", mailBody);
+        }
+        public Task SendCompanyContact(ContactMail contactMail)
+        {
+            string emailTemplate = File.ReadAllText(EmailTemplates.CompanyContactTemplate);
+            string mailBody = Engine.Razor.RunCompile(emailTemplate, "companyContact", null, new { CompanyName = contactMail.companyName,  Message = contactMail.message });
+
+            return SendMailAsync(contactMail.destinationMail, "Tienes un nuevo mensaje de: " + contactMail.companyName, mailBody);
         }
 
         public Task SendMailAsync(string destinationEmail, string subject, string bodyMail)

@@ -2,13 +2,13 @@
 
 namespace PracticeJob.DAL.Migrations
 {
-    public partial class AddProfileImageToStudent : Migration
+    public partial class AddProfileImageToCompany : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
                 name: "ProfileImage",
-                table: "Students",
+                table: "Companies",
                 type: "longtext",
                 nullable: true,
                 defaultValue: null,
@@ -20,7 +20,7 @@ namespace PracticeJob.DAL.Migrations
         {
             migrationBuilder.DropColumn(
                 name: "ProfileImage",
-                table: "Students");
+                table: "Companies");
         }
     }
 }

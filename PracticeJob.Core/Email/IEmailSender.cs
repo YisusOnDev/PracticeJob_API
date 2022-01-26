@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PracticeJob.Core.DTO;
+using PracticeJob.DAL.Entities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,5 +11,6 @@ namespace PracticeJob.Core.Email
     {
         public Task SendConfirmationMail(string destinationEmail, string confirmationCode);
         public Task SendPasswordReset(string destinationEmail, string confirmationCode);
+        public Task SendCompanyContact(ContactMail contactMail);
     }
 }

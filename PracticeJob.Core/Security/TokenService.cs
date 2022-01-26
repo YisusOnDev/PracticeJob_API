@@ -88,6 +88,22 @@ namespace PracticeJob.Core.Security
             }
             return false;
         }
+
+        public bool ValidToken(string token, int objectId)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(token.Replace("Bearer ", string.Empty));
+            var tokenS = jsonToken as JwtSecurityToken;
+            var id = tokenS.Claims.FirstOrDefault(claim => claim.Type == "Id").Value;
+            if (id != null)
+            {
+                if (objectId == Int32.Parse(id))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
 }

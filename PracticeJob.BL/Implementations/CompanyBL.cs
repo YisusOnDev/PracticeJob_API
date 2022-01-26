@@ -88,5 +88,17 @@ namespace PracticeJob.BL.Implementations
             var passwordReseted = CompanyRepository.UpdatePassword(newPasswordReset);
             return passwordReseted;
         }
+
+        public bool ContactStudent(ContactMailDTO contactMailDTO)
+        {
+            ContactMail contactMail = Mapper.Map<ContactMailDTO, ContactMail>(contactMailDTO);
+            EmailSender.SendCompanyContact(contactMail);
+            return true;
+        }
+
+        public void SetProfileImage(int companyId, string fileName)
+        {
+            CompanyRepository.SetProfileImage(companyId, fileName);
+        }
     }
 }

@@ -5,6 +5,9 @@ using PracticeJob.Core.DTO;
 using PracticeJob.Core.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.IO;
 
 namespace PracticeJob.API.Controllers
 {
@@ -94,6 +97,38 @@ namespace PracticeJob.API.Controllers
             return Ok(updStudent);
         }
 
+        [HttpPost]
+        [Route("ContactStudent")]
+        public ActionResult<bool> ContactStudent(ContactMailDTO contactMailDTO)
+        {
+            var result = CompanyBL.ContactStudent(contactMailDTO);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("UploadImage")]
+        public async Task<ActionResult<CompanyDTO>> UploadImage(IFormFile file, int companyId)
+        {
+            var token = HttpContext.GetTokenAsync("access_token").Result;
+            if (_tokenService.ValidToken(token, companyId))
+            {
+                if (ImageIsValid(file))
+                {
+                    string fileName = "company_" + companyId + System.IO.Path.GetExtension(file.FileName);
+                    CompanyBL.SetProfileImage(companyId, fileName);
+                    var path = Directory.GetCurrentDirectory();
+                    string filePath = Path.Combine(path, "wwwroot", "profile_images", "company", fileName);
+                    using (Stream fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(fileStream);
+                    }
+                    return Ok();
+                }
+                return Conflict("Formato de archivo no válido");
+            }
+            return Unauthorized();
+        }
+
         [Authorize]
         [HttpPost]
         [Route("Authorized")]
@@ -110,5 +145,16 @@ namespace PracticeJob.API.Controllers
             }
             return Unauthorized();
         }
+
+        private bool ImageIsValid(IFormFile file) 
+        {
+            List<string> ImageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG" };
+            if (ImageExtensions.Contains(System.IO.Path.GetExtension(file.FileName).ToUpper()))
+            {
+                return true;
+            }
+            return false;
+        }
+
     }
 }

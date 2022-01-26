@@ -108,5 +108,14 @@ namespace PracticeJob.DAL.Repositories.Implementations
             }
             return false;
         }
+
+        public void SetProfileImage(int companyId, string fileName)
+        {
+            var companyFromDb = DbContext.Companies.SingleOrDefault(s => s.Id == companyId);
+            if (companyFromDb != null)
+            {
+                companyFromDb.ProfileImage = fileName;
+            }
+        }
     }
 }
