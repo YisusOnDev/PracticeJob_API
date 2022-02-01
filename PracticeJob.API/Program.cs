@@ -14,7 +14,7 @@ namespace PracticeJob.API
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseUrls("https://*:5000");
+                    webBuilder.UseUrls("https://*:5000", "http://*:5001");
                     webBuilder.UseStartup<Startup>();
                 });
     }
