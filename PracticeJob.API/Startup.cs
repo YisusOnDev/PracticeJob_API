@@ -168,7 +168,7 @@ namespace PracticeJob.API
             app.UseAuthorization();
             app.UseAuthentication();
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
