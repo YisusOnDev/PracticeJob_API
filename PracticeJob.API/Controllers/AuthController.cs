@@ -21,6 +21,13 @@ namespace PracticeJob.API.Controllers
             this.CompanyBL = CompanyBL;
         }
 
+        [HttpGet]
+        [Route("Echo")]
+        public ActionResult Echo()
+        {
+            return Ok("Test");
+        }
+
         [HttpPost]
         [Route("Login")]
        public ActionResult<Object> Login(AuthDTO authDTO)
