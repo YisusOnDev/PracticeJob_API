@@ -13,7 +13,7 @@ namespace PracticeJob.DAL.Repositories.Contracts
         string Generate2FACode(string email);
         Company ValidateEmail(Company company, string code);
         bool UpdatePassword(PasswordReset newPassword);
-        void SetProfileImage(int companyId, string fileName);
+        Company SetProfileImage(int companyId, string fileName);
 
     }
 }

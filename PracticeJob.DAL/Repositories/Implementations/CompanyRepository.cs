@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using PracticeJob.DAL.Entities;
 using PracticeJob.DAL.Repositories.Contracts;
 
@@ -9,18 +10,20 @@ namespace PracticeJob.DAL.Repositories.Implementations
     public class CompanyRepository : ICompanyRepository
     {
         public PracticeJobContext DbContext { get; set; }
-        public CompanyRepository(PracticeJobContext context)
+        public IConfiguration Configuration { get; set; }
+        public CompanyRepository(PracticeJobContext context, IConfiguration Configuration)
         {
             this.DbContext = context;
+            this.Configuration = Configuration;
         }
         public Company Login(Company company)
         {
-            return DbContext.Companies.Include(u => u.Province).FirstOrDefault(c => c.Email == company.Email && c.Password == company.Password);
+            return GetProfileImageUrl(DbContext.Companies.Include(u => u.Province).FirstOrDefault(c => c.Email == company.Email && c.Password == company.Password));
         }
 
         public Company Get(int companyId)
         {
-            return DbContext.Companies.Include(u => u.Province).FirstOrDefault(c => c.Id == companyId);
+            return GetProfileImageUrl(DbContext.Companies.Include(u => u.Province).FirstOrDefault(c => c.Id == companyId));
         }
 
         public Company Create(Company company)
@@ -31,7 +34,7 @@ namespace PracticeJob.DAL.Repositories.Implementations
 
             DbContext.SaveChanges();
 
-            return companyFromDb;
+            return GetProfileImageUrl(companyFromDb);
         }
 
         public bool Exists(Company company)
@@ -51,12 +54,10 @@ namespace PracticeJob.DAL.Repositories.Implementations
 
                 DbContext.SaveChanges();
 
-                return dbCompany;
+                return GetProfileImageUrl(dbCompany);
             }
-            else
-            {
-                return null;
-            }
+            return null;
+            
         }
         public bool EmailRegistered(string email)
         {
@@ -87,7 +88,7 @@ namespace PracticeJob.DAL.Repositories.Implementations
                     companyFromDb.TFCode = null;
                 }
                 DbContext.SaveChanges();
-                return companyFromDb;
+                return GetProfileImageUrl(companyFromDb);
             }
             return null;
         }
@@ -109,13 +110,25 @@ namespace PracticeJob.DAL.Repositories.Implementations
             return false;
         }
 
-        public void SetProfileImage(int companyId, string fileName)
+        public Company SetProfileImage(int companyId, string fileName)
         {
-            var companyFromDb = DbContext.Companies.SingleOrDefault(s => s.Id == companyId);
+            var companyFromDb = Get(companyId);
             if (companyFromDb != null)
             {
                 companyFromDb.ProfileImage = fileName;
+                DbContext.SaveChanges();
+                return GetProfileImageUrl(companyFromDb);
             }
+            return null;
+        }
+
+        public Company GetProfileImageUrl(Company company)
+        {
+            if (company.ProfileImage != null)
+            {
+                company.ProfileImage = Configuration["ServerRoot"] + "/profile_images/company/" + company.ProfileImage;
+            }
+            return company;
         }
     }
 }

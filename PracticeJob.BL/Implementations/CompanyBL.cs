@@ -96,9 +96,10 @@ namespace PracticeJob.BL.Implementations
             return true;
         }
 
-        public void SetProfileImage(int companyId, string fileName)
+        public CompanyDTO SetProfileImage(int companyId, string fileName)
         {
-            CompanyRepository.SetProfileImage(companyId, fileName);
+            var company = Mapper.Map<Company, CompanyDTO>(CompanyRepository.SetProfileImage(companyId, fileName));
+            return company;
         }
     }
 }

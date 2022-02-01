@@ -103,28 +103,35 @@ namespace PracticeJob.API.Controllers
         {
             var result = CompanyBL.ContactStudent(contactMailDTO);
             return Ok(result);
-        }
+        } 
 
-        [HttpPost]
+        [HttpPost, DisableRequestSizeLimit]
         [Route("UploadImage")]
-        public async Task<ActionResult<CompanyDTO>> UploadImage(IFormFile file, int companyId)
+        public async Task<ActionResult<CompanyDTO>> UploadImage(int companyId)
         {
             var token = HttpContext.GetTokenAsync("access_token").Result;
             if (_tokenService.ValidToken(token, companyId))
             {
-                if (ImageIsValid(file))
+                var file = Request.Form.Files[0];
+                if (file != null)
                 {
-                    string fileName = "company_" + companyId + System.IO.Path.GetExtension(file.FileName);
-                    CompanyBL.SetProfileImage(companyId, fileName);
-                    var path = Directory.GetCurrentDirectory();
-                    string filePath = Path.Combine(path, "wwwroot", "profile_images", "company", fileName);
-                    using (Stream fileStream = new FileStream(filePath, FileMode.Create))
+                    if (ImageIsValid(file))
                     {
-                        await file.CopyToAsync(fileStream);
+                        string fileName = "company_" + companyId + System.IO.Path.GetExtension(file.FileName);
+                        var path = Directory.GetCurrentDirectory();
+                        string filePath = Path.Combine(path, "wwwroot", "profile_images", "company", fileName);
+                        using (Stream fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(fileStream);
+                        }
+                        var updCompany = CompanyBL.SetProfileImage(companyId, fileName);
+                        return Ok(updCompany);
                     }
-                    return Ok();
+                    return Conflict("Formato de archivo no válido");
                 }
-                return Conflict("Formato de archivo no válido");
+
+                return Conflict("Archivo corrupto");
+
             }
             return Unauthorized();
         }
@@ -148,7 +155,7 @@ namespace PracticeJob.API.Controllers
 
         private bool ImageIsValid(IFormFile file) 
         {
-            List<string> ImageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG" };
+            List<string> ImageExtensions = new List<string> { ".JPG", ".JPEG", ".BMP", ".GIF", ".PNG" };
             if (ImageExtensions.Contains(System.IO.Path.GetExtension(file.FileName).ToUpper()))
             {
                 return true;

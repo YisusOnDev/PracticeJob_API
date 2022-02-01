@@ -18,6 +18,7 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using PracticeJob.Core.Email;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace PracticeJob.API
 {
@@ -55,6 +56,13 @@ namespace PracticeJob.API
                 var defaultAuthorizationPolicyBuilder = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme);
                 defaultAuthorizationPolicyBuilder = defaultAuthorizationPolicyBuilder.RequireAuthenticatedUser();
                 config.DefaultPolicy = defaultAuthorizationPolicyBuilder.Build();
+            });
+
+            // Bypass Multipart
+            services.Configure<FormOptions>(o => {
+                o.ValueLengthLimit = int.MaxValue;
+                o.MultipartBodyLengthLimit = int.MaxValue;
+                o.MemoryBufferThreshold = int.MaxValue;
             });
 
 

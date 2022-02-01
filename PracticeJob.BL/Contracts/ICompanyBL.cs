@@ -13,6 +13,6 @@ namespace PracticeJob.BL.Contracts
         bool ResetPasswordSend(string email);
         bool UpdatePassword(PasswordResetDTO passwordReset);
         bool ContactStudent(ContactMailDTO contactMailDTO);
-        void SetProfileImage(int companyId, string fileName);
+        CompanyDTO SetProfileImage(int companyId, string fileName);
     }
 }
