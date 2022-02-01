@@ -170,8 +170,6 @@ namespace PracticeJob.API
 
             // app.UseHttpsRedirection();
 
-            app.UsePathBase("/api");
-
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
