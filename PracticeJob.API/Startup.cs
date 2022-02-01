@@ -168,12 +168,14 @@ namespace PracticeJob.API
             app.UseAuthorization();
             app.UseAuthentication();
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
+
+            app.UsePathBase("/api");
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("../swagger/v1/swagger.json", "PracticeJob API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "PracticeJob API V1");
             });
 
 
