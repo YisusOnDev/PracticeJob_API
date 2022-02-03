@@ -18,12 +18,12 @@ namespace PracticeJob.DAL.Repositories.Implementations
         }
         public Company Login(Company company)
         {
-            return GetProfileImageUrl(DbContext.Companies.Include(u => u.Province).FirstOrDefault(c => c.Email == company.Email && c.Password == company.Password));
+            return DbContext.Companies.Include(u => u.Province).FirstOrDefault(c => c.Email == company.Email && c.Password == company.Password);
         }
 
         public Company Get(int companyId)
         {
-            return GetProfileImageUrl(DbContext.Companies.Include(u => u.Province).FirstOrDefault(c => c.Id == companyId));
+            return DbContext.Companies.Include(u => u.Province).FirstOrDefault(c => c.Id == companyId);
         }
 
         public Company Create(Company company)
@@ -34,7 +34,7 @@ namespace PracticeJob.DAL.Repositories.Implementations
 
             DbContext.SaveChanges();
 
-            return GetProfileImageUrl(companyFromDb);
+            return companyFromDb;
         }
 
         public bool Exists(Company company)
@@ -54,7 +54,7 @@ namespace PracticeJob.DAL.Repositories.Implementations
 
                 DbContext.SaveChanges();
 
-                return GetProfileImageUrl(dbCompany);
+                return dbCompany;
             }
             return null;
             
@@ -88,7 +88,7 @@ namespace PracticeJob.DAL.Repositories.Implementations
                     companyFromDb.TFCode = null;
                 }
                 DbContext.SaveChanges();
-                return GetProfileImageUrl(companyFromDb);
+                return companyFromDb;
             }
             return null;
         }
@@ -117,18 +117,9 @@ namespace PracticeJob.DAL.Repositories.Implementations
             {
                 companyFromDb.ProfileImage = fileName;
                 DbContext.SaveChanges();
-                return GetProfileImageUrl(companyFromDb);
+                return companyFromDb;
             }
             return null;
-        }
-
-        public Company GetProfileImageUrl(Company company)
-        {
-            if (company.ProfileImage != null)
-            {
-                company.ProfileImage = Configuration["ServerRoot"] + "/profile_images/company/" + company.ProfileImage;
-            }
-            return company;
         }
     }
 }

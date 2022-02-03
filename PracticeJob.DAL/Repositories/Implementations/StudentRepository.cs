@@ -117,5 +117,17 @@ namespace PracticeJob.DAL.Repositories.Implementations
             }
             return false;
         }
+
+        public Student SetProfileImage(int studentId, string fileName)
+        {
+            var studentFromDb = Get(studentId);
+            if (studentFromDb != null)
+            {
+                studentFromDb.ProfileImage = fileName;
+                DbContext.SaveChanges();
+                return studentFromDb;
+            }
+            return null;
+        }
     }
 }
