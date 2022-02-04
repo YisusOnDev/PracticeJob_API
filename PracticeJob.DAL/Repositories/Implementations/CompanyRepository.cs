@@ -30,6 +30,7 @@ namespace PracticeJob.DAL.Repositories.Implementations
         {
             // Put ProvinceId to 1 to prevent null ForeignKeys error
             company.ProvinceId = 1;
+            company.ProfileImage = "default.png";
             var companyFromDb = DbContext.Companies.Add(company).Entity;
 
             DbContext.SaveChanges();
