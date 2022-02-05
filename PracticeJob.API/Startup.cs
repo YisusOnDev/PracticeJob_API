@@ -73,12 +73,12 @@ namespace PracticeJob.API
                 o.AddPolicy("AllowSetOrigins", options =>
                 {
                     options.WithOrigins("http://localhost:8080");
-		            options.WithOrigins("https://practicejob.yisus.dev");
+                    options.WithOrigins("https://practicejob.yisus.dev");
                     options.AllowAnyHeader();
                     options.AllowAnyMethod();
                     options.AllowCredentials();
                     options.WithExposedHeaders(exposedHeaders);
-                });
+                });                
             });
 
             AddSwagger(services);
