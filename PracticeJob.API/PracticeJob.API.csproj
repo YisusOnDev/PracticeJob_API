@@ -17,8 +17,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PracticeJob.BL\PracticeJob.BL.csproj" />
-	<ProjectReference Include="..\PracticeJob.DAL\PracticeJob.DAL.csproj" />
+    <ProjectReference Include="..\PracticeJob.DAL\PracticeJob.DAL.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\**">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+</ItemGroup>
 
 
 </Project>
