@@ -73,8 +73,11 @@ namespace PracticeJob.API
                 o.AddPolicy("AllowSetOrigins", options =>
                 {
                     options.WithOrigins("http://localhost:8080");
+<<<<<<< HEAD
 		    options.WithOrigins("https://practicejob.yisus.dev");
                     options.AllowAnyOrigin();
+=======
+>>>>>>> parent of 4a2b674 (merged last commit)
                     options.AllowAnyHeader();
                     options.AllowAnyMethod();
                     options.AllowCredentials();
