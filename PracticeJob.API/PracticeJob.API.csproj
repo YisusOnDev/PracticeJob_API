@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <EnableDefaultContentItems>false</EnableDefaultContentItems>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,15 +16,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PracticeJob.BL\PracticeJob.BL.csproj" />
-    <ProjectReference Include="..\PracticeJob.DAL\PracticeJob.DAL.csproj" />
-  </ItemGroup>
-  
+    <None Include="wwwroot\**">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+</ItemGroup>
 
   <ItemGroup>
-    <Content Include="wwwroot\**\*">
-      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
-    </Content>
+    <ProjectReference Include="..\PracticeJob.BL\PracticeJob.BL.csproj" />
+    <ProjectReference Include="..\PracticeJob.DAL\PracticeJob.DAL.csproj" />
   </ItemGroup>
 
 </Project>
