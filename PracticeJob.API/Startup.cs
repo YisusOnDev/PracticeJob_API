@@ -35,7 +35,6 @@ namespace PracticeJob.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-   
 
             // JWT
             services.AddTransient<ITokenService, TokenService>();
@@ -164,7 +163,7 @@ namespace PracticeJob.API
 
             app.UseRouting();
 
-            app.UseFileServer();
+            app.UseStaticFiles();
 
             app.UseAuthorization();
             app.UseAuthentication();
