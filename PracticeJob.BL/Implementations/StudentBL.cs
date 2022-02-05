@@ -86,5 +86,10 @@ namespace PracticeJob.BL.Implementations
             var passwordReseted = StudentRepository.UpdatePassword(newPasswordReset);
             return passwordReseted;
         }
+        public StudentDTO SetProfileImage(int studentId, string fileName)
+        {
+            var student = Mapper.Map<Student, StudentDTO>(StudentRepository.SetProfileImage(studentId, fileName));
+            return student;
+        }
     }
 }

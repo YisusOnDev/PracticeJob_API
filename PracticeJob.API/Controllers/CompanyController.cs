@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Authentication;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.IO;
+using PracticeJob.Core.Common;
+using System.Linq;
 
 namespace PracticeJob.API.Controllers
 {
@@ -112,13 +114,13 @@ namespace PracticeJob.API.Controllers
             var token = HttpContext.GetTokenAsync("access_token").Result;
             if (_tokenService.ValidToken(token, companyId))
             {
-                var file = Request.Form.Files[0];
+                IFormFile file = Request.Form.Files.First();
                 if (file != null)
                 {
-                    if (ImageIsValid(file))
+                    if (CustomUtils.ImageIsValid(file))
                     {
                         string fileName = "company_" + companyId + System.IO.Path.GetExtension(file.FileName);
-                        var path = Directory.GetCurrentDirectory();
+                        string path = Directory.GetCurrentDirectory();
                         string filePath = Path.Combine(path, "wwwroot", "profile_images", "company", fileName);
                         using (Stream fileStream = new FileStream(filePath, FileMode.Create))
                         {
@@ -151,16 +153,6 @@ namespace PracticeJob.API.Controllers
                 }
             }
             return Unauthorized();
-        }
-
-        private bool ImageIsValid(IFormFile file) 
-        {
-            List<string> ImageExtensions = new List<string> { ".JPG", ".JPEG", ".BMP", ".GIF", ".PNG" };
-            if (ImageExtensions.Contains(System.IO.Path.GetExtension(file.FileName).ToUpper()))
-            {
-                return true;
-            }
-            return false;
         }
 
     }

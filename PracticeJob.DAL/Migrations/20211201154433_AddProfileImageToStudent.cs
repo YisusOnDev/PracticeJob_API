@@ -10,8 +10,8 @@ namespace PracticeJob.DAL.Migrations
                 name: "ProfileImage",
                 table: "Students",
                 type: "longtext",
-                nullable: true,
-                defaultValue: null,
+                nullable: false,
+                defaultValue: "default.png",
                 collation: "utf8mb4_general_ci")
                 .Annotation("MySql:CharSet", "utf8mb4");
         }

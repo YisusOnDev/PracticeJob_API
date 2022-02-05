@@ -4,6 +4,9 @@ using PracticeJob.Core.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
 using PracticeJob.Core.Security;
+using System.Threading.Tasks;
+using PracticeJob.Core.Common;
+using System.IO;
 
 namespace PracticeJob.API.Controllers
 {
@@ -92,6 +95,37 @@ namespace PracticeJob.API.Controllers
         {
             var updStudent = StudentBL.UpdatePassword(passwordReset);
             return Ok(updStudent);
+        }
+
+        [HttpPost, DisableRequestSizeLimit]
+        [Route("UploadImage")]
+        public async Task<ActionResult<StudentDTO>> UploadImage(int studentId)
+        {
+            var token = HttpContext.GetTokenAsync("access_token").Result;
+            if (_tokenService.ValidToken(token, studentId))
+            {
+                var file = Request.Form.Files[0];
+                if (file != null)
+                {
+                    if (CustomUtils.ImageIsValid(file))
+                    {
+                        string fileName = "student_" + studentId + System.IO.Path.GetExtension(file.FileName);
+                        var path = Directory.GetCurrentDirectory();
+                        string filePath = Path.Combine(path, "wwwroot", "profile_images", "student", fileName);
+                        using (Stream fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(fileStream);
+                        }
+                        var updStudent = StudentBL.SetProfileImage(studentId, fileName);
+                        return Ok(updStudent);
+                    }
+                    return Conflict("Formato de archivo no válido");
+                }
+
+                return Conflict("Archivo corrupto");
+
+            }
+            return Unauthorized();
         }
 
         [Authorize]

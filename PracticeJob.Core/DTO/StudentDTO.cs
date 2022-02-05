@@ -13,6 +13,7 @@ namespace PracticeJob.Core.DTO
         public int ProvinceId { get; set; }
         public ProvinceDTO Province { get; set; }
         public string City { get; set; }
+        public string ProfileImage { get; set; }
         public int FPId { get; set; }
         public FPDTO FP { get; set; }
         public double FPCalification { get; set; }

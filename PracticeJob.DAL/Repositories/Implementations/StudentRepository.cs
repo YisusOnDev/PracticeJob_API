@@ -36,6 +36,7 @@ namespace PracticeJob.DAL.Repositories.Implementations
             // Put ProvinceId and FPId to 1 to prevent null ForeignKeys error
             student.ProvinceId = 1;
             student.FPId = 1;
+            student.ProfileImage = "default.png";
             var createdStudent = DbContext.Students.Add(student).Entity;
             DbContext.SaveChanges();
             return createdStudent;
@@ -116,6 +117,18 @@ namespace PracticeJob.DAL.Repositories.Implementations
                 }
             }
             return false;
+        }
+
+        public Student SetProfileImage(int studentId, string fileName)
+        {
+            var studentFromDb = Get(studentId);
+            if (studentFromDb != null)
+            {
+                studentFromDb.ProfileImage = fileName;
+                DbContext.SaveChanges();
+                return studentFromDb;
+            }
+            return null;
         }
     }
 }
