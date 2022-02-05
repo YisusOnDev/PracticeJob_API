@@ -5,6 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Email\EmailTemplates\CompanyContactTemplate.html" />
+    <None Remove="Email\EmailTemplates\ConfirmEmailTemplate.html" />
+    <None Remove="Email\EmailTemplates\ResetPasswordTemplate.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Email\EmailTemplates\CompanyContactTemplate.html" />
+    <EmbeddedResource Include="Email\EmailTemplates\ConfirmEmailTemplate.html" />
+    <EmbeddedResource Include="Email\EmailTemplates\ResetPasswordTemplate.html" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.21" />
     <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="6.0.0" />
@@ -14,10 +26,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PracticeJob.DAL\PracticeJob.DAL.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Email\EmailTemplates\" />
   </ItemGroup>
 
 </Project>

@@ -6,8 +6,10 @@ using RazorEngine.Templating;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,7 +24,12 @@ namespace PracticeJob.Core.Email
         }
         public Task SendConfirmationMail(string destinationEmail, string confirmationCode)
         {
-            string emailTemplate = File.ReadAllText(EmailTemplates.ConfirmEmailTemplate);
+            string emailTemplate = "";
+            Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(EmailTemplates.ConfirmEmailTemplate);
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                emailTemplate = reader.ReadToEnd();
+            }
             string mailBody = Engine.Razor.RunCompile(emailTemplate, "confirmMail", null, new { Code = confirmationCode });
 
             return SendMailAsync(destinationEmail, "Confirma tu cuenta en PracticeJob", mailBody);
@@ -30,14 +37,24 @@ namespace PracticeJob.Core.Email
 
         public Task SendPasswordReset(string destinationEmail, string confirmationCode)
         {
-            string emailTemplate = File.ReadAllText(EmailTemplates.PasswordRecoveryTemplate);
+            string emailTemplate = "";
+            Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(EmailTemplates.PasswordRecoveryTemplate);
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                emailTemplate = reader.ReadToEnd();
+            }
             string mailBody = Engine.Razor.RunCompile(emailTemplate, "resetPassword", null, new {Code = confirmationCode });
 
             return SendMailAsync(destinationEmail, "Reestablecimiento de contraseña", mailBody);
         }
         public Task SendCompanyContact(ContactMail contactMail)
         {
-            string emailTemplate = File.ReadAllText(EmailTemplates.CompanyContactTemplate);
+            string emailTemplate = "";
+            Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(EmailTemplates.CompanyContactTemplate);
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                emailTemplate = reader.ReadToEnd();
+            }
             string mailBody = Engine.Razor.RunCompile(emailTemplate, "companyContact", null, new { CompanyName = contactMail.companyName,  Message = contactMail.message });
 
             return SendMailAsync(contactMail.destinationMail, "Tienes un nuevo mensaje de: " + contactMail.companyName, mailBody);
