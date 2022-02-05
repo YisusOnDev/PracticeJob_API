@@ -73,6 +73,8 @@ namespace PracticeJob.API
                 o.AddPolicy("AllowSetOrigins", options =>
                 {
                     options.WithOrigins("http://localhost:8080");
+                    options.WithOrigins("https://practicejob.dev");
+                    options.AllowAnyOrigin();
                     options.AllowAnyHeader();
                     options.AllowAnyMethod();
                     options.AllowCredentials();
