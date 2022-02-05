@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <EnableDefaultContentItems>false</EnableDefaultContentItems>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +20,7 @@
     <ProjectReference Include="..\PracticeJob.BL\PracticeJob.BL.csproj" />
     <ProjectReference Include="..\PracticeJob.DAL\PracticeJob.DAL.csproj" />
   </ItemGroup>
+  
 
   <ItemGroup>
     <Content Include="wwwroot\**\*">
