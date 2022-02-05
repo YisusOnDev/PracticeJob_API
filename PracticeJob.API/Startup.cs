@@ -74,6 +74,7 @@ namespace PracticeJob.API
                 {
                     options.WithOrigins("http://localhost:8080");
 		    options.WithOrigins("https://practicejob.yisus.dev");
+                    options.AllowAnyOrigin();
                     options.AllowAnyHeader();
                     options.AllowAnyMethod();
                     options.AllowCredentials();
