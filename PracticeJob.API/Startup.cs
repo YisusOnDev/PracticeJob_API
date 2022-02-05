@@ -72,11 +72,10 @@ namespace PracticeJob.API
             services.AddCors(o => {
                 o.AddPolicy("AllowSetOrigins", options =>
                 {
-                    //options.WithOrigins("http://localhost:8080");
-		            //options.WithOrigins("https://practicejob.yisus.dev");
-                    options.AllowAnyMethod();
+                    options.WithOrigins("http://localhost:8080");
+		            options.WithOrigins("https://practicejob.yisus.dev");
                     options.AllowAnyHeader();
-                    options.SetIsOriginAllowed(origin => true);
+                    options.AllowAnyMethod();
                     options.AllowCredentials();
                     options.WithExposedHeaders(exposedHeaders);
                 });
