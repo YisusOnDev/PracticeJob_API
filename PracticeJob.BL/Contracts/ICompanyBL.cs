@@ -14,5 +14,6 @@ namespace PracticeJob.BL.Contracts
         bool UpdatePassword(PasswordResetDTO passwordReset);
         bool ContactStudent(ContactMailDTO contactMailDTO);
         CompanyDTO SetProfileImage(int companyId, string fileName);
+        CompanyDTO CreateStripeId(CompanyDTO companyDTO);
     }
 }

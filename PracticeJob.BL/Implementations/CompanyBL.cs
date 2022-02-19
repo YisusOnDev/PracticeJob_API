@@ -1,27 +1,30 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Configuration;
 using PracticeJob.BL.Contracts;
 using PracticeJob.Core.DTO;
 using PracticeJob.Core.Email;
 using PracticeJob.Core.Security;
 using PracticeJob.DAL.Entities;
 using PracticeJob.DAL.Repositories.Contracts;
+using Stripe;
 
 namespace PracticeJob.BL.Implementations
 {
     public class CompanyBL : ICompanyBL
     {
+        private readonly IConfiguration Configuration;
         public ICompanyRepository CompanyRepository { get; set; }
         public IPasswordGenerator PwdGenerator { get; set; }
         public IMapper Mapper { get; set; }
-        
         public IEmailSender EmailSender { get; set; }
 
-        public CompanyBL(ICompanyRepository CompanyRepository, IPasswordGenerator PwdGenerator, IMapper Mapper, IEmailSender EmailSender)
+        public CompanyBL(ICompanyRepository CompanyRepository, IPasswordGenerator PwdGenerator, IMapper Mapper, IEmailSender EmailSender, IConfiguration Configuration)
         {
             this.CompanyRepository = CompanyRepository;
             this.PwdGenerator = PwdGenerator;
             this.Mapper = Mapper;
             this.EmailSender = EmailSender;
+            this.Configuration = Configuration;
         }
         public CompanyDTO Login(AuthDTO authDTO)
         {
@@ -100,6 +103,30 @@ namespace PracticeJob.BL.Implementations
         {
             var company = Mapper.Map<Company, CompanyDTO>(CompanyRepository.SetProfileImage(companyId, fileName));
             return company;
+        }
+
+        public CompanyDTO CreateStripeId(CompanyDTO companyDTO)
+        {
+            Company _company = CompanyRepository.Get(companyDTO.Id);
+            if (_company != null)
+            {
+                if (_company.StripeId == null)
+                {
+                    StripeConfiguration.ApiKey = Configuration["Stripe:Secret"];
+                    var optionsCustomer = new CustomerCreateOptions
+                    {
+                        Email = _company.Email
+                    };
+
+                    var serviceCustomer = new CustomerService();
+                    var customer = serviceCustomer.Create(optionsCustomer);
+                    _company.StripeId = customer.Id;
+                    Company updCompany = CompanyRepository.Update(_company);
+                    return Mapper.Map<Company, CompanyDTO>(updCompany);
+                }
+                return Mapper.Map<Company, CompanyDTO>(_company);
+            }
+            return null;
         }
     }
 }

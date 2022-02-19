@@ -21,5 +21,6 @@ namespace PracticeJob.DAL.Entities
         public bool ValidatedEmail { get; set; }
         [JsonIgnore]
         public string TFCode { get; set; }
+        public string StripeId { get; set; }
     }
 }
