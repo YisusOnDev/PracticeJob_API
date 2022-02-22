@@ -35,6 +35,9 @@ namespace PracticeJob.Core.AutomapperProfiles
 
             CreateMap<ContactMailDTO, ContactMail>();
             CreateMap<ContactMail, ContactMailDTO>();
+
+            CreateMap<PrivateMessageDTO, PrivateMessage>();
+            CreateMap<PrivateMessage, PrivateMessageDTO>();
         }
     }
 }

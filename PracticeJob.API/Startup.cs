@@ -107,6 +107,8 @@ namespace PracticeJob.API
             services.AddScoped<IJobApplicationBL, JobApplicationBL>();
             services.AddScoped<IJobApplicationRepository, JobApplicationRepository>();
             services.AddScoped<IEmailSender, EmailSender>();
+            services.AddScoped<IPrivateMessageBL, PrivateMessageBL>();
+            services.AddScoped<IPrivateMessageRepository, PrivateMessageRepository>();
         }
 
         private void AddSwagger(IServiceCollection services)
