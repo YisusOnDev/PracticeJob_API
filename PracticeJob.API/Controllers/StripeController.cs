@@ -111,8 +111,8 @@ namespace PracticeJob.API.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [Route("webhook")]
-        public async Task<IActionResult> Index()
+        [Route("webhookbad")]
+        public async Task<IActionResult> Index2()
         {
             var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
 
@@ -143,6 +143,54 @@ namespace PracticeJob.API.Controllers
             {
                 Console.WriteLine(e);
                 return BadRequest();
+            }
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("webhook")]
+        public async Task<IActionResult> Index()
+        {
+            var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
+            if (json == null)
+            {
+                return StatusCode(500);
+            }
+            string endpointSecret = Configuration["Stripe:WebhookSigningSecret"];
+            try
+            {
+                var stripeEvent = EventUtility.ParseEvent(json);
+                var signatureHeader = Request.Headers["Stripe-Signature"];
+
+                stripeEvent = EventUtility.ConstructEvent(json,
+                        signatureHeader, endpointSecret);
+
+                switch (stripeEvent.Type)
+                {
+                    case Events.InvoicePaid:
+                        var invoice = stripeEvent.Data.Object as Invoice;
+                        Console.WriteLine(invoice);
+                        //paymentBL.PagoSuccess(invoice);
+                        break;
+                    case Events.CustomerSubscriptionCreated:
+                        var subscription = stripeEvent.Data.Object as Subscription;
+                        Console.WriteLine(subscription);
+                        //paymentBL.SubscriptionCreated(subscription);
+                        break;
+                    default:
+                        Console.WriteLine("Unhandled event type: {0}", stripeEvent.Type);
+                        break;
+                }
+                return Ok();
+            }
+            catch (StripeException e)
+            {
+                Console.WriteLine("Error: {0}", e.Message);
+                return BadRequest();
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500);
             }
         }
     }
