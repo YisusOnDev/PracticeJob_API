@@ -58,6 +58,10 @@ namespace PracticeJob.API.Controllers
             {
                 StripeConfiguration.ApiKey = Configuration["Stripe:Secret"];
                 string stripeCustomerId = companyDTO.StripeId;
+                if (stripeCustomerId == null)
+                {
+                    return false;
+                }
                 SubscriptionListOptions options = new SubscriptionListOptions
                 {
                     Price = "price_1KUrcgFqZdmFOIAOmBvbDgoq",
