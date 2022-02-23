@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PracticeJob.DAL.Entities;
 
 namespace PracticeJob.DAL.Migrations
 {
     [DbContext(typeof(PracticeJobContext))]
-    partial class PracticeJobContextModelSnapshot : ModelSnapshot
+    [Migration("20220219125044_AddStripeIdToCompany")]
+    partial class AddStripeIdToCompany
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -190,33 +192,6 @@ namespace PracticeJob.DAL.Migrations
                     b.ToTable("JobOffers");
                 });
 
-            modelBuilder.Entity("PracticeJob.DAL.Entities.PrivateMessage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("CompanyId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Message")
-                        .HasColumnType("longtext");
-
-                    b.Property<bool>("Read")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
-
-                    b.HasIndex("StudentId");
-
-                    b.ToTable("PrivateMessages");
-                });
-
             modelBuilder.Entity("PracticeJob.DAL.Entities.Province", b =>
                 {
                     b.Property<int>("Id")
@@ -359,25 +334,6 @@ namespace PracticeJob.DAL.Migrations
                     b.Navigation("Company");
                 });
 
-            modelBuilder.Entity("PracticeJob.DAL.Entities.PrivateMessage", b =>
-                {
-                    b.HasOne("PracticeJob.DAL.Entities.Company", "Company")
-                        .WithMany("PrivateMessages")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PracticeJob.DAL.Entities.Student", "Student")
-                        .WithMany("PrivateMessages")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Company");
-
-                    b.Navigation("Student");
-                });
-
             modelBuilder.Entity("PracticeJob.DAL.Entities.Student", b =>
                 {
                     b.HasOne("PracticeJob.DAL.Entities.FP", "FP")
@@ -397,19 +353,9 @@ namespace PracticeJob.DAL.Migrations
                     b.Navigation("Province");
                 });
 
-            modelBuilder.Entity("PracticeJob.DAL.Entities.Company", b =>
-                {
-                    b.Navigation("PrivateMessages");
-                });
-
             modelBuilder.Entity("PracticeJob.DAL.Entities.JobOffer", b =>
                 {
                     b.Navigation("JobApplications");
-                });
-
-            modelBuilder.Entity("PracticeJob.DAL.Entities.Student", b =>
-                {
-                    b.Navigation("PrivateMessages");
                 });
 #pragma warning restore 612, 618
         }

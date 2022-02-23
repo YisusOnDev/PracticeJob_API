@@ -6,8 +6,8 @@ namespace PracticeJob.Core.DTO
 {
     public class ContactMailDTO
     {
-        public string destinationMail { get; set; }
-        public string companyName { get; set; }
-        public string message { get; set; }
+        public string DestinationMail { get; set; }
+        public string CompanyName { get; set; }
+        public string Message { get; set; }
     }
 }

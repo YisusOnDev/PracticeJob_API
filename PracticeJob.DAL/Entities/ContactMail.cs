@@ -6,8 +6,8 @@ namespace PracticeJob.DAL.Entities
 {
     public class ContactMail
     {
-        public string destinationMail;
-        public string companyName;
-        public string message;
+        public string DestinationMail;
+        public string CompanyName;
+        public string Message;
     }
 }

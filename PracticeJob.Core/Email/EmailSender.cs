@@ -17,7 +17,7 @@ namespace PracticeJob.Core.Email
 {
     public class EmailSender : IEmailSender
     {
-        private IConfiguration IConfiguration;
+        private readonly IConfiguration IConfiguration;
         public EmailSender(IConfiguration IConfiguration)
         {
             this.IConfiguration = IConfiguration;
@@ -55,9 +55,9 @@ namespace PracticeJob.Core.Email
             {
                 emailTemplate = reader.ReadToEnd();
             }
-            string mailBody = Engine.Razor.RunCompile(emailTemplate, "companyContact", null, new { CompanyName = contactMail.companyName,  Message = contactMail.message });
+            string mailBody = Engine.Razor.RunCompile(emailTemplate, "companyContact", null, (contactMail.CompanyName, contactMail.Message));
 
-            return SendMailAsync(contactMail.destinationMail, "Tienes un nuevo mensaje de: " + contactMail.companyName, mailBody);
+            return SendMailAsync(contactMail.DestinationMail, "Tienes un nuevo mensaje de: " + contactMail.CompanyName, mailBody);
         }
 
         public Task SendMailAsync(string destinationEmail, string subject, string bodyMail)
@@ -76,10 +76,12 @@ namespace PracticeJob.Core.Email
                 Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
             };
 
-            MailMessage mail = new MailMessage(fromAddress, toAddress);
-            mail.IsBodyHtml = true;
-            mail.Subject = subject;
-            mail.Body = bodyMail;
+            MailMessage mail = new MailMessage(fromAddress, toAddress)
+            {
+                IsBodyHtml = true,
+                Subject = subject,
+                Body = bodyMail
+            };
 
             smtp.Send(mail);
 

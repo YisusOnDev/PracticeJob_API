@@ -52,7 +52,7 @@ namespace PracticeJob.DAL.Repositories.Implementations
                 dbCompany.Address = company.Address;
                 dbCompany.ProvinceId = company.ProvinceId;
                 dbCompany.Province = company.Province;
-
+                dbCompany.StripeId = company.StripeId;
                 DbContext.SaveChanges();
 
                 return dbCompany;

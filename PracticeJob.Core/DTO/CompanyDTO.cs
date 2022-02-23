@@ -13,5 +13,6 @@ namespace PracticeJob.Core.DTO
         public int ProvinceId { get; set; }
         public ProvinceDTO Province { get; set; }
         public bool ValidatedEmail { get; set; }
+        public string StripeId { get; set; }
     }
 }

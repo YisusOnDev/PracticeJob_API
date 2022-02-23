@@ -19,12 +19,14 @@ namespace PracticeJob.DAL.Repositories.Implementations
         {
             if (Exists(jobOfferId, studentId) == false)
             {
-                var newApplication = new JobApplication();
-                newApplication.StudentId = studentId;
-                newApplication.JobOfferId = jobOfferId;
-                newApplication.ApplicationDate = DateTime.Now;
-                newApplication.ApplicationStatus = ApplicationStatus.Pending;
-            
+                var newApplication = new JobApplication
+                {
+                    StudentId = studentId,
+                    JobOfferId = jobOfferId,
+                    ApplicationDate = DateTime.Now,
+                    ApplicationStatus = ApplicationStatus.Pending
+                };
+
                 var createdApplication = DbContext.JobApllications.Add(newApplication).Entity;
                 DbContext.SaveChanges();
                 if (createdApplication != null)

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
@@ -21,5 +22,7 @@ namespace PracticeJob.DAL.Entities
         public bool ValidatedEmail { get; set; }
         [JsonIgnore]
         public string TFCode { get; set; }
+        public string StripeId { get; set; }
+        public ICollection<PrivateMessage> PrivateMessages { get; set; }
     }
 }

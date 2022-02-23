@@ -105,7 +105,7 @@ namespace PracticeJob.API.Controllers
         {
             var result = CompanyBL.ContactStudent(contactMailDTO);
             return Ok(result);
-        } 
+        }
 
         [HttpPost, DisableRequestSizeLimit]
         [Route("UploadImage")]
