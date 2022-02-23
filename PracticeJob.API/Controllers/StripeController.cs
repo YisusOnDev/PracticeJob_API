@@ -162,6 +162,7 @@ namespace PracticeJob.API.Controllers
             }
             catch (Exception e)
             {
+                Console.WriteLine("Error: {0}", e.Message);
                 return StatusCode(500);
             }
         }
