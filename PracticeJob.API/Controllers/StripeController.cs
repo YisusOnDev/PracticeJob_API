@@ -80,11 +80,16 @@ namespace PracticeJob.API.Controllers
             var token = HttpContext.GetTokenAsync("access_token").Result;
             if (_tokenService.ValidToken(token, companyDTO))
             {
+                if (companyDTO.StripeId == null)
+                {
+                    companyDTO.StripeId = CompanyBL.CreateStripeId(companyDTO).StripeId;
+                }
+
                 StripeConfiguration.ApiKey = Configuration["Stripe:Secret"];
                 var options = new SessionCreateOptions
                 {
-                    SuccessUrl = "https://practicejob.yisus.dev/success.html?session_id={CHECKOUT_SESSION_ID}",
-                    CancelUrl = "https://practicejob.yisus.dev//failure.html",
+                    SuccessUrl = "https://practicejob.yisus.dev/paymentSuccess?session_id={CHECKOUT_SESSION_ID}",
+                    CancelUrl = "https://practicejob.yisus.dev/paymentFailure",
                     PaymentMethodTypes = new List<string>
                     {
                         "card",
@@ -107,43 +112,6 @@ namespace PracticeJob.API.Controllers
                 return Ok(new StripePaymentDTO { Url = session.Url });
             }
             return Unauthorized();
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [Route("webhookbad")]
-        public async Task<IActionResult> Index2()
-        {
-            var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
-
-            try
-            {
-                var stripeEvent = EventUtility.ParseEvent(json);
-
-                if (stripeEvent.Type == Events.InvoicePaid)
-                {
-                    var invoice = stripeEvent.Data.Object as Invoice;
-                    Console.WriteLine(invoice);
-                    //paymentBL.PagoSuccess(invoice);
-                }
-                else if (stripeEvent.Type == Events.CustomerSubscriptionCreated)
-                {
-                    var subscription = stripeEvent.Data.Object as Subscription;
-                    Console.WriteLine(subscription);
-                    //paymentBL.SubscriptionCreated(subscription);
-                }
-                else
-                {
-                    // Unexpected event type
-                    Console.WriteLine("Unhandled event type: {0}", stripeEvent.Type);
-                }
-                return Ok();
-            }
-            catch (StripeException e)
-            {
-                Console.WriteLine(e);
-                return BadRequest();
-            }
         }
 
         [HttpPost]
