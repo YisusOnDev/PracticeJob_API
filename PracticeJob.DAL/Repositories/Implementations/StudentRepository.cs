@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PracticeJob.DAL.Entities;
 using PracticeJob.DAL.Repositories.Contracts;
 using System;
+using System.Collections.Generic;
 
 namespace PracticeJob.DAL.Repositories.Implementations
 {
@@ -29,6 +30,33 @@ namespace PracticeJob.DAL.Repositories.Implementations
                 Include(u => u.FP).ThenInclude(fp => fp.FPFamily).
                 Include(u => u.FP).ThenInclude(fp => fp.FPGrade).
                 FirstOrDefault(u => u.Id == studentId);
+        }
+
+        public List<Student> GetAllFromProvince(int provinceId)
+        {
+           return DbContext.Students.
+                Include(u => u.Province).
+                Include(u => u.FP).ThenInclude(fp => fp.FPFamily).
+                Include(u => u.FP).ThenInclude(fp => fp.FPGrade).
+                Where(u => u.ProvinceId == provinceId).ToList();
+        }
+
+        public List<Student> GetAllFromFP(int fpId)
+        {
+            return DbContext.Students.
+                 Include(u => u.Province).
+                 Include(u => u.FP).ThenInclude(fp => fp.FPFamily).
+                 Include(u => u.FP).ThenInclude(fp => fp.FPGrade).
+                 Where(u => u.FPId == fpId).ToList();
+        }
+
+        public List<Student> GetAllFromFPAndProvince(int fpId, int provinceId)
+        {
+            return DbContext.Students.
+                 Include(u => u.Province).
+                 Include(u => u.FP).ThenInclude(fp => fp.FPFamily).
+                 Include(u => u.FP).ThenInclude(fp => fp.FPGrade).
+                 Where(u => u.FPId == fpId && u.ProvinceId == provinceId).ToList();
         }
 
         public Student Create(Student student)

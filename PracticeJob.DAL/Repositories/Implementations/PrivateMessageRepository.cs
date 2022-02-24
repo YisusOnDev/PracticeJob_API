@@ -26,6 +26,9 @@ namespace PracticeJob.DAL.Repositories.Implementations
         {
             // Set pm as not read
             pm.Read = false;
+            pm.Company = DbContext.Companies.FirstOrDefault(c => c.Id == pm.CompanyId);
+            pm.Student = DbContext.Students.FirstOrDefault(s => s.Id == pm.StudentId);
+            
             DbContext.PrivateMessages.Add(pm);
             DbContext.SaveChanges();
             return true;

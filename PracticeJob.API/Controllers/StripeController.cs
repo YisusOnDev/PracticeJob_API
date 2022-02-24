@@ -24,6 +24,7 @@ namespace PracticeJob.API.Controllers
 
         public StripeController(ICompanyBL CompanyBL, ITokenService TokenService, IConfiguration Configuration)
         {
+            StripeConfiguration.ApiKey = Configuration["Stripe:Secret"];
             this.CompanyBL = CompanyBL;
             this._tokenService = TokenService;
             this.Configuration = Configuration;
@@ -56,7 +57,6 @@ namespace PracticeJob.API.Controllers
             var token = HttpContext.GetTokenAsync("access_token").Result;
             if (_tokenService.ValidToken(token, companyDTO))
             {
-                StripeConfiguration.ApiKey = Configuration["Stripe:Secret"];
                 string stripeCustomerId = companyDTO.StripeId;
                 if (stripeCustomerId == null)
                 {
@@ -89,7 +89,6 @@ namespace PracticeJob.API.Controllers
                     companyDTO.StripeId = CompanyBL.CreateStripeId(companyDTO).StripeId;
                 }
 
-                StripeConfiguration.ApiKey = Configuration["Stripe:Secret"];
                 var options = new SessionCreateOptions
                 {
                     SuccessUrl = "https://practicejob.yisus.dev/paymentSuccess?session_id={CHECKOUT_SESSION_ID}",

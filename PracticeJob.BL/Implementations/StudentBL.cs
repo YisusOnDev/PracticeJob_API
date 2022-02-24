@@ -5,6 +5,7 @@ using PracticeJob.Core.Email;
 using PracticeJob.Core.Security;
 using PracticeJob.DAL.Entities;
 using PracticeJob.DAL.Repositories.Contracts;
+using System.Collections.Generic;
 
 namespace PracticeJob.BL.Implementations
 {
@@ -33,6 +34,38 @@ namespace PracticeJob.BL.Implementations
         {
             var student = Mapper.Map<Student, StudentDTO>(StudentRepository.Get(studentId));
             return student;
+        }
+        public List<StudentDTO> GetAllFromProvincePremium(int provinceId)
+        {
+            List<Student> filteredStudents = StudentRepository.GetAllFromProvince(provinceId);
+            foreach(Student s in filteredStudents)
+            {
+                s.Name = string.Empty;
+                s.LastName = string.Empty;
+            }
+            return Mapper.Map<List<Student>, List<StudentDTO>>(filteredStudents);
+        }
+
+        public List<StudentDTO> GetAllFromFpPremium(int fpId)
+        {
+            List<Student> filteredStudents = StudentRepository.GetAllFromFP(fpId);
+            foreach (Student s in filteredStudents)
+            {
+                s.Name = string.Empty;
+                s.LastName = string.Empty;
+            }
+            return Mapper.Map<List<Student>, List<StudentDTO>>(filteredStudents);
+        }
+
+        public List<StudentDTO> GetAllFromFpAndProvincePremium(int fpId, int provinceId)
+        {
+            List<Student> filteredStudents = StudentRepository.GetAllFromFPAndProvince(fpId, provinceId);
+            foreach (Student s in filteredStudents)
+            {
+                s.Name = string.Empty;
+                s.LastName = string.Empty;
+            }
+            return Mapper.Map<List<Student>, List<StudentDTO>>(filteredStudents);
         }
 
         public StudentDTO Create(AuthDTO authDTO)

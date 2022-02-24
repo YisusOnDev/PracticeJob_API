@@ -7,6 +7,9 @@ using PracticeJob.Core.Security;
 using System.Threading.Tasks;
 using PracticeJob.Core.Common;
 using System.IO;
+using System.Collections.Generic;
+using Stripe;
+using Microsoft.Extensions.Configuration;
 
 namespace PracticeJob.API.Controllers
 {
@@ -14,11 +17,13 @@ namespace PracticeJob.API.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
+        private readonly IConfiguration Configuration;
         private readonly ITokenService _tokenService;
         public IStudentBL StudentBL { get; set; }
 
-        public StudentController(ITokenService tokenService, IStudentBL StudentBL)
+        public StudentController(IConfiguration configuration, ITokenService tokenService, IStudentBL StudentBL)
         {
+            Configuration = configuration;
             _tokenService = tokenService;
             this.StudentBL = StudentBL;
         }
@@ -130,6 +135,57 @@ namespace PracticeJob.API.Controllers
 
         [Authorize]
         [HttpPost]
+        [Route("GetAllPremiumProvince")]
+        public ActionResult<List<StudentDTO>> GetAllFromProvincePremium(CompanyDTO companyDTO, int provinceId)
+        {
+            var token = HttpContext.GetTokenAsync("access_token").Result;
+            if (_tokenService.ValidToken(token, companyDTO))
+            {
+                if (CanDoPremiumRequest(companyDTO))
+                {
+                    List<StudentDTO> allStudents = StudentBL.GetAllFromProvincePremium(provinceId);
+                    return Ok(allStudents);
+                }            
+            }
+            return Unauthorized();
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("GetAllPremiumFP")]
+        public ActionResult<List<StudentDTO>> GetAllFromFPPremium(CompanyDTO companyDTO, int fpId)
+        {
+            var token = HttpContext.GetTokenAsync("access_token").Result;
+            if (_tokenService.ValidToken(token, companyDTO))
+            {
+                if (CanDoPremiumRequest(companyDTO))
+                {
+                    List<StudentDTO> allStudents = StudentBL.GetAllFromFpPremium(fpId);
+                    return Ok(allStudents);
+                }
+            }
+            return Unauthorized();
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("GetAllPremiumFPAndProvince")]
+        public ActionResult<List<StudentDTO>> GetAllFromFPAndProvincePremium(CompanyDTO companyDTO, int fpId, int provinceId)
+        {
+            var token = HttpContext.GetTokenAsync("access_token").Result;
+            if (_tokenService.ValidToken(token, companyDTO))
+            {
+                if (CanDoPremiumRequest(companyDTO))
+                {
+                    List<StudentDTO> allStudents = StudentBL.GetAllFromFpAndProvincePremium(fpId, provinceId);
+                    return Ok(allStudents);
+                }
+            }
+            return Unauthorized();
+        }
+
+        [Authorize]
+        [HttpPost]
         [Route("Authorized")]
         public ActionResult<StudentDTO> Authorized(StudentDTO studentDTO)
         {
@@ -145,6 +201,26 @@ namespace PracticeJob.API.Controllers
                 return BadRequest();
             }
             return Unauthorized();
+        }
+
+        private bool CanDoPremiumRequest(CompanyDTO companyDTO)
+        {
+            string stripeCustomerId = companyDTO.StripeId;
+            if (stripeCustomerId == null)
+            {
+                return false;
+            }
+            StripeConfiguration.ApiKey = Configuration["Stripe:Secret"];
+            SubscriptionListOptions options = new SubscriptionListOptions
+            {
+                Price = "price_1KUrcgFqZdmFOIAOmBvbDgoq",
+                Status = "active",
+                Limit = 5,
+                Customer = stripeCustomerId,
+            };
+            SubscriptionService service = new SubscriptionService();
+
+            return service.List(options).Data.Count > 0;
         }
     }
 }
