@@ -92,7 +92,7 @@ namespace PracticeJob.API.Controllers
                 StripeConfiguration.ApiKey = Configuration["Stripe:Secret"];
                 var options = new SessionCreateOptions
                 {
-                    SuccessUrl = "https://practicejob.yisus.dev/#/paymentSuccess?session_id={CHECKOUT_SESSION_ID}",
+                    SuccessUrl = "https://practicejob.yisus.dev/#/paymentSuccess",//?session_id={CHECKOUT_SESSION_ID}",
                     CancelUrl = "https://practicejob.yisus.dev/#/paymentFailure",
                     PaymentMethodTypes = new List<string>
                     {
