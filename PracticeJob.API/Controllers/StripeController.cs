@@ -21,13 +21,15 @@ namespace PracticeJob.API.Controllers
         private readonly IConfiguration Configuration;
         private readonly ITokenService _tokenService;
         public ICompanyBL CompanyBL { get; set; }
+        public IStripeInvoiceBL StripeInvoiceBL { get; set; }
 
-        public StripeController(ICompanyBL CompanyBL, ITokenService TokenService, IConfiguration Configuration)
+        public StripeController(ICompanyBL CompanyBL, ITokenService TokenService, IConfiguration Configuration, IStripeInvoiceBL stripeInvoiceBL)
         {
             StripeConfiguration.ApiKey = Configuration["Stripe:Secret"];
             this.CompanyBL = CompanyBL;
             this._tokenService = TokenService;
             this.Configuration = Configuration;
+            this.StripeInvoiceBL = stripeInvoiceBL;
         }
 
         [Authorize]
@@ -135,18 +137,16 @@ namespace PracticeJob.API.Controllers
 
                 stripeEvent = EventUtility.ConstructEvent(json,
                         signatureHeader, endpointSecret);
-
                 switch (stripeEvent.Type)
                 {
+                    /// Someone paid a new invoice -> Register to db
                     case Events.InvoicePaid:
                         var invoice = stripeEvent.Data.Object as Invoice;
-                        Console.WriteLine(invoice);
-                        //paymentBL.PagoSuccess(invoice);
-                        break;
-                    case Events.CustomerSubscriptionCreated:
-                        var subscription = stripeEvent.Data.Object as Subscription;
-                        Console.WriteLine(subscription);
-                        //paymentBL.SubscriptionCreated(subscription);
+                        /// Retrieve subscription data to get good period date value
+                        Subscription subscription = new SubscriptionService().Get(invoice.SubscriptionId);
+
+                        Console.WriteLine("Registering new invoice from Stripe");
+                        StripeInvoiceBL.RegisterInvoice(invoice, subscription);
                         break;
                     default:
                         Console.WriteLine("Unhandled event type: {0}", stripeEvent.Type);

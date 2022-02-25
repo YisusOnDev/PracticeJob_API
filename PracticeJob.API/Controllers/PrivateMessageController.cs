@@ -35,9 +35,9 @@ namespace PracticeJob.API.Controllers
             if (_tokenService.ValidToken(token, studentId))
             {
                 List<PrivateMessageDTO> unreadMessages = PrivateMessageBL.GetAllUnread(studentId);
-                if (unreadMessages != null && unreadMessages.Count > 0)
+                if (unreadMessages == null)
                 {
-                    return NoContent();
+                    return BadRequest();
                 }
                 return Ok(unreadMessages);
             }
@@ -61,7 +61,7 @@ namespace PracticeJob.API.Controllers
         [Authorize]
         [HttpPost]
         [Route("SetRead")]
-        public ActionResult<bool> SendMessage(int pmId)
+        public ActionResult<bool> SetRead(int pmId)
         {
             bool success = PrivateMessageBL.SetAsRead(pmId);
             return success;

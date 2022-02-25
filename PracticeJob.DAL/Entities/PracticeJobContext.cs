@@ -15,6 +15,7 @@ namespace PracticeJob.DAL.Entities
         public DbSet<JobOffer> JobOffers { get; set; }
         public DbSet<JobApplication> JobApllications { get; set; }
         public DbSet<PrivateMessage> PrivateMessages { get; set; }
+        public DbSet<StripeInvoice> Stripeinvoices { get; set; }
         public PracticeJobContext()
         {
         }

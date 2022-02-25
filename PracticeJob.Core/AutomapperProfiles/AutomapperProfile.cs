@@ -38,6 +38,9 @@ namespace PracticeJob.Core.AutomapperProfiles
 
             CreateMap<PrivateMessageDTO, PrivateMessage>();
             CreateMap<PrivateMessage, PrivateMessageDTO>();
+
+            CreateMap<StripeInvoiceDTO, StripeInvoice>();
+            CreateMap<StripeInvoice, StripeInvoiceDTO>();
         }
     }
 }

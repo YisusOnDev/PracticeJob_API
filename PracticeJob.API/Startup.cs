@@ -110,6 +110,8 @@ namespace PracticeJob.API
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IPrivateMessageBL, PrivateMessageBL>();
             services.AddScoped<IPrivateMessageRepository, PrivateMessageRepository>();
+            services.AddScoped<IStripeInvoiceBL, StripeInvoiceBL>();
+            services.AddScoped<IStripeInvoiceRepository, StripeInvoiceRepository>();
         }
 
         private void AddSwagger(IServiceCollection services)
