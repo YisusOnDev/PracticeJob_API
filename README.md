@@ -35,5 +35,6 @@ Also once you change your settings you should run "Update-Database" on Package M
 Copyright © 2021 [Jesús Téllez (Yisus)](https://github.com/YisusOnDev).<br />
 
 ## 💻 Linked Projects
+* [PracticeJob .NET Core API](https://github.com/YisusOnDev/PracticeJob_API)
 * [PracticeJob Angular WebApp](https://github.com/YisusOnDev/PracticeJob_Angular)
 * [PracticeJob Flutter MobileApp](https://github.com/YisusOnDev/PracticeJob_Flutter)
